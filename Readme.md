@@ -37,7 +37,7 @@ The design of "Pimp My English" is simple yet effective, focusing on user experi
 - I want to customize existing sets of words to better fit my vocabulary needs.
 - I want to view statistics of all my games to track my learning progress.
 - I want to share my word sets with others to help them learn.
-- I want to participate in the rankings to see how I compare to other learners.
+- I want to participate in the ranking of word sets to see how my contributions compare to those of other learners.
 - I want to log into the site to access my personalized settings and word sets.
 - I want to be able to edit and delete my word sets if needed.
 - I want to review and edit my account information to keep my profile up-to-date.
