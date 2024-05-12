@@ -12,7 +12,8 @@
 ## Features
 ### Authentication and User Roles
 - **Subscribers**: Authorization on the platform is required for subscribers. Subscribers have access to all platform features, including creating and editing word sets, through paid subscriptions.
-- **Guests**: Can use the service without registration or authorization, limited to accessing preset and shared word sets.
+- **Guests**: Can use the service without registration or authorization, limited to accessing preset and shared word sets. This role also has all of the registered Users, but don't has subscription. 
+- **Admin**: Have full control over the platform's content and user management. They can configure and customize various aspects of the platform, such as subscription plans, pricing, and user roles.
 
 ### Interactive Quizzes
 - The quiz consists of preset or subscriber-shared word sets.
@@ -27,6 +28,14 @@
 - Users can purchase subscriptions to access additional features and word sets.
 - The Stripe API is integrated to handle secure online payments and subscription management.
 - Subscribers have access to exclusive word sets, customization options, and advanced statistics.
+
+
+## Rules
+- After registration, users must verify their email addresses.
+- Before purchasing a subscription, the user's role is set to `guest`.
+- At the end of each calendar year, all `guest` users created more than a year ago (based on the `created_at` field) will be removed from the system.
+- When a user is deleted, all associated data will be cascaded and deleted, except for word sets (`WordSets`).
+- Word sets created by deleted users will be preserved with the author's information `username` (in open form) and `email` address (in closed form), respectively.
 
 ## UX/UI
 ### Site Goals
@@ -55,9 +64,9 @@ The design of "Pimp My English" is simple yet effective, focusing on user experi
 - I want to see the basic statistics for my current session to monitor my immediate learning outcomes.
 - I want to understand the benefits of becoming a subscriber and the available subscription options.
 
-### As an Owner/Administrator:
+### As an Admin:
 - I want to manage the entire platform to ensure smooth operations and content quality.
-- I want to add new word sets to expand the learning resources available.
+- I want to add new word sets or to approved Subscriber's word sets to expand the learning resources available.
 - I want to edit existing word sets to ensure they are accurate and up-to-date.
 - I want to remove inappropriate content or user accounts to maintain a safe and positive learning environment.
 - I want to manage financial transactions and oversee the subscription process to ensure it runs smoothly.
@@ -68,12 +77,101 @@ Wireframes for "Pimp My English" were developed to plan the layout and interacti
 
 ### Database Structure
 The database for "Pimp My English" is structured to support a robust e-commerce and educational platform:
-- **User**: Stores subscriber and guest information, including subscription details.
-- **Word Sets**: Contains collections of words, each with definitions and usage examples.
-- **Quizzes**: Links users to their quiz results and word sets used.
-- **Ratings**: Manages the rating system for word sets, including user feedback and usage statistics.
-- **Subscriptions**: Handles subscription plans, pricing, and user subscription data.
-- **Payments**: Stores payment information and transaction history for subscriptions.
+- **Users**: Stores user information, including username, email, password, subscription details, user role (guest or subscriber), email verification status, and creation timestamp.
+- **Administrators**: Stores information about platform administrators, including their user ID.
+- **WordSets**: Contains collections of words, each with definitions, usage examples, name, description, rating, creator (user ID), approval status (administrator ID), and author information (username and email).
+- **Words**: Stores individual words, their definitions, examples, and the associated word set.
+- **Quizzes**: Links users to their quiz results, including the user ID, word set used, score, and completion timestamp.
+- **Ratings**: Manages the rating system for word sets, including user feedback (user ID, word set ID, and rating value).
+- **Subscriptions**: Handles subscription plans, pricing, duration (monthly or yearly), and name.
+- **Payments**: Stores payment information and transaction history for subscriptions, including user ID, subscription ID, amount, and payment date.
+
+```dbml
+
+  Enum SubscriptionDurations {
+    monthly
+    yearly
+  }
+
+  Table Users {
+    id int [pk]
+    username varchar
+    email varchar
+    password varchar
+    is_subscriber bool
+    subscription_id int [ref: > Subscriptions.id]
+    email_verified bool
+    role user_roles
+    created_at timestamp
+  }
+
+  Enum user_roles {
+    guest
+    subscriber
+  }
+
+  Table Administrators {
+    id int [pk]
+    user_id int [ref: > Users.id]
+    role admin_roles
+  }
+
+  Enum admin_roles {
+    admin
+  }
+
+  Table WordSets {
+    id int [pk]
+    name varchar
+    description text
+    created_by int [ref: > Users.id]
+    rating float
+    approved_by int [ref: > Administrators.id]
+    author_username varchar
+    author_email varchar
+  }
+
+  Table Words {
+    id int [pk]
+    word varchar
+    definition text
+    example text
+    word_set_id int [ref: > WordSets.id]
+  }
+
+  Table Quizzes {
+    id int [pk]
+    user_id int [ref: > Users.id]
+    word_set_id int [ref: > WordSets.id]
+    score int
+    completed_at timestamp
+  }
+
+  Table Ratings {
+    id int [pk]
+    user_id int [ref: > Users.id]
+    word_set_id int [ref: > WordSets.id]
+    rating int
+  }
+
+  Table Subscriptions {
+    id int [pk]
+    name varchar
+    price float
+    duration SubscriptionDurations
+  }
+
+  Table Payments {
+    id int [pk]
+    user_id int [ref: > Users.id]
+    subscription_id int [ref: > Subscriptions.id]
+    amount float
+    payment_date timestamp
+  }
+  ```
+
+<img src="static/readme/images/PimpMyEnglishDBScheme.png" width="800" alt="Databases structure">
+
 
 ## Testing
 - Description of manual testing of site functionality.
@@ -87,6 +185,7 @@ The database for "Pimp My English" is structured to support a robust e-commerce 
 - Links to used resources, codes, images, and texts, citing authorship and sources.
 
 ## Future Features
+- Implement different administrator roles, such as owner, content manager, and support, to better manage and maintain the platform.
 - Expansion of functionality to include voice commands and multilingual word sets.
 - Introduction of gamification elements to increase user engagement.
 - Integration with additional payment gateways for broader accessibility.
