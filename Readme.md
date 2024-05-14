@@ -9,6 +9,170 @@
 - **Database**: SQLite (development), PostgreSQL (production)
 - **Payment Processing**: Stripe API
 
+## Project Architecture
+Following best practices, the functionality of this project is divided into separate Django apps based on their purpose. The project utilizes the following apps:
+
+1. **Accounts**
+
+    Description: User management, authentication, and profiles.
+
+    Main Tasks:
+    - User registration
+    - User login and logout
+    - Email verification
+    - User profile management
+    - Access control (guest, subscriber, and admin roles)
+
+    Models:
+    - User (Django's built-in model)
+    - Profile
+
+    URL Routes:
+    - /accounts/register/
+    - /accounts/login/
+    - /accounts/logout/
+    - /accounts/verify-email/
+    - /accounts/profile/
+
+2. **Subscriptions**
+    
+    Description: Subscription, plan, and payment management (Stripe integration).
+
+    Main Tasks:
+    - Create and manage subscriptions
+    - Manage subscription plans
+    - Integrate with Stripe for payment processing
+    - Track subscription status
+
+    Models:
+    - Subscription
+    - Plan
+    - Payment
+
+    URL Routes:
+    - /subscriptions/plans/
+    - /subscriptions/subscribe/
+    - /subscriptions/manage/
+    - /subscriptions/cancel/
+    - /subscriptions/payments/
+
+3. **Wordsets**
+
+    Description: Manage word sets, definitions, examples, and ratings.
+
+    Main Tasks:
+    - Create and edit word sets
+    - Add and manage words in sets
+    - Rating system for word sets
+    - Process user and system ratings
+
+    Models:
+    - WordSet
+    - Word
+    - Rating
+
+    URL Routes:
+    - /wordsets/
+    - /wordsets/create/
+    - /wordsets/<id>/
+    - /wordsets/<id>/edit/
+    - /wordsets/<id>/rate/
+
+4. **Quizzes**
+
+    Description: Implement quiz functionality and track results.
+
+    Main Tasks:
+    - Create and manage quizzes
+    - Allow users to take quizzes
+    - Track and store quiz results
+    - Time limits for questions
+
+    Models:
+    - Quiz
+    - QuizResult
+
+    URL Routes:
+    - /quizzes/
+    - /quizzes/start/
+    - /quizzes/<id>/
+    - /quizzes/<id>/results/
+
+5. **Admin**
+
+    Description: Administrative app for content, user, and subscription management.
+
+    Main Tasks:
+    - Manage users and their roles
+    - Administer content (word sets, words, and quizzes)
+    - Manage subscription plans and payments
+    - Reports and metrics for system monitoring
+
+    Models:
+    - Uses models from other apps
+
+    URL Routes:
+    - /admin/users/
+    - /admin/wordsets/
+    - /admin/quizzes/
+    - /admin/subscriptions/
+    - /admin/reports/
+
+This separation of functionality allows for better code organization, task distribution among developers, and easier future development and maintenance of the project.
+
+```uml
+Project structure:
+
+pimp_my_english/
+│
+├── accounts/
+│   ├── migrations/
+│   ├── templates/
+│   ├── urls.py
+│   ├── views.py
+│   ├── models.py
+│   └── ...
+│
+├── subscriptions/
+│   ├── migrations/
+│   ├── templates/
+│   ├── urls.py
+│   ├── views.py
+│   ├── models.py
+│   └── ...
+│
+├── wordsets/
+│   ├── migrations/
+│   ├── templates/
+│   ├── urls.py
+│   ├── views.py
+│   ├── models.py
+│   └── ...
+│
+├── quizzes/
+│   ├── migrations/
+│   ├── templates/
+│   ├── urls.py
+│   ├── views.py
+│   ├── models.py
+│   └── ...
+│
+├── admin/
+│   ├── migrations/
+│   ├── templates/
+│   ├── urls.py
+│   ├── views.py
+│   └── ...
+│
+├── manage.py
+└── pimp_my_english/
+    ├── settings.py
+    ├── urls.py
+    ├── wsgi.py
+    └── ...
+
+```
+
 ## Features
 ### Authentication and User Roles
 - **Subscribers**: Authorization on the platform is required for subscribers. Subscribers have access to all platform features, including creating and editing word sets, through paid subscriptions.
