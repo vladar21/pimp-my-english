@@ -14,43 +14,38 @@ Following best practices, the functionality of this project is divided into sepa
 
 1. **Accounts**
 
-    Description: User management, authentication, and profiles.
+    Description: User management and authentication.
 
     Main Tasks:
     - User registration
     - User login and logout
     - Email verification
-    - User profile management
     - Access control (guest, subscriber, and admin roles)
 
     Models:
     - User (Django's built-in model)
-    - Profile
 
     URL Routes:
     - /accounts/register/
     - /accounts/login/
     - /accounts/logout/
     - /accounts/verify-email/
-    - /accounts/profile/
 
 2. **Subscriptions**
     
-    Description: Subscription, plan, and payment management (Stripe integration).
+    Description: Subscription and payment management (Stripe integration).
 
     Main Tasks:
     - Create and manage subscriptions
-    - Manage subscription plans
     - Integrate with Stripe for payment processing
     - Track subscription status
 
     Models:
     - Subscription
-    - Plan
     - Payment
 
     URL Routes:
-    - /subscriptions/plans/
+    - /subscriptions/
     - /subscriptions/subscribe/
     - /subscriptions/manage/
     - /subscriptions/cancel/
@@ -69,7 +64,8 @@ Following best practices, the functionality of this project is divided into sepa
     Models:
     - WordSet
     - Word
-    - Rating
+    - Definition
+    - WordGroup
 
     URL Routes:
     - /wordsets/
@@ -176,7 +172,7 @@ pimp_my_english/
 ## Features
 ### Authentication and User Roles
 - **Subscribers**: Authorization on the platform is required for subscribers. Subscribers have access to all platform features, including creating and editing word sets, through paid subscriptions.
-- **Guests**: Can use the service without registration or authorization, limited to accessing preset and shared word sets. This role also has all of the registered Users, but don't has subscription. 
+- **Guests**: Can use the service without registration or authorization, limited to accessing preset and shared word sets. This role also has all of the registered Users, but don't has subscription.
 - **Admin**: Have full control over the platform's content and user management. They can configure and customize various aspects of the platform, such as subscription plans, pricing, and user roles.
 
 ### Interactive Quizzes
@@ -193,6 +189,13 @@ pimp_my_english/
 - The Stripe API is integrated to handle secure online payments and subscription management.
 - Subscribers have access to exclusive word sets, customization options, and advanced statistics.
 
+## Profile Section
+The Profile section of the site provides users with detailed information about their account. It includes:
+- **Current Subscription**: Displays the user's current subscription plan, renewal date, and subscription details.
+- **Subscription History**: A history of all past subscriptions, including dates and plan details.
+- **Created Word Sets**: Lists word sets created by the user, with options to edit or delete them.
+- **Quiz Statistics**: Displays statistics of quizzes taken by the user, including scores and progress over time.
+- **Account Information**: Allows users to view and update their account information such as username, email, and password.
 
 ## Rules
 - After registration, users must verify their email addresses.
@@ -241,23 +244,25 @@ Wireframes for "Pimp My English" were developed to plan the layout and interacti
 
 ### Database Structure
 The database for "Pimp My English" is structured to support a robust e-commerce and educational platform:
+
 - **Users**: Stores user information, including username, email, password, subscription details, user role (guest or subscriber), email verification status, and creation timestamp.
 - **Administrators**: Stores information about platform administrators, including their user ID.
 - **WordSets**: Contains collections of words, each with definitions, usage examples, name, description, rating, creator (user ID), approval status (administrator ID), and author information (username and email).
-- **Words**: Stores individual words, their definitions, examples, and the associated word set.
+- **Words**: Stores individual words, their definitions, examples, audio, images, and the associated word set.
+- **WordGroups**: Groups words across different languages.
 - **Quizzes**: Links users to their quiz results, including the user ID, word set used, score, and completion timestamp.
 - **Ratings**: Manages the rating system for word sets, including user feedback (user ID, word set ID, and rating value).
 - **Subscriptions**: Handles subscription plans, pricing, duration (monthly or yearly), and name.
 - **Payments**: Stores payment information and transaction history for subscriptions, including user ID, subscription ID, amount, and payment date.
+- **QuizResults**: Stores the results of individual quiz attempts, including user ID, quiz ID, score, and completion timestamp.
 
 ```dbml
-
-  Enum SubscriptionDurations {
+Enum SubscriptionDurations {
     monthly
     yearly
-  }
+}
 
-  Table Users {
+Table Users {
     id int [pk]
     username varchar
     email varchar
@@ -267,24 +272,24 @@ The database for "Pimp My English" is structured to support a robust e-commerce 
     email_verified bool
     role user_roles
     created_at timestamp
-  }
+}
 
-  Enum user_roles {
+Enum user_roles {
     guest
     subscriber
-  }
+}
 
-  Table Administrators {
+Table Administrators {
     id int [pk]
     user_id int [ref: > Users.id]
     role admin_roles
-  }
+}
 
-  Enum admin_roles {
+Enum admin_roles {
     admin
-  }
+}
 
-  Table WordSets {
+Table WordSets {
     id int [pk]
     name varchar
     description text
@@ -293,46 +298,116 @@ The database for "Pimp My English" is structured to support a robust e-commerce 
     approved_by int [ref: > Administrators.id]
     author_username varchar
     author_email varchar
-  }
+}
 
-  Table Words {
-    id int [pk]
-    word varchar
-    definition text
-    example text
+Table WordGroups {
+    id int [pk, increment]
+    created_at timestamp
+    updated_at timestamp
+}
+
+Enum WordType {
+    noun
+    verb
+    adjective
+    adverb
+    pronoun
+    preposition
+    conjunction
+    interjection
+}
+
+Enum CefrLevel {
+    A1
+    A2
+    B1
+    B2
+    C1
+    C2
+}
+
+Enum LanguageCode {
+    en
+    ru
+    ua
+    # добавить другие коды языков по ISO 639-1
+}
+
+Enum CountryCode {
+    US
+    UK
+    RU
+    UA
+    # добавить другие коды стран по Alpha-2 ISO 3166-1
+}
+
+Table Words {
+    id int [pk, increment]
+    text varchar(255)
+    language_code LanguageCode // Код языка по ISO 639-1
+    country_code CountryCode // Код страны по Alpha-2 ISO 3166-1
+    word_type WordType // Тип слова
+    cefr_level CefrLevel // Уровень CEFR
+    word_group_id int [ref: > WordGroups.id] // Ссылка на группу слов
+    audio_data blob // Данные аудиофайла
+    image_data blob // Данные изображения
+    created_at timestamp
+    updated_at timestamp
+}
+
+Table WordInSet {
+    id int [pk, increment]
+    word_id int [ref: > Words.id]
     word_set_id int [ref: > WordSets.id]
-  }
+}
 
-  Table Quizzes {
+Table Definition {
+    id int [pk, increment]
+    word_id int [ref: > Words.id]
+    definition text
+    created_at timestamp
+    updated_at timestamp
+}
+
+Table Quizzes {
     id int [pk]
     user_id int [ref: > Users.id]
     word_set_id int [ref: > WordSets.id]
     score int
     completed_at timestamp
-  }
+}
 
-  Table Ratings {
+Table QuizResults {
+    id int [pk]
+    user_id int [ref: > Users.id]
+    quiz_id int [ref: > Quizzes.id]
+    score int
+    completed_at timestamp
+}
+
+Table Ratings {
     id int [pk]
     user_id int [ref: > Users.id]
     word_set_id int [ref: > WordSets.id]
     rating int
-  }
+}
 
-  Table Subscriptions {
+Table Subscriptions {
     id int [pk]
     name varchar
     price float
     duration SubscriptionDurations
-  }
+}
 
-  Table Payments {
+Table Payments {
     id int [pk]
     user_id int [ref: > Users.id]
     subscription_id int [ref: > Subscriptions.id]
     amount float
     payment_date timestamp
-  }
-  ```
+}
+
+```
 
 <img src="static/readme/images/PimpMyEnglishDBScheme.png" width="800" alt="Databases structure">
 
