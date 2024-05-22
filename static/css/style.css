@@ -1,0 +1,730 @@
+/* Font face declarations */
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('../fonts/Caveat/Caveat-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Asterisk wildcard selector to override default styles added by the browser */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* General styles */
+
+.body-css {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+
+    color: whitesmoke;
+    font-family: 'Lato', sans-serif;
+    background: black url('../images/Tower-Bridge.webp') no-repeat center center/cover;
+}
+
+.quizsquare {
+    height: auto;
+    background-color: rgba(39, 34, 34, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+    padding-top: 5px;
+    border-radius: 5px;
+    width: 95%;
+}
+
+/* Quiz Title */
+.quiz-title-css {
+    text-align: center;
+    margin: 10px 0;
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.quiz-title-css:hover {
+    background-color: rgba(78, 51, 90, 0.9);
+    cursor: pointer;
+}
+
+#question-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Quiz Task (Question) */
+.quiz-task {
+    display: none;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: rgba(5, 103, 116, 0.9);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+/* Word Type */
+.word-type {
+    margin-top: 10px;
+    font-style: italic;
+    letter-spacing: .2rem;
+    font-size: 16px;
+    text-align: center;
+    padding: 5px;
+    padding-top: 2px;
+    border-radius: 19px;
+    background-color: rgba(39, 34, 34, 0.9);
+}
+
+.word-definition {
+    font-family: 'Caveat', cursive;
+    color: black;
+    font-size: 230%;
+    line-height: 2rem;
+    text-align: center;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.content-task-container {
+    display:flex; 
+    flex-direction: row; 
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.word-image {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.img-word-image {
+    width:100%;
+}
+
+.quiz-field-css {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background-color:  rgba(0, 188, 212, 0.7);
+    padding: 0px;
+    border-radius: 5px;
+    min-width: 100%;
+}
+
+/* Answer List Area (Styled as Radio Buttons) */
+.answer-list-area {    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    flex: 1;
+}
+
+.answers-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+#choose-answer {
+    align-self: start;
+    background-color: #056774;
+    padding: 0 10px;
+    border-radius: 5px;
+}
+
+.answers-list {    
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    list-style-type: none;
+}
+
+.answer-option {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+#answer-list-area > div > ul > li {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#answer-list-area > div > ul > li label {
+    color: black;
+    font-size: 138%;
+    line-height: 0.5rem;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.answer-option:hover {
+    background-color: #ddd;
+}
+
+/* Styling of the audio element container */
+.play-sound-button {
+    margin: 0;
+    margin-top: 2px;
+    padding:0;
+    background-image: url('../images/button_play.webp');
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    text-align: center;
+    margin-left: 5px;
+    float: right;
+}
+
+/* Control buttons area */
+.control-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 12px;
+}
+
+.control-buttons button,
+.control-buttons .timer-spinner {
+    font-size: 18px;
+    margin-top: 10px;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    flex-wrap: wrap;
+}
+
+#stop-button {
+    background-color: rgba(255, 87, 34, 0.9);
+    box-shadow: 2px 2px 15px -2px rgb(50, 50, 50);
+    margin-left: 3px;
+    border-radius: 5px;
+}
+
+#next-button {
+    background-color:rgba(76, 175, 80, 0.9);
+    box-shadow: 2px 2px 15px -2px rgb(50, 50, 50);
+    margin-right: 3px;
+    border-radius: 5px;
+}
+
+#stop-button:hover {
+    background-color: rgba(255, 69, 0, 0.9);
+}
+
+#next-button:hover {
+    background-color: rgba(69, 160, 73, 0.9);
+}
+
+/* Horizontal Spinner for Timer */
+.timer-spinner {
+    font-size: 24px;
+    margin-top: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(51, 51, 51, 0.9);
+    color: white;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+}
+
+/* Add animations for the spinner if desired */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Score Area */
+.score-area {
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Score Label Styles */
+.score-label {
+    display: inline-block;
+    font-size: 1.17em;
+    line-height: 0.95;
+    margin: 5px 10px;
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 0px 10px 6px 10px;
+    border-radius: 5px;
+}
+
+/* Count Styles */
+.count {
+    font-weight: bold;
+    font-family: 'Caveat', cursive;
+    font-size: 180%;
+}
+
+#answered-count {
+    color: #4caf50;
+}
+#total-count {
+    color: yellow;
+}
+
+.right-count {
+    color: #4caf50;
+}
+
+.wrong-count {
+    color: #e49d87;
+}
+
+/* Start Button */
+#start-quiz-button {
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: bold;
+    
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: rgba(76, 175, 80, 0.9);
+    box-shadow: 2px 2px 15px -2px rgb(50, 50, 50);
+}
+
+/* Statistic Window */
+#statistic-window {
+    display: block;
+    width: 100%;
+}
+
+.arrow-right {
+    display: inline-block;
+    margin: 0;
+    margin-left: 10px;
+    margin-top: 3px;
+    padding:0;
+    background-image: url('../images/right_arrow.png');
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.rules-akcent {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: rgb(51, 51, 51);
+    font-weight: bold;
+    padding: 1px 5px 1px 1px;
+    border-radius: 45%;
+}
+
+#settings {
+    display: none;
+    width: 100%;
+}
+
+/* statistic window styles */
+.winners-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 100%;
+    background-color: rgba(0, 188, 212, 0.7);
+    padding: 10px 10px;
+    border-radius: 5px;
+    font-family: 'Caveat', cursive;
+}
+
+/* Rules styles */
+#rules {
+    display: none;
+    width: 100%;
+}
+
+#rules td {
+    width: 100%;
+    font-size: 100%;
+    text-align: left;
+    background-color: rgba(51, 51, 51, 0.7);
+}
+
+.content-rules {
+    width: 100%;
+}
+
+.rules-title {
+    text-align: center;
+    color: whitesmoke;
+    font-family: 'Caveat', cursive;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 210%;
+}
+
+.content-rules p {
+    font-size: 180%;
+    margin: 10px;
+}
+
+/* Winner table styles */
+
+.winners-table {
+    width: 100%;
+}
+
+.winners-table caption {
+    font-size: 210%;
+}
+
+/* Add some styles for the table header */
+.winners-table th {
+    background-color:  rgba(123, 81, 141, 0.85);
+}
+
+.winners-table tr {
+    font-size: 150%;
+}
+
+.winners-table td {
+    box-shadow: 1px 1px 5px -1px rgb(50, 50, 50);
+}
+
+/* Adjust the width and position of the table cells */
+.winners-table td:nth-child(1) {
+    width: 22%;
+    text-align: center;
+}
+
+.winners-table td:nth-child(2) {
+    width: 24%;
+    text-align: center;
+}
+
+.winners-table td:nth-child(3) {
+    width: 28%;
+    text-align: center;
+}
+
+.winners-table td:nth-child(4) {
+    width: 26%;
+    text-align: center;
+}
+
+/* Add some styles for the highlighted rows */
+.highlight {
+    background-color: rgba(51, 51, 51, 0.7);
+    border-radius: 5px;
+}
+
+/* Add some styles for the second class */
+.second {
+    font-size: smaller;
+    vertical-align: super;
+ }
+
+/* Style for statistic window controll area */
+.rules-start-settings {
+    width:100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+
+.rules-start-settings a {
+    font-family: 'Caveat', cursive;
+    font-size: 150%;
+    text-decoration: none;
+    color: white;
+    align-self: flex-end;
+    padding: 5px;
+    padding-right: 8px;
+    border-radius: 5px;
+}
+
+.rules-start-settings a:hover {
+    background-color: rgba(128, 124, 124, 0.7);
+}
+
+/* Settings Section Styles */
+
+#settings {
+    display: none;
+    width: 100%;
+}
+
+#settings-table label {
+    font-size: 21px;
+    display: block;
+}
+    
+#settings-table input[type="range"] {
+    width: 100%;
+}
+
+#settings-table .total {
+    font-weight: bold;
+}
+
+#settings-table .right {
+    text-align: right;
+}
+
+#wordtype-level-selection {
+    text-align: left;
+}
+
+#settings-table td:nth-child(4) {
+    line-height: 180%;
+}
+
+#settings-table td:nth-child(4) label {
+    font-size: 25px;
+}
+
+/* Increase the size of the checkbox container */
+input[type="checkbox"] {
+    transform: scale(1.5);
+}
+  
+/* Increase the size of the checkbox marker (square checkbox) */
+input[type="checkbox"]::before {
+    transform: scale(1.5);
+}
+
+#resetSettingsDefault {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color:  rgba(123, 81, 141, 0.85);
+}
+
+#resetSettingsDefault:hover {
+    background-color:  rgba(85, 56, 97, 0.85);
+}
+
+/* close button */
+.winners-results {
+    position: relative;
+}
+
+.close-button-div {
+    padding:0;
+    margin:0;
+    position: absolute;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(85, 56, 97, 0.85);
+    width: 20px;
+    height: 20px;
+    border: 0;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.close-button {
+    padding:0;
+    margin:0;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    font-size: 18px;  
+    color: white;
+    font-weight: bold;
+}  
+
+/* Tooltip styles */
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 15px;
+    z-index: 999;
+  }
+
+/* Add some styles for the table on large screens */
+@media screen and (min-width: 600px) {
+  .quizsquare {
+    padding: 30px;
+    padding-top: 20px;
+    border-radius: 5px;
+    width: 90%;
+  }
+  
+  /* Center the table on the page */
+  .winners-table {
+    margin: auto;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  /* Add some borders and padding for the table cells */
+  .winners-table td, .winners-table th {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .winners-table th:nth-child(2) {
+    text-align: left;
+  }
+
+  .winners-table caption {
+    font-size: 210%;
+  }
+
+  .winners-table tr {
+    font-size: 180%;
+  }
+
+  .winners-table td {
+    box-shadow: 1px 1px 5px -1px rgb(50, 50, 50);
+  }
+
+  /* Adjust the width and position of the table cells */
+  .winners-table td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+  }
+
+  .winners-table td:nth-child(2) {
+    width: 50%;
+    text-align: left;
+  }
+
+  .winners-table td:nth-child(3) {
+    width: 20%;
+    text-align: center;
+  }
+
+  .winners-table td:nth-child(4) {
+    width: 10%;
+    text-align: center;
+  }
+  
+  /* setting table */
+  #settings-table td:nth-child(2) {
+    width: 30%;
+    text-align: left;
+  }
+
+  #settings-table td:nth-child(3) {
+    width: 20%;
+    text-align: left;
+  }
+
+  #settings-table td:nth-child(4) {
+    width: 40%;
+    text-align: left;
+    line-height: 150%;
+  }
+
+  #settings-table td:nth-child(4) label {
+    font-size: 100%;
+  }
+
+  .control-buttons {
+    gap: 30px;
+  }
+
+}
+
+@media screen and (min-width: 700px) {
+  .quizsquare {
+    width: 65%;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .quizsquare {
+    width: 65%;
+  }
+
+  /* styles for word image */
+  .word-image {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+    .quizsquare {
+        width: 60%;
+      }
+
+      #settings-table td:nth-child(4) {
+        line-height: 100%;
+      }
+}
+
+@media screen and (min-width: 1200px) {
+    .quizsquare {
+        width: 55%;
+      }
+}
+
+@media screen and (min-width: 1400px) {
+    .quizsquare {
+        width: 50%;
+      }
+}
+
+@media screen and (min-width: 1600px) {
+    .quizsquare {
+        width: 45%;
+      }
+}
