@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'subscriptions',
     'wordsets',
     'quizzes',
-    'admin',
+    'admin_app',
 ]
 
 MIDDLEWARE = [
@@ -64,7 +64,7 @@ ROOT_URLCONF = 'pimp_my_english.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,10 +84,7 @@ WSGI_APPLICATION = 'pimp_my_english.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 
@@ -127,6 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

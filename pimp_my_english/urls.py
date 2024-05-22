@@ -7,5 +7,5 @@ urlpatterns = [
     path('subscriptions/', include('subscriptions.urls')),
     path('wordsets/', include('wordsets.urls')),
     path('quizzes/', include('quizzes.urls')),
-    path('admin-panel/', include('admin.urls')),
+    path('admin_app/', include('admin_app.urls')),
 ]
