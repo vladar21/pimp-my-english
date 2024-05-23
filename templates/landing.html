@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %}Landing Page - Pimp My English{% endblock %}
+
+{% block content %}
+<div class="quizsquare">
+    <h1 id="english-words-quiz" class="quiz-title-css">English Words Quiz</h1>
+
+    <div id="quiz-field" class="quiz-field-css">
+        <div id="question-area">
+            <h2 class="quiz-task">Guess the word by definition:</h2>
+            <span class="word-type"></span>
+            <span class="word-definition"></span>
+        </div>
+
+        <div class="content-task-container">
+            <div class="word-image">
+                <img class="img-word-image" src="#" alt="">
+            </div>
+            <div id="answer-list-area">
+                <div class="answers-container">
+                    <h3 id="choose-answer">it is ...</h3>
+                    <ul class="answers-list">
+                        <!-- Answer options will be added here dynamically -->
+                    </ul>                
+                </div>             
+            </div>
+        </div>
+        
+        <div class="control-buttons">
+            <button id="stop-button">Stop</button>
+            <div id="timer-spinner" class="timer-spinner">30</div>
+            <button id="next-button">Next</button>
+        </div>
+        
+        <div id="score-area" class="score-area">
+            <div class="score-label">
+                Answered/Total:
+                <span id="answered-count" class="count">0</span>&nbsp;/&nbsp;
+                <span id="total-count" class="count">0</span>
+            </div>
+            <div class="score-label">
+                Right/Wrong:
+                <span id="right-count" class="count right-count">0</span>&nbsp;/&nbsp;
+                <span id="wrong-count" class="count wrong-count">0</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings">
+        <div class="winners-results">
+            <div class="close-button-div">
+                <button id="closeButtonSettings" class="close-button">x</button>
+            </div>
+            <table id="settings-table" class="winners-table">
+                <caption>Settings</caption>
+                <thead>
+                    <tr>
+                        <th>pp</th>
+                        <th>Describe</th>
+                        <th>Name</th>
+                        <th>Values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight">
+                        <td>1</td>
+                        <td>total number of words for quiz</td>
+                        <td>Total Words</td>
+                        <td>
+                            <label for="word-count-slider"><span id="word-count-label">3</span> words</label>
+                            <input type="range" id="word-count-slider" min="3" max="100" value="3">
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>2</td>
+                        <td>cefr levels of words for quiz ('A1', 'B1', 'B2' etc)</td>
+                        <td>CEFR Levels</td>
+                        <td>
+                            <div id="cefr-level-selection">
+                                <label>
+                                    <input id="cefr-checkbox-A1" type="checkbox" name="cefr-level" value="A1" checked>
+                                    A1 (<span id="cefr-level-count-A1">0</span> words)
+                                </label>
+                                <label>
+                                    <input id="cefr-checkbox-A2" type="checkbox" name="cefr-level" value="A2" checked>
+                                    A2 (<span id="cefr-level-count-A2">0</span> words)
+                                </label>
+                                <label>
+                                    <input id="cefr-checkbox-B1" type="checkbox" name="cefr-level" value="B1" checked>
+                                    B1 (<span id="cefr-level-count-B1">0</span> words)
+                                </label>
+                                <label>
+                                    <input id="cefr-checkbox-B2" type="checkbox" name="cefr-level" value="B2" checked>
+                                    B2 (<span id="cefr-level-count-B2">0</span> words)
+                                </label>
+                                <label>
+                                    <input id="cefr-checkbox-C1" type="checkbox" name="cefr-level" value="C1" checked>
+                                    C1 (<span id="cefr-level-count-C1">0</span> words)
+                                </label>
+                                <label>
+                                    <input id="cefr-checkbox-C2" type="checkbox" name="cefr-level" value="C2" checked>
+                                    C2 (<span id="cefr-level-count-C2">0</span> words)
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>3</td>
+                        <td>types of words for quiz ('noun', 'adjective' etc)</td>
+                        <td>Word Types</td>
+                        <td>
+                            <div id="wordtype-level-selection">
+                                <label>
+                                    <input id="words-types-checkbox-noun" type="checkbox" name="words-types" value="noun" checked>
+                                    noun (<span id="words-types-count-noun">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-adjective" type="checkbox" name="words-types" value="adjective" checked>
+                                    adjective (<span id="words-types-count-adjective">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-verb" type="checkbox" name="words-types" value="verb" checked>
+                                    verb (<span id="words-types-count-verb">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-adverb" type="checkbox" name="words-types" value="adverb" checked>
+                                    adverb (<span id="words-types-count-adverb">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-preposition" type="checkbox" name="words-types" value="preposition" checked>
+                                    preposition (<span id="words-types-count-preposition">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-pronoun" type="checkbox" name="words-types" value="pronoun" checked>
+                                    pronoun (<span id="words-types-count-pronoun">0</span>)
+                                </label>
+                                <label>
+                                    <input id="words-types-checkbox-interjection" type="checkbox" name="words-types" value="interjection" checked>
+                                    interjection (<span id="words-types-count-interjection">0</span>)
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="highlight total">
+                        <td colspan="4" class="reset-settings-default">
+                            <button id="resetSettingsDefault">Reset</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="rules">
+        <div class="winners-results">
+            <div class="close-button-div">
+                <button id="closeButtonRules" class="close-button">x</button>
+            </div>
+            <div class="content-rules">
+                <h2 class="rules-title">Rules</h2>
+                <div>
+                    <div>
+                        <p class="highlight">1. Press <span class="rules-akcent">Start</span> button to begin the quiz.</p>
+                    </div>
+                    <div>
+                        <p class="highlight">2. Press <span class="rules-akcent">Settings</span> link to make quiz more controllable. In this section you can select:
+                            <br><span class="arrow-right"></span> total number of words for quiz;
+                            <br><span class="arrow-right"></span> cefr levels of words for quiz ('A1', 'B1', 'B2' etc);
+                            <br><span class="arrow-right"></span> types of words for quiz ('noun', 'adjective' etc);                      
+                        </p>
+                    </div>
+                    <div>
+                        <p class="highlight">3. On the current quiz screen, you can see the following elements:
+                            <br><span class="arrow-right"></span> at the top, the <b>definition</b> of the word to be guessed;
+                            <br><span class="arrow-right"></span> below, the <b>image</b> as a clue that may help you guess the correct answer;
+                            <br><span class="arrow-right"></span> below, the <b>word variants</b> for the answer, with audio pronunciation support;
+                            <br><span class="arrow-right"></span> below, the 30-second <b>countdown timer</b> for answering. If you answer later - the quiz will automatically stop;
+                            <br><span class="arrow-right"></span> on the right, the <span class="rules-akcent">Stop</span> quiz button;
+                            <br><span class="arrow-right"></span> on the left, the <span class="rules-akcent">Next</span> question button;
+                            <br><span class="arrow-right"></span> in the bottom left corner, the number of quiz questions already answered and the total number of questions;
+                            <br><span class="arrow-right"></span> in the bottom right corner, the number of correct and incorrect answers in the current attempt.
+                        </p>
+                    </div>
+                    <div>
+                        <p class="highlight">4. After pressing <span class="rules-akcent">Stop</span> button, you will be taken to the winners table, where you can see the results of the current attempt and all previous attempts.</p>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+
+    <div id="statistic-window">
+        <div id="winner-quiz-field" class="winners-results">
+            <table id="winners-table" class="winners-table">
+                <caption>Winners Results</caption>
+                <thead>
+                    <tr>
+                        <th>Place</th>
+                        <th>Attempt</th>
+                        <th>Scores</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Winners' results will be added here dynamically -->
+                </tbody>
+            </table>                
+        </div>
+    </div>
+
+    <div class="rules-start-settings">
+        <a href="#" id="rules-link" class="rules-link">Rules</a>
+        <button id="start-quiz-button">Start</button>
+        <a href="#" id="settings-link" class="settings-link">Settings</a>
+    </div>
+</div>
+{% endblock %}
+
