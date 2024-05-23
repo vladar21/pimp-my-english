@@ -146,3 +146,5 @@ MESSAGE_TAGS = {
 DATABASES = {
     'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
+
+AUTH_USER_MODEL = 'accounts.User'
