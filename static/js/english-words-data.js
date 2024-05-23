@@ -1,8 +1,8 @@
 
 const englishWordsInit = {    
     "humanity": {
-        "image_url": 'assets/images/quiz_images/humanity.webp',
-        "sound_url": 'assets/sound/humanity.mp3',
+        "image_url": 'static/images/quiz_images/humanity.webp',
+        "sound_url": 'static/sound/humanity.mp3',
         "cefr": {
             "level": "C2",
             "title": "Proficient"
@@ -94,8 +94,8 @@ const englishWordsInit = {
         ],
     },
     "charisma": {
-        "image_url": 'assets/images/quiz_images/charisma.webp',
-        "sound_url": 'assets/sound/charisma.mp3',
+        "image_url": 'static/images/quiz_images/charisma.webp',
+        "sound_url": 'static/sound/charisma.mp3',
         "cefr": {
             "level": "C1",
             "title": "Advanced"
@@ -146,8 +146,8 @@ const englishWordsInit = {
         ],
     },
     "blunt": {
-        "image_url": "assets/images/quiz_images/blunt.webp",
-        "sound_url": "assets/sound/blunt.mp3",
+        "image_url": "static/images/quiz_images/blunt.webp",
+        "sound_url": "static/sound/blunt.mp3",
         "cefr": {
             "level": "C2",
             "title": "Proficient"
@@ -269,8 +269,8 @@ const englishWordsInit = {
         ],       
     },
     "cynical": {
-        "image_url": "assets/images/quiz_images/cynical.webp",
-        "sound_url": "assets/sound/cynical.mp3",
+        "image_url": "static/images/quiz_images/cynical.webp",
+        "sound_url": "static/sound/cynical.mp3",
         "cefr": {
             "level": "C2",
             "title": "Proficient"
@@ -317,8 +317,8 @@ const englishWordsInit = {
         ],       
     },
     "fussy": {
-        "image_url": "assets/images/quiz_images/fussy.webp",
-        "sound_url": "assets/sound/fussy.mp3",
+        "image_url": "static/images/quiz_images/fussy.webp",
+        "sound_url": "static/sound/fussy.mp3",
         "cefr": {
             "level": "C2",
             "title": "Proficient"
@@ -402,8 +402,8 @@ const englishWordsInit = {
         ],       
     },
     "smooth": {
-        "image_url": "assets/images/quiz_images/smooth.webp",
-        "sound_url": "assets/sound/smooth.mp3",
+        "image_url": "static/images/quiz_images/smooth.webp",
+        "sound_url": "static/sound/smooth.mp3",
         "cefr": {
             "level": "C2",
             "title": "Intermediate"
@@ -641,8 +641,8 @@ const englishWordsInit = {
         ],       
     },
     "embrace": {
-        "image_url": "assets/images/quiz_images/embrace.webp",
-        "sound_url": "assets/sound/embrace.mp3",
+        "image_url": "static/images/quiz_images/embrace.webp",
+        "sound_url": "static/sound/embrace.mp3",
         "cefr": {
             "level": "C1",
             "title": "Advanced"
@@ -755,8 +755,8 @@ const englishWordsInit = {
         ],       
     },
     "survey": {
-        "image_url": "assets/images/quiz_images/survey.webp",
-        "sound_url": "assets/sound/survey.mp3",
+        "image_url": "static/images/quiz_images/survey.webp",
+        "sound_url": "static/sound/survey.mp3",
         "cefr": {
             "level": "C1",
             "title": "Advanced"
@@ -983,8 +983,8 @@ const englishWordsInit = {
         ],       
     },
     "opt": {
-        "image_url": "assets/images/quiz_images/opt.webp",
-        "sound_url": "assets/sound/opt.mp3",
+        "image_url": "static/images/quiz_images/opt.webp",
+        "sound_url": "static/sound/opt.mp3",
         "cefr": {
             "level": "C1",
             "title": "Advanced"
@@ -1044,8 +1044,8 @@ const englishWordsInit = {
         ],       
     },
     "abandon": {
-        "image_url": "assets/images/quiz_images/opt.webp",
-        "sound_url": "assets/sound/opt.mp3",
+        "image_url": "static/images/quiz_images/opt.webp",
+        "sound_url": "static/sound/opt.mp3",
         "cefr": {
             "level": "C1",
             "title": "Advanced"

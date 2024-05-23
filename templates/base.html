@@ -6,24 +6,20 @@
     <meta name="description" content="{% block meta_description %}Default description{% endblock %}">
     <meta name="keywords" content="{% block meta_keywords %}english, quiz, learning{% endblock %}">
     <title>{% block title %}Pimp My English{% endblock %}</title>
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
 </head>
-<body>
-    <header>
-        <nav>
-            <!-- Navigation items -->
-        </nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2024 Pimp My English. All rights reserved.</p>
-    </footer>
+<body class="body-css">
+
+
+    {% block content %}
+    {% endblock %}
+
+
+    <script src="{% static 'js/english-words-data.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
