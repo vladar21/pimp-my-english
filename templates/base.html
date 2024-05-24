@@ -11,14 +11,43 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="body-css">
-
-
-    {% block content %}
-    {% endblock %}
-
-
+    <header class="header-css">
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="main-css">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Pimp My English. All rights reserved.</p>
+        <nav>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Newsletters</a>
+        </nav>
+        <div class="social-icons">
+            <a href="#" class="social-icon" title="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-icon" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-icon" title="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+    </footer>
+    
     <script src="{% static 'js/english-words-data.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
 </body>
