@@ -30,6 +30,7 @@ body {
     color: whitesmoke;
     font-family: 'Lato', sans-serif;
     background: black url('../images/Tower-Bridge.webp') no-repeat center center/cover;
+    background-attachment: fixed;
 }
 
 header {
@@ -224,7 +225,8 @@ footer nav a:hover {
 }
 
 .img-word-image {
-    width: 100%;
+    max-width: 60%;
+    max-height: 60%;
 }
 
 .quiz-field-css {
@@ -360,6 +362,12 @@ footer nav a:hover {
 
 #next-button:hover {
     background-color: rgba(69, 160, 73, 0.9);
+}
+
+/* Add animations for the spinner if desired */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Horizontal Spinner for Timer */
@@ -701,6 +709,22 @@ input[type="checkbox"]::before {
     z-index: 999;
 }
 
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    height: 0;
+    overflow: hidden;
+}
+
+.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    height: auto;
+}
+
+
 /* Add some styles for the table on large screens */
 @media screen and (min-width: 600px) {
     .quizsquare {
@@ -787,15 +811,19 @@ input[type="checkbox"]::before {
     }
 }
 
-@media screen and (min-width: 700px) {
-    .quizsquare {
-        width: 65%;
+@media screen and (max-width: 800px){
+    .img-word-image {
+        max-width: 80%;
+        max-height: 80%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 }
 
 @media screen and (min-width: 800px) {
     .quizsquare {
-        width: 65%;
+        width: 60%;
     }
 
     /* styles for word image */
