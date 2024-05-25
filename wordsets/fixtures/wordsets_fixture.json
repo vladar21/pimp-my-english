@@ -1,0 +1,398 @@
+[
+    {
+        "model": "accounts.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$260000$6Alc94mU2DK6yAF0xCoPUY$3hFwDmgx9AImKoPCg/KtI85HV2QTC7C1QChT1Ek26oc=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "testuser",
+            "first_name": "Test",
+            "last_name": "User",
+            "email": "testuser@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2023-01-01T00:00:00Z",
+            "is_subscriber": true,
+            "subscription_id": null,
+            "email_verified": true,
+            "role": "subscriber",
+            "created_at": "2023-01-01T00:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "admin_app.admin",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "role": "admin"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 1,
+        "fields": {
+            "name": "Monthly Subscription",
+            "price": 9.99,
+            "duration": "monthly"
+        }
+    },
+    {
+        "model": "subscriptions.subscription",
+        "pk": 2,
+        "fields": {
+            "name": "Yearly Subscription",
+            "price": 99.99,
+            "duration": "yearly"
+        }
+    },
+    {
+        "model": "wordsets.wordset",
+        "pk": 1,
+        "fields": {
+            "name": "Advanced Vocabulary",
+            "description": "A set of advanced English vocabulary words.",
+            "created_by": 1,
+            "rating": 4.5,
+            "approved_by": 1,
+            "author_username": "testuser",
+            "author_email": "testuser@example.com"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 1,
+        "fields": {
+            "text": "humanity",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "noun",
+            "cefr_level": "C2",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 1,
+        "fields": {
+            "word": 1,
+            "definition": "all people.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 2,
+        "fields": {
+            "word": 1,
+            "definition": "kindness and sympathy towards others.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 3,
+        "fields": {
+            "word": 1,
+            "definition": "the condition of being human.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 2,
+        "fields": {
+            "text": "charisma",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "noun",
+            "cefr_level": "C1",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 4,
+        "fields": {
+            "word": 2,
+            "definition": "a natural power that some people have to influence or attract people.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 5,
+        "fields": {
+            "word": 2,
+            "definition": "a strong personal quality that makes someone attract, influence, and inspire other people.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 3,
+        "fields": {
+            "text": "blunt",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "adjective",
+            "cefr_level": "C2",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 6,
+        "fields": {
+            "word": 3,
+            "definition": "not sharp.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 7,
+        "fields": {
+            "word": 3,
+            "definition": "saying what you think without trying to be polite or considering other people's feelings.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 4,
+        "fields": {
+            "text": "cynical",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "adjective",
+            "cefr_level": "C2",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 8,
+        "fields": {
+            "word": 4,
+            "definition": "inclined to believe the worst, especially about people.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 9,
+        "fields": {
+            "word": 4,
+            "definition": "believing that people are only interested in themselves and are not sincere.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 5,
+        "fields": {
+            "text": "fussy",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "adjective",
+            "cefr_level": "C2",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 10,
+        "fields": {
+            "word": 5,
+            "definition": "only liking particular things and very difficult to please.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 11,
+        "fields": {
+            "word": 5,
+            "definition": "too careful about unimportant details.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 6,
+        "fields": {
+            "text": "smooth",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "adjective",
+            "cefr_level": "C1",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 12,
+        "fields": {
+            "word": 6,
+            "definition": "having a regular surface that has no holes or lumps in it.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 13,
+        "fields": {
+            "word": 6,
+            "definition": "a substance that is smooth has no lumps in it.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 7,
+        "fields": {
+            "text": "embrace",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "noun",
+            "cefr_level": "C1",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 14,
+        "fields": {
+            "word": 7,
+            "definition": "the action of putting your arms around someone.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 15,
+        "fields": {
+            "word": 7,
+            "definition": "a clasping in the arms; a hug.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 8,
+        "fields": {
+            "text": "survey",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "noun",
+            "cefr_level": "C1",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 16,
+        "fields": {
+            "word": 8,
+            "definition": "an examination of people's opinions or behaviour made by asking people questions.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 17,
+        "fields": {
+            "word": 8,
+            "definition": "an examination of the structure of a building in order to find out if there is anything wrong with it.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.word",
+        "pk": 9,
+        "fields": {
+            "text": "opt",
+            "language_code": "en",
+            "country_code": "US",
+            "word_type": "verb",
+            "cefr_level": "C1",
+            "word_set": 1,
+            "audio_data": null,
+            "image_data": null,
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 18,
+        "fields": {
+            "word": 9,
+            "definition": "to choose something or to decide to do something.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    },
+    {
+        "model": "wordsets.definition",
+        "pk": 19,
+        "fields": {
+            "word": 9,
+            "definition": "to choose or decide not to do something or take part in something.",
+            "created_at": "2023-01-01T00:00:00Z",
+            "updated_at": "2023-01-01T00:00:00Z"
+        }
+    }
+]
