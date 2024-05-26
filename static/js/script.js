@@ -1,12 +1,12 @@
 class Quiz {
   constructor() {
-    this.data = []; // Array to store quiz data
+    this.data = [];
     this.englishWords = {};
     this.englishWordsRandomQuestion = {};
-    this.isQuizStart = false; // Flag indicating if the quiz has started
+    this.isQuizStart = false;
     this.currentQuiz = null;
     this.winnersArray = [];
-    this.attempt = -1; // Initialize attempt counter
+    this.attempt = -1;
     this.timer = 0;
     this.timerInterval = null;
     this.isTimerSpinnerVisible = true;
@@ -26,6 +26,7 @@ class Quiz {
     this.settingsLink = document.getElementById("settings-link");
 
     this.initialize();
+    this.fetchQuizData();
   }
 
   initialize() {
@@ -41,9 +42,7 @@ class Quiz {
     wordCountSlider.addEventListener("input", () => {
       sliderLabel.textContent = wordCountSlider.value;
     });
-    wordCountSlider.addEventListener("change", (event) => {
-      this.handleWordCountSliderChange(event);
-    });
+    wordCountSlider.addEventListener("change", (event) => this.handleWordCountSliderChange(event));
 
     const cefrCheckboxes = document.querySelectorAll('input[name="cefr-level"]');
     cefrCheckboxes.forEach((checkbox) => {
@@ -59,6 +58,19 @@ class Quiz {
     allCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener("mouseover", () => this.handleCheckboxMouseOver(checkbox));
     });
+  }
+
+  async fetchQuizData() {
+    try {
+      const response = await fetch('/quizzes/api/quiz-data/');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      this.englishWords = await response.json();
+      this.initSettings();
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
   }
 
   handleStartWindowClick(event) {
@@ -604,7 +616,6 @@ class Quiz {
   }
 
   initSettings() {
-    this.englishWords = JSON.parse(JSON.stringify(englishWordsInit));
     const words = Object.values(this.englishWords);
     const cefrCheckboxes = document.querySelectorAll('input[name="cefr-level"]');
     cefrCheckboxes.forEach((checkbox) => {
