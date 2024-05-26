@@ -1,9 +1,9 @@
+# quizzes/urls.py
+
 from django.urls import path
-from . import views
+from .views import QuizDataView, submit_quiz_result
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('start/', views.start, name='start'),
-    path('<int:id>/', views.detail, name='detail'),
-    path('<int:id>/results/', views.results, name='results'),
+    path('api/quiz-data/', QuizDataView.as_view(), name='quiz-data'),
+    path('api/submit-quiz-result/', submit_quiz_result, name='submit-quiz-result'),
 ]
