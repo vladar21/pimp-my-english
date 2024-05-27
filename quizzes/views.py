@@ -1,9 +1,62 @@
 # quizzes/views.py
 
+from django.http import JsonResponse
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+
+
+def quiz_settings(request):
+    # Получите данные для контекста
+    word_count = 10  # Пример значения, замените реальными данными
+    cefr_levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+    cefr_counts = {'A1': 5, 'A2': 10, 'B1': 15, 'B2': 20, 'C1': 25, 'C2': 30}  # Пример значений
+    selected_cefr_levels = ['A1', 'B1']  # Пример значений
+    word_types = ['noun', 'adjective', 'verb']
+    word_type_counts = {'noun': 50, 'adjective': 40, 'verb': 60}  # Пример значений
+    selected_word_types = ['noun', 'verb']  # Пример значений
+
+    context = {
+        'word_count': word_count,
+        'cefr_levels': cefr_levels,
+        'cefr_counts': cefr_counts,
+        'selected_cefr_levels': selected_cefr_levels,
+        'word_types': word_types,
+        'word_type_counts': word_type_counts,
+        'selected_word_types': selected_word_types,
+    }
+
+    return render(request, 'quizzes/quiz_settings.html', context)
+
+
+def rules(request):
+    return render(request, 'quizzes/rules.html')
+
+
+def submit_quiz_settings(request):
+    if request.method == 'POST':
+        # Process the settings form submission
+        selected_cefr_levels = request.POST.getlist('cefr_levels')
+        selected_word_types = request.POST.getlist('word_types')
+        word_count = int(request.POST.get('word_count', 10))  # Default to 10 if not provided
+
+        # Save the settings to the session or handle them as needed
+        request.session['selected_cefr_levels'] = selected_cefr_levels
+        request.session['selected_word_types'] = selected_word_types
+        request.session['word_count'] = word_count
+
+        # Return a JSON response or redirect as needed
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Settings updated successfully.',
+            'selected_cefr_levels': selected_cefr_levels,
+            'selected_word_types': selected_word_types,
+            'word_count': word_count,
+        })
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
 class QuizDataView(APIView):

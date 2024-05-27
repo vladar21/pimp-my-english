@@ -1,0 +1,42 @@
+<!-- quizzes/templates/quizzes/rules.html -->
+{% extends 'base.html' %}
+
+{% block title %}Quiz Rules - Pimp My English{% endblock %}
+
+{% block content %}
+<div class="winners-results">
+    <div class="close-button-div">
+        <button id="closeButtonRules" class="close-button">x</button>
+    </div>
+    <div class="content-rules">
+        <h2 class="rules-title">Rules</h2>
+        <div>
+            <div>
+                <p class="highlight">1. Press <span class="rules-akcent">Start</span> button to begin the quiz.</p>
+            </div>
+            <div>
+                <p class="highlight">2. Press <span class="rules-akcent">Settings</span> link to make quiz more controllable. In this section you can select:
+                    <br><span class="arrow-right"></span> total number of words for quiz;
+                    <br><span class="arrow-right"></span> cefr levels of words for quiz ('A1', 'B1', 'B2' etc);
+                    <br><span class="arrow-right"></span> types of words for quiz ('noun', 'adjective' etc);                      
+                </p>
+            </div>
+            <div>
+                <p class="highlight">3. On the current quiz screen, you can see the following elements:
+                    <br><span class="arrow-right"></span> at the top, the <b>definition</b> of the word to be guessed;
+                    <br><span class="arrow-right"></span> below, the <b>image</b> as a clue that may help you guess the correct answer;
+                    <br><span class="arrow-right"></span> below, the <b>word variants</b> for the answer, with audio pronunciation support;
+                    <br><span class="arrow-right"></span> below, the 30-second <b>countdown timer</b> for answering. If you answer later - the quiz will automatically stop;
+                    <br><span class="arrow-right"></span> on the right, the <span class="rules-akcent">Stop</span> quiz button;
+                    <br><span class="arrow-right"></span> on the left, the <span class="rules-akcent">Next</span> question button;
+                    <br><span class="arrow-right"></span> in the bottom left corner, the number of quiz questions already answered and the total number of questions;
+                    <br><span class="arrow-right"></span> in the bottom right corner, the number of correct and incorrect answers in the current attempt.
+                </p>
+            </div>
+            <div>
+                <p class="highlight">4. After pressing <span class="rules-akcent">Stop</span> button, you will be taken to the winners table, where you can see the results of the current attempt and all previous attempts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

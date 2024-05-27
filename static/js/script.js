@@ -1,3 +1,12 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const closeButtonRules = document.getElementById('closeButtonRules');
+  if (closeButtonRules) {
+      closeButtonRules.addEventListener('click', () => {
+          window.location.href = '/';  // Redirect to home page or another page
+      });
+  }
+});
+
 class Quiz {
   constructor() {
     this.data = [];
@@ -18,46 +27,21 @@ class Quiz {
     this.showStartWindow = document.getElementById("english-words-quiz");
     this.statisticWindow = document.getElementById("statistic-window");
     this.quizField = document.getElementById("quiz-field");
-    this.rulesSection = document.getElementById("rules");
-    this.settingsSection = document.getElementById("settings");
 
     this.startQuizButton = document.getElementById("start-quiz-button");
-    this.rulesLink = document.getElementById("rules-link");
-    this.settingsLink = document.getElementById("settings-link");
 
     this.initialize();
     this.fetchQuizData();
   }
 
   initialize() {
-    this.startQuizButton.addEventListener("click", () => this.startQuiz());
-    this.showStartWindow.addEventListener("click", (event) => this.handleStartWindowClick(event));
-    this.rulesLink.addEventListener("click", (event) => this.handleRulesLinkClick(event));
-    this.settingsLink.addEventListener("click", (event) => this.handleSettingsLinkClick(event));
+    if (this.startQuizButton) {
+      this.startQuizButton.addEventListener("click", () => this.startQuiz());
+    }
 
-    this.initSettings();
-
-    const wordCountSlider = document.getElementById("word-count-slider");
-    const sliderLabel = document.getElementById("word-count-label");
-    wordCountSlider.addEventListener("input", () => {
-      sliderLabel.textContent = wordCountSlider.value;
-    });
-    wordCountSlider.addEventListener("change", (event) => this.handleWordCountSliderChange(event));
-
-    const cefrCheckboxes = document.querySelectorAll('input[name="cefr-level"]');
-    cefrCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => this.applyChangeSettings());
-    });
-
-    const wordsTypesCheckboxes = document.querySelectorAll('input[name="words-types"]');
-    wordsTypesCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("change", () => this.applyChangeSettings());
-    });
-
-    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-    allCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener("mouseover", () => this.handleCheckboxMouseOver(checkbox));
-    });
+    if (this.showStartWindow) {
+      this.showStartWindow.addEventListener("click", (event) => this.handleStartWindowClick(event));
+    }
   }
 
   async fetchQuizData() {
@@ -67,7 +51,7 @@ class Quiz {
         throw new Error('Network response was not ok');
       }
       this.englishWords = await response.json();
-      this.initSettings();
+      // Assuming `initSettings` was configuring the initial state based on fetched data.
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -78,61 +62,8 @@ class Quiz {
     if (!this.isQuizStart) {
       this.toggleVisibility({
         "quiz-field": "none",
-        "statistic-window": "block",
-        "rules": "none",
-        "settings": "none"
+        "statistic-window": "block"
       });
-      this.resetLinkBackgrounds();
-    }
-  }
-
-  handleRulesLinkClick(event) {
-    event.preventDefault();
-    this.closeButtonHandler("closeButtonRules");
-    this.toggleVisibility({
-      "quiz-field": "none",
-      "statistic-window": "none",
-      "rules": "block",
-      "settings": "none"
-    });
-    this.rulesLink.style.backgroundColor = "rgba(128, 124, 124, 0.7)";
-    this.settingsLink.style.backgroundColor = "";
-  }
-
-  handleSettingsLinkClick(event) {
-    event.preventDefault();
-    this.closeButtonHandler("closeButtonSettings");
-    this.toggleVisibility({
-      "quiz-field": "none",
-      "statistic-window": "none",
-      "rules": "none",
-      "settings": "block"
-    });
-    this.settingsLink.style.backgroundColor = "rgba(128, 124, 124, 0.7)";
-    this.rulesLink.style.backgroundColor = "";
-
-    const resetButton = document.getElementById("resetSettingsDefault");
-    resetButton.addEventListener("click", () => this.initSettings());
-  }
-
-  handleWordCountSliderChange(event) {
-    const newWordCount = event.target.value;
-    this.englishWords = Object.keys(this.englishWords)
-      .slice(0, newWordCount)
-      .reduce((result, wordKey) => {
-        result[wordKey] = this.englishWords[wordKey];
-        return result;
-      }, {});
-    this.applyChangeSettings();
-  }
-
-  handleCheckboxMouseOver(checkbox) {
-    if (!checkbox.checked) {
-      const count = parseInt(checkbox.getAttribute("data-count"), 10);
-      const tooltipText = count === 0
-        ? `Sorry, but *${checkbox.value}* words are not yet in our quiz dictionary.`
-        : "Use Reset to restore settings";
-      this.setTooltip(checkbox, tooltipText);
     }
   }
 
@@ -147,84 +78,7 @@ class Quiz {
     });
   }
 
-  setTooltip(htmlElement, tooltipText) {
-    const tooltipElement = document.createElement("div");
-    tooltipElement.className = "tooltip";
-    tooltipElement.textContent = tooltipText;
-
-    const htmlElementPosition = htmlElement.getBoundingClientRect();
-    let tooltipTop = htmlElementPosition.top - tooltipElement.clientHeight - 30;
-    if (tooltipTop < 0) {
-      tooltipTop = 10;
-    }
-
-    let tooltipLeft = htmlElementPosition.left;
-    if ((tooltipLeft + tooltipElement.clientWidth) > window.innerWidth) {
-      tooltipLeft = window.innerWidth - tooltipElement.clientWidth - 10;
-    }
-
-    tooltipElement.style.position = "fixed";
-    tooltipElement.style.top = `${tooltipTop}px`;
-    tooltipElement.style.left = `${tooltipLeft}px`;
-
-    document.body.appendChild(tooltipElement);
-
-    htmlElement.addEventListener("mouseout", () => {
-      tooltipElement.remove();
-    });
-
-    setTimeout(() => {
-      tooltipElement.remove();
-    }, 1000);
-  }
-
-  setStartButtonStyle(totalWordsCount) {
-    const startButton = document.getElementById('start-quiz-button');
-    const normalColor = 'rgba(76, 175, 80, 0.9)';
-    const hoverColor = 'rgba(35, 105, 39, 0.9)';
-    const disabledColor = 'grey';
-
-    startButton.style.backgroundColor = normalColor;
-
-    if (totalWordsCount >= 3) {
-      startButton.disabled = false;
-      startButton.addEventListener('mouseover', () => {
-        startButton.style.backgroundColor = hoverColor;
-      });
-      startButton.addEventListener('mouseout', () => {
-        startButton.style.backgroundColor = normalColor;
-      });
-    } else {
-      startButton.style.backgroundColor = disabledColor;
-      startButton.disabled = true;
-      startButton.addEventListener('mouseover', () => {
-        startButton.style.backgroundColor = disabledColor;
-        this.setTooltip(startButton, 'Use Reset to restore settings');
-      });
-      startButton.addEventListener('mouseout', () => {
-        startButton.style.backgroundColor = disabledColor;
-      });
-    }
-  }
-
-  closeButtonHandler(closeButtonId) {
-    const closeButton = document.getElementById(closeButtonId);
-    closeButton.addEventListener("click", (event) => {
-      event.preventDefault();
-      if (!this.isQuizStart) {
-        this.toggleVisibility({
-          "quiz-field": "none",
-          "statistic-window": "block",
-          "rules": "none",
-          "settings": "none"
-        });
-        this.resetLinkBackgrounds();
-      }
-    });
-  }
-
   startQuiz() {
-    this.applyChangeSettings();
     this.isQuizStart = true;
     this.toggleVisibility({
       "rules-start-settings": "none"
@@ -234,16 +88,18 @@ class Quiz {
     this.attempt++;
     this.toggleVisibility({
       "statistic-window": "none",
-      "rules": "none",
-      "settings": "none",
       "quiz-field": "flex"
     });
 
     const nextQuizButton = document.getElementById("next-button");
-    nextQuizButton.addEventListener("click", () => this.takeATurn());
+    if (nextQuizButton) {
+      nextQuizButton.addEventListener("click", () => this.takeATurn());
+    }
 
     const stopQuizButton = document.getElementById("stop-button");
-    stopQuizButton.addEventListener("click", () => this.stopQuiz());
+    if (stopQuizButton) {
+      stopQuizButton.addEventListener("click", () => this.stopQuiz());
+    }
 
     this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
     const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
@@ -266,7 +122,6 @@ class Quiz {
       "rules-start-settings": "flex"
     });
 
-    this.resetLinkBackgrounds();
     this.stopTimer();
 
     const totalTimeSpent = this.data.reduce((totalTime, quiz) => {
@@ -563,133 +418,8 @@ class Quiz {
     return shuffledArray;
   }
 
-  parseSettingsFromTable() {
-    const settings = {
-      cefrLevels: [],
-      wordTypes: [],
-      wordCount: 3,
-    };
-
-    const table = document.getElementById("settings-table");
-    const checkboxes = table.querySelectorAll('input[name="cefr-level"]:checked, input[name="words-types"]:checked');
-    const wordCountSlider = document.getElementById("word-count-slider");
-
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.getAttribute("name") === "cefr-level") {
-        settings.cefrLevels.push(checkbox.value);
-      } else if (checkbox.getAttribute("name") === "words-types") {
-        settings.wordTypes.push(checkbox.value);
-      }
-    });
-
-    settings.wordCount = parseInt(wordCountSlider.value);
-
-    return settings;
-  }
-
-  applyChangeSettings() {
-    const selectedSettings = this.parseSettingsFromTable();
-    const filteredWords = this.filterWordsBySettings(this.englishWords, selectedSettings);
-    this.englishWords = filteredWords;
-    this.updateWordDisplay(filteredWords);
-  }
-
-  filterWordTypes(word, settings) {
-    word["word-types"] = word["word-types"].filter((type) => settings.wordTypes.includes(type["word-type"]));
-    return word["word-types"].length > 0;
-  }
-
-  filterWordsBySettings(englishWords, settings) {
-    const filteredWords = JSON.parse(JSON.stringify(englishWords));
-    for (const wordKey in filteredWords) {
-      if (!this.filterWordTypes(filteredWords[wordKey], settings)) {
-        delete filteredWords[wordKey];
-      }
-    }
-    return Object.keys(filteredWords).reduce((result, wordKey) => {
-      const word = filteredWords[wordKey];
-      if (settings.cefrLevels.includes(word.cefr.level)) {
-        result[wordKey] = word;
-      }
-      return result;
-    }, {});
-  }
-
-  initSettings() {
-    const words = Object.values(this.englishWords);
-    const cefrCheckboxes = document.querySelectorAll('input[name="cefr-level"]');
-    cefrCheckboxes.forEach((checkbox) => {
-      const cefrLevel = checkbox.value;
-      const cefrCountSpan = document.getElementById(`cefr-level-count-${cefrLevel}`);
-      const filteredWords = words.filter((word) => word.cefr.level === cefrLevel);
-      cefrCountSpan.textContent = filteredWords.length;
-      checkbox.checked = filteredWords.length > 0;
-      checkbox.disabled = filteredWords.length === 0;
-      checkbox.setAttribute("data-count", filteredWords.length);
-    });
-
-    const wordTypeCheckboxes = document.querySelectorAll('input[name="words-types"]');
-    wordTypeCheckboxes.forEach((checkbox) => {
-      const wordType = checkbox.value;
-      const wordTypeCountSpan = document.getElementById(`words-types-count-${wordType}`);
-      const filteredWords = words.filter((word) => word["word-types"].some((type) => type["word-type"] === wordType));
-      wordTypeCountSpan.textContent = filteredWords.length;
-      checkbox.checked = filteredWords.length > 0;
-      checkbox.disabled = filteredWords.length === 0;
-      checkbox.setAttribute("data-count", filteredWords.length);
-    });
-
-    const totalWordsCount = Object.values(this.englishWords).length;
-    document.getElementById("word-count-label").textContent = totalWordsCount;
-    const wordCountSlider = document.getElementById("word-count-slider");
-    wordCountSlider.value = totalWordsCount;
-    wordCountSlider.min = 3;
-    wordCountSlider.max = totalWordsCount;
-
-    this.setStartButtonStyle(totalWordsCount);
-  }
-
-  updateWordDisplay(filteredWords) {
-    const cefrLevels = ["A1", "A2", "B1", "B2", "C1", "C2"];
-    cefrLevels.forEach((cefrLevel) => {
-      const cefrCountSpan = document.getElementById(`cefr-level-count-${cefrLevel}`);
-      const wordsMatchingCEFR = Object.values(filteredWords).filter((word) => word.cefr.level === cefrLevel).length;
-      cefrCountSpan.textContent = wordsMatchingCEFR;
-      const checkbox = document.getElementById(`cefr-checkbox-${cefrLevel}`);
-      checkbox.checked = wordsMatchingCEFR > 0;
-      checkbox.disabled = wordsMatchingCEFR === 0;
-    });
-
-    const totalWordsCount = this.getObjectLength(filteredWords);
-    const wordTypes = ["noun", "adjective", "verb", "adverb", "preposition", "pronoun", "interjection"];
-    const wordTypeCounts = wordTypes.reduce((counts, wordType) => {
-      counts[wordType] = Object.values(filteredWords).filter((word) =>
-        word["word-types"].some((type) => type["word-type"] === wordType)
-      ).length;
-      return counts;
-    }, {});
-
-    wordTypes.forEach((wordType) => {
-      const wordTypeCountSpan = document.getElementById(`words-types-count-${wordType}`);
-      wordTypeCountSpan.textContent = wordTypeCounts[wordType];
-      const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
-      checkbox.checked = wordTypeCounts[wordType] > 0;
-      checkbox.disabled = wordTypeCounts[wordType] === 0;
-    });
-
-    document.getElementById("word-count-label").textContent = totalWordsCount;
-    document.getElementById("word-count-slider").value = totalWordsCount;
-
-    this.setStartButtonStyle(totalWordsCount);
-  }
-
   getObjectLength(obj) {
     return Object.keys(obj).length;
-  }
-
-  resetLinkBackgrounds() {
-    this.rulesLink.style.backgroundColor = "";
-    this.settingsLink.style.backgroundColor = "";
   }
 
   getAttemptString(index) {
