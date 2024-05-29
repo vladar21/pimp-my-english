@@ -66,10 +66,30 @@
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault">Reset</button>
+                        <button id="saveSettingsDefault" type="submit">Save</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const closeButtonRules = document.getElementById('closeButtonSettings');
+        if (closeButtonRules) {
+            closeButtonRules.addEventListener('click', () => {
+                window.location.href = '/';  // Redirect to home page or another page
+            });
+        }
+
+        // Update word count label as slider moves
+        const wordCountSlider = document.getElementById("word-count-slider");
+        const wordCountLabel = document.getElementById("word-count-label");
+
+        wordCountSlider.addEventListener("input", function() {
+            wordCountLabel.textContent = wordCountSlider.value;
+        });
+    });
+</script>
 {% endblock %}

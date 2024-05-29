@@ -673,6 +673,23 @@ input[type="checkbox"]::before {
     background-color: rgba(85, 56, 97, 0.85);
 }
 
+#saveSettingsDefault {
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: rgba(96, 138, 94, 0.85);
+}
+
+#saveSettingsDefault:hover {
+    background-color: rgba(85, 56, 97, 0.85);
+}
+
 /* close button */
 .winners-results {
     position: relative;

@@ -1,22 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const closeButtonRules = document.getElementById('closeButtonRules');
-  if (closeButtonRules) {
-      closeButtonRules.addEventListener('click', () => {
-          window.location.href = '/';  // Redirect to home page or another page
-      });
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const closeButtonRules = document.getElementById('closeButtonSettings');
-  if (closeButtonRules) {
-      closeButtonRules.addEventListener('click', () => {
-          window.location.href = '/';  // Redirect to home page or another page
-      });
-  }
-});
-
-
 class Quiz {
   constructor() {
     this.data = [];
