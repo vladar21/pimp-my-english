@@ -822,8 +822,8 @@ input[type="checkbox"]::before {
 
 @media screen and (max-width: 800px){
     .img-word-image {
-        /* max-width: 80%;
-        max-height: 80%; */
+        max-width: 60%;
+        max-height: 60%;
         display: block;
         margin-left: auto;
         margin-right: auto;
@@ -835,15 +835,15 @@ input[type="checkbox"]::before {
 
 @media screen and (min-width: 800px) {
     .quizsquare {
-        max-width: 60%;
-        max-height: 60%;
+        max-width: 70%;
+        /* max-height: 70%; */
         display: flex;
     }
 
-    .img-word-image {
+    /* .img-word-image {
         max-width: 70%;
         max-height: 70%;
-    }
+    } */
 
     /* .word-image {
         width: 60%;
@@ -851,15 +851,15 @@ input[type="checkbox"]::before {
 }
 
 @media screen and (min-width: 1000px) {
-    .quizsquare {
+    /* .quizsquare {
         max-width: 55%;
         max-height: 50%;
-    }
+    } */
 
-    .img-word-image {
+    /* .img-word-image {
         max-width: 65%;
         max-height: 65%;
-    }
+    } */
 
     #settings-table td:nth-child(4) {
         line-height: 100%;
@@ -868,19 +868,19 @@ input[type="checkbox"]::before {
 
 @media screen and (min-width: 1200px) {
     .quizsquare {
-        max-width: 55%;
-        max-height: 55%;
+        max-width: 62%;
+        max-height: 62%;
     }
-    .img-word-image {
+    /* .img-word-image {
         max-width: 60%;
         max-height: 60%;
-    }
+    } */
 }
 
 @media screen and (min-width: 1400px) {
     .quizsquare {
-        max-width: 45%;
-        max-height: 45%;
+        max-width: 55%;
+        max-height: 55%;
     }
     /* .img-word-image {
         max-width: 60%;
@@ -889,10 +889,10 @@ input[type="checkbox"]::before {
 }
 
 @media screen and (min-width: 1600px) {
-    .quizsquare {
+    /* .quizsquare {
         max-width: 45%;
         max-height: 45%;
-    }
+    } */
 
     .img-word-image {
         max-width: 50%;
