@@ -11,4 +11,6 @@ urlpatterns = [
     path('rules/', views.rules, name='rules'),
     path('settings/', views.quiz_settings, name='quiz_settings'),
     path('submit_quiz_settings/', views.submit_quiz_settings, name='submit_quiz_settings'),
+
+    path('check-media-data/', views.check_media_data, name='check_media_data'),
 ]

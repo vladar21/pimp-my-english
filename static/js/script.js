@@ -42,7 +42,7 @@ class Quiz {
         throw new Error('Network response was not ok');
       }
       this.englishWords = await response.json();
-      // Assuming `initSettings` was configuring the initial state based on fetched data.
+      console.log('Fetched quiz data:', this.englishWords); // Debugging line to ensure data is fetched correctly
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -94,9 +94,11 @@ class Quiz {
 
     this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
     const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
-    this.currentQuiz = this.displayQuestion(randomQuestion);
-    this.currentQuiz.attempt = this.attempt;
-    this.data.push(this.currentQuiz);
+    if (randomQuestion) {
+      this.currentQuiz = this.displayQuestion(randomQuestion);
+      this.currentQuiz.attempt = this.attempt;
+      this.data.push(this.currentQuiz);
+    }
 
     document.getElementById("right-count").textContent = "0";
     document.getElementById("wrong-count").textContent = "0";
@@ -178,11 +180,11 @@ class Quiz {
     this.winnersArray.forEach((winner, index) => {
       const row = document.createElement("tr");
       row.innerHTML = `
-            <td>${winner.place}</td>
-            <td>${this.getAttemptString(winner.attempt)}</td>
-            <td>${winner.scores}</td>
-            <td>${winner.timeSpent}</td>
-        `;
+        <td>${winner.place}</td>
+        <td>${this.getAttemptString(winner.attempt)}</td>
+        <td>${winner.scores}</td>
+        <td>${winner.timeSpent}</td>
+      `;
       if (index < 3) {
         row.classList.add("highlight");
       }
@@ -211,15 +213,19 @@ class Quiz {
       this.stopQuiz();
     } else {
       const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
-      this.currentQuiz = this.displayQuestion(randomQuestion);
-      this.currentQuiz.attempt = this.attempt;
-      this.currentQuiz.spentTime = 0;
-      this.data.push(this.currentQuiz);
+      if (randomQuestion) {
+        this.currentQuiz = this.displayQuestion(randomQuestion);
+        this.currentQuiz.attempt = this.attempt;
+        this.currentQuiz.spentTime = 0;
+        this.data.push(this.currentQuiz);
+      }
     }
   }
 
   addSpentTimeToLastAttempt() {
-    this.data[this.data.length - 1].spentTime = 30 - this.timer;
+    if (this.data.length > 0) {
+      this.data[this.data.length - 1].spentTime = 30 - this.timer;
+    }
   }
 
   checkLastAnswer() {
@@ -241,10 +247,26 @@ class Quiz {
 
   getRandomQuestion(englishWordsRandomQuestion) {
     const wordKeys = Object.keys(englishWordsRandomQuestion);
+    if (wordKeys.length === 0) {
+      console.error("No words available for the quiz.");
+      return null;
+    }
     const randomIndex = Math.floor(Math.random() * wordKeys.length);
     const selectedWordKey = wordKeys[randomIndex];
     const wordObject = this.englishWords[selectedWordKey];
+
+    if (!wordObject || !wordObject["word-types"] || wordObject["word-types"].length === 0) {
+      console.error(`Word "${selectedWordKey}" does not have valid word-types.`);
+      return null;
+    }
+
     const randomWordType = wordObject["word-types"][Math.floor(Math.random() * wordObject["word-types"].length)];
+
+    if (!randomWordType || !randomWordType.definitions || randomWordType.definitions.length === 0) {
+      console.error(`Word type for "${selectedWordKey}" does not have valid definitions.`);
+      return null;
+    }
+
     const randomDefinition = randomWordType.definitions[Math.floor(Math.random() * randomWordType.definitions.length)];
 
     const question = {
@@ -263,6 +285,11 @@ class Quiz {
   }
 
   displayQuestion(question) {
+    if (!question) {
+      console.error("No valid question to display.");
+      return;
+    }
+
     const quizTaskElement = document.querySelector(".quiz-task");
     const wordTypeElement = document.querySelector(".word-type");
     const wordDefinitionElement = document.querySelector(".word-definition");
@@ -275,8 +302,14 @@ class Quiz {
     quizTaskElement.textContent = "Guess the word by definition:";
     wordTypeElement.textContent = question.wordType;
     wordDefinitionElement.textContent = question.definition;
-    imgWordElement.src = question.imageUrl;
-    imgWordElement.alt = question.definition;
+
+    if (question.imageUrl) {
+      imgWordElement.src = question.imageUrl;
+      imgWordElement.alt = question.definition;
+    } else {
+      imgWordElement.src = "";
+      imgWordElement.alt = "No image available";
+    }
 
     answersListElement.innerHTML = "";
 
@@ -316,11 +349,15 @@ class Quiz {
 
       const currentWord = this.englishWords[option.answer];
       audioSourceElement.src = currentWord.sound_url;
+      audioSourceElement.type = "audio/mpeg";
       audioButtonPlayElement.id = option.answer;
       audioButtonPlayElement.className = "play-sound-button";
+      // audioButtonPlayElement.textContent = "";
+
       audioButtonPlayElement.onclick = function () {
         document.getElementById(option.answer).play();
       };
+
       audioElement.id = option.answer;
       audioElement.classList.add("audio-container");
 
@@ -338,8 +375,15 @@ class Quiz {
 
       li.appendChild(input);
       li.appendChild(label);
-      li.appendChild(audioElement);
-      li.appendChild(audioButtonPlayElement);
+
+      if (currentWord.sound_url) {
+        li.appendChild(audioElement);
+        li.appendChild(audioButtonPlayElement);
+      } else {
+        const noAudioMessage = document.createElement("span");
+        noAudioMessage.textContent = "No audio available";
+        li.appendChild(noAudioMessage);
+      }
 
       answersListElement.appendChild(li);
 
