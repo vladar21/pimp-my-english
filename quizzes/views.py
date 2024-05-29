@@ -23,14 +23,21 @@ def check_media_data(request):
 
 
 def quiz_settings(request):
-    # Получите данные для контекста
-    word_count = 10  # Пример значения, замените реальными данными
+    # Retrieve all words from the database
+    words = Word.objects.all()
+    word_count = words.count()
+    
+    # Count the number of words for each CEFR level
     cefr_levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-    cefr_counts = {'A1': 5, 'A2': 10, 'B1': 15, 'B2': 20, 'C1': 25, 'C2': 30}  # Пример значений
-    selected_cefr_levels = ['A1', 'B1']  # Пример значений
+    cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_levels}
+    
+    # Count the number of words for each word type
     word_types = ['noun', 'adjective', 'verb']
-    word_type_counts = {'noun': 50, 'adjective': 40, 'verb': 60}  # Пример значений
-    selected_word_types = ['noun', 'verb']  # Пример значений
+    word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_types}
+
+    # Determine which CEFR levels and word types have words
+    selected_cefr_levels = [level for level, count in cefr_counts.items() if count > 0]
+    selected_word_types = [word_type for word_type, count in word_type_counts.items() if count > 0]
 
     context = {
         'word_count': word_count,
