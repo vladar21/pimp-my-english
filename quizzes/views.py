@@ -2,12 +2,14 @@
 
 import base64
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from wordsets.models import Word, Definition, CefrLevel
+from wordsets.models import Word, Definition, CefrLevel, WordType
 
 
 def check_media_data(request):
@@ -23,33 +25,63 @@ def check_media_data(request):
 
 
 def quiz_settings(request):
-    # Retrieve all words from the database
     words = Word.objects.all()
     word_count = words.count()
-    
-    # Count the number of words for each CEFR level
-    cefr_levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+
+    cefr_levels = [level[0] for level in CefrLevel.choices]
     cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_levels}
-    
-    # Count the number of words for each word type
-    word_types = ['noun', 'adjective', 'verb']
+
+    word_types = [word_type[0] for word_type in WordType.choices]
     word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_types}
 
-    # Determine which CEFR levels and word types have words
-    selected_cefr_levels = [level for level, count in cefr_counts.items() if count > 0]
-    selected_word_types = [word_type for word_type, count in word_type_counts.items() if count > 0]
+    selected_cefr_levels = request.GET.getlist('cefr_levels', cefr_levels)
+    selected_word_types = request.GET.getlist('word_types', word_types)
 
     context = {
         'word_count': word_count,
         'cefr_levels': cefr_levels,
         'cefr_counts': cefr_counts,
+        'cefr_total_counts': cefr_counts,
         'selected_cefr_levels': selected_cefr_levels,
         'word_types': word_types,
         'word_type_counts': word_type_counts,
+        'word_type_total_counts': word_type_counts,
         'selected_word_types': selected_word_types,
     }
 
     return render(request, 'quizzes/quiz_settings.html', context)
+
+
+@csrf_exempt
+def update_quiz_settings(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        cefr_levels = data.get('cefr_levels', [])
+        word_types = data.get('word_types', [])
+
+        words = Word.objects.all()
+
+        cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level[0] for level in CefrLevel.choices]}
+        word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in [word_type[0] for word_type in WordType.choices]}
+
+        # Filter words based on selected CEFR levels and word types        
+        words = words.filter(cefr_level__in=cefr_levels).filter(word_type__in=word_types)
+       
+        word_count = words.count()
+        cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_total_counts}
+        word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_type_total_counts}
+
+        response_data = {
+            'word_count': word_count,
+            'cefr_counts': cefr_counts,
+            'cefr_total_counts': cefr_total_counts,
+            'word_type_counts': word_type_counts,
+            'word_type_total_counts': word_type_total_counts
+        }
+
+        return JsonResponse(response_data)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
 def rules(request):

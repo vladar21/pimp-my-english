@@ -41,8 +41,9 @@
                                 <label>
                                     <input id="cefr-checkbox-{{ level }}" type="checkbox" name="cefr_levels" value="{{ level }}"
                                            data-count="{{ cefr_counts|dict:level }}" 
-                                           {% if cefr_counts|dict:level > 0 %}checked{% else %}disabled{% endif %}>
-                                    {{ level }} (<span id="cefr-level-count-{{ level }}">{{ cefr_counts|dict:level }}</span> words)
+                                           {% if cefr_counts|dict:level > 0 and level in selected_cefr_levels %}checked{% endif %}
+                                           {% if cefr_counts|dict:level == 0 %}disabled{% endif %}>
+                                    {{ level }} (<span id="cefr-level-count-{{ level }}">{{ cefr_counts|dict:level }} / {{ cefr_total_counts|dict:level }}</span> words)
                                 </label>
                             {% endfor %}
                         </div>
@@ -58,8 +59,9 @@
                                 <label>
                                     <input id="words-types-checkbox-{{ word_type }}" type="checkbox" name="word_types" value="{{ word_type }}"
                                            data-count="{{ word_type_counts|dict:word_type }}" 
-                                           {% if word_type_counts|dict:word_type > 0 %}checked{% else %}disabled{% endif %}>
-                                    {{ word_type }} (<span id="words-types-count-{{ word_type }}">{{ word_type_counts|dict:word_type }}</span>)
+                                           {% if word_type_counts|dict:word_type > 0 and word_type in selected_word_types %}checked{% endif %}
+                                           {% if word_type_counts|dict:word_type == 0 %}disabled{% endif %}>
+                                    {{ word_type }} (<span id="words-types-count-{{ word_type }}">{{ word_type_counts|dict:word_type }} / {{ word_type_total_counts|dict:word_type }}</span> words)
                                 </label>
                             {% endfor %}
                         </div>
@@ -94,6 +96,56 @@
                 wordCountLabel.textContent = wordCountSlider.value;
             });
         }
+
+        const updateSettings = () => {
+            const checkedCefrLevels = Array.from(document.querySelectorAll('input[name="cefr_levels"]:checked')).map(checkbox => checkbox.value);
+            const checkedWordTypes = Array.from(document.querySelectorAll('input[name="word_types"]:checked')).map(checkbox => checkbox.value);
+
+            fetch("{% url 'update_quiz_settings' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    cefr_levels: checkedCefrLevels,
+                    word_types: checkedWordTypes
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("word-count-label").textContent = data.word_count;
+                wordCountSlider.max = data.word_count;
+
+                Object.entries(data.cefr_counts).forEach(([level, count]) => {
+                    const span = document.getElementById(`cefr-level-count-${level}`);
+                    if (span) {
+                        span.textContent = `${count} / ${data.cefr_total_counts[level]}`;
+                    }
+                    const checkbox = document.getElementById(`cefr-checkbox-${level}`);
+                    if (checkbox) {
+                        checkbox.checked = count > 0;
+                        checkbox.disabled = count === 0;
+                    }
+                });
+
+                Object.entries(data.word_type_counts).forEach(([wordType, count]) => {
+                    const span = document.getElementById(`words-types-count-${wordType}`);
+                    if (span) {
+                        span.textContent = `${count} / ${data.word_type_total_counts[wordType]}`;
+                    }
+                    const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
+                    if (checkbox) {
+                        checkbox.checked = count > 0;
+                        checkbox.disabled = count === 0;
+                    }
+                });
+            });
+        };
+
+        document.querySelectorAll('input[name="cefr_levels"], input[name="word_types"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSettings);
+        });
     });
 </script>
 {% endblock %}
