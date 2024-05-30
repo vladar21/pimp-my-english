@@ -28,14 +28,13 @@ def quiz_settings(request):
     words = Word.objects.all()
     word_count = words.count()
 
-    cefr_levels = [level[0] for level in CefrLevel.choices]
+    cefr_levels = [level.value for level in CefrLevel]
     cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_levels}
-
-    word_types = [word_type[0] for word_type in WordType.choices]
+    word_types = [word_type.value for word_type in WordType]
     word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_types}
 
-    selected_cefr_levels = request.GET.getlist('cefr_levels', cefr_levels)
-    selected_word_types = request.GET.getlist('word_types', word_types)
+    selected_cefr_levels = cefr_levels  # Initially, all levels are selected
+    selected_word_types = word_types  # Initially, all word types are selected
 
     context = {
         'word_count': word_count,
@@ -51,7 +50,6 @@ def quiz_settings(request):
 
     return render(request, 'quizzes/quiz_settings.html', context)
 
-
 @csrf_exempt
 def update_quiz_settings(request):
     if request.method == 'POST':
@@ -61,12 +59,12 @@ def update_quiz_settings(request):
 
         words = Word.objects.all()
 
-        cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level[0] for level in CefrLevel.choices]}
-        word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in [word_type[0] for word_type in WordType.choices]}
+        cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']}
+        word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in ['noun', 'adjective', 'verb']}
 
-        # Filter words based on selected CEFR levels and word types        
+        # Filter words based on selected CEFR levels and word types
         words = words.filter(cefr_level__in=cefr_levels).filter(word_type__in=word_types)
-       
+
         word_count = words.count()
         cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_total_counts}
         word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_type_total_counts}

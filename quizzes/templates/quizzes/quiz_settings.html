@@ -146,6 +146,53 @@
         document.querySelectorAll('input[name="cefr_levels"], input[name="word_types"]').forEach(checkbox => {
             checkbox.addEventListener('change', updateSettings);
         });
+
+        const resetButton = document.getElementById('resetSettingsDefault');
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                fetch("{% url 'update_quiz_settings' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        cefr_levels: {{ cefr_levels|safe }},
+                        word_types: {{ word_types|safe }}
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("word-count-label").textContent = data.word_count;
+                    wordCountSlider.max = data.word_count;
+                    wordCountSlider.value = data.word_count;
+
+                    Object.entries(data.cefr_counts).forEach(([level, count]) => {
+                        const span = document.getElementById(`cefr-level-count-${level}`);
+                        if (span) {
+                            span.textContent = `${count} / ${data.cefr_total_counts[level]}`;
+                        }
+                        const checkbox = document.getElementById(`cefr-checkbox-${level}`);
+                        if (checkbox) {
+                            checkbox.checked = count > 0;
+                            checkbox.disabled = count === 0;
+                        }
+                    });
+
+                    Object.entries(data.word_type_counts).forEach(([wordType, count]) => {
+                        const span = document.getElementById(`words-types-count-${wordType}`);
+                        if (span) {
+                            span.textContent = `${count} / ${data.word_type_total_counts[wordType]}`;
+                        }
+                        const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
+                        if (checkbox) {
+                            checkbox.checked = count > 0;
+                            checkbox.disabled = count === 0;
+                        }
+                    });
+                });
+            });
+        }
     });
 </script>
 {% endblock %}
