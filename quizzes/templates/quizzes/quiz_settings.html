@@ -1,4 +1,3 @@
-<!-- quizzes/templates/quizzes/quiz_settings.html -->
 {% extends 'base.html' %}
 {% load dict_filter %}
 
@@ -42,7 +41,7 @@
                                     <input id="cefr-checkbox-{{ level }}" type="checkbox" name="cefr_levels" value="{{ level }}"
                                            data-count="{{ cefr_counts|dict:level }}" 
                                            {% if cefr_counts|dict:level > 0 and level in selected_cefr_levels %}checked{% endif %}
-                                           {% if cefr_counts|dict:level == 0 %}disabled{% endif %}>
+                                           {% if cefr_total_counts|dict:level == 0 %}disabled{% endif %}>
                                     {{ level }} (<span id="cefr-level-count-{{ level }}">{{ cefr_counts|dict:level }} / {{ cefr_total_counts|dict:level }}</span> words)
                                 </label>
                             {% endfor %}
@@ -60,13 +59,14 @@
                                     <input id="words-types-checkbox-{{ word_type }}" type="checkbox" name="word_types" value="{{ word_type }}"
                                            data-count="{{ word_type_counts|dict:word_type }}" 
                                            {% if word_type_counts|dict:word_type > 0 and word_type in selected_word_types %}checked{% endif %}
-                                           {% if word_type_counts|dict:word_type == 0 %}disabled{% endif %}>
+                                           {% if word_type_total_counts|dict:word_type == 0 %}disabled{% endif %}>
                                     {{ word_type }} (<span id="words-types-count-{{ word_type }}">{{ word_type_counts|dict:word_type }} / {{ word_type_total_counts|dict:word_type }}</span> words)
                                 </label>
                             {% endfor %}
                         </div>
                     </td>
                 </tr>
+                <input id="flag_all_null" type="hidden" value="{{ flag_all_null }}">
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault" type="button">Reset</button>
@@ -100,6 +100,8 @@
         const updateSettings = () => {
             const checkedCefrLevels = Array.from(document.querySelectorAll('input[name="cefr_levels"]:checked')).map(checkbox => checkbox.value);
             const checkedWordTypes = Array.from(document.querySelectorAll('input[name="word_types"]:checked')).map(checkbox => checkbox.value);
+            let flag_all_null = document.getElementById('flag_all_null').value;
+            console.log(flag_all_null);
 
             fetch("{% url 'update_quiz_settings' %}", {
                 method: 'POST',
@@ -109,13 +111,16 @@
                 },
                 body: JSON.stringify({
                     cefr_levels: checkedCefrLevels,
-                    word_types: checkedWordTypes
+                    word_types: checkedWordTypes,
+                    flag_all_null: flag_all_null
                 })
             })
             .then(response => response.json())
             .then(data => {
                 document.getElementById("word-count-label").textContent = data.word_count;
                 wordCountSlider.max = data.word_count;
+                console.log('then ', data.flag_all_null);
+                document.getElementById('flag_all_null').value = data.flag_all_null;
 
                 Object.entries(data.cefr_counts).forEach(([level, count]) => {
                     const span = document.getElementById(`cefr-level-count-${level}`);
@@ -125,7 +130,7 @@
                     const checkbox = document.getElementById(`cefr-checkbox-${level}`);
                     if (checkbox) {
                         checkbox.checked = count > 0;
-                        checkbox.disabled = count === 0;
+                        checkbox.disabled = data.cefr_total_counts[level] === 0;
                     }
                 });
 
@@ -137,7 +142,7 @@
                     const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
                     if (checkbox) {
                         checkbox.checked = count > 0;
-                        checkbox.disabled = count === 0;
+                        checkbox.disabled = data.word_type_total_counts[wordType] === 0;
                     }
                 });
             });
@@ -175,7 +180,7 @@
                         const checkbox = document.getElementById(`cefr-checkbox-${level}`);
                         if (checkbox) {
                             checkbox.checked = count > 0;
-                            checkbox.disabled = count === 0;
+                            checkbox.disabled = data.cefr_total_counts[level] === 0;
                         }
                     });
 
@@ -187,7 +192,7 @@
                         const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
                         if (checkbox) {
                             checkbox.checked = count > 0;
-                            checkbox.disabled = count === 0;
+                            checkbox.disabled = data.word_type_total_counts[wordType] === 0;
                         }
                     });
                 });
