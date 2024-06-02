@@ -1,3 +1,4 @@
+<!-- quizzes/templates/quizzes/quiz_settings.html -->
 {% extends 'base.html' %}
 {% load dict_filter %}
 
@@ -83,11 +84,10 @@
         const closeButtonSettings = document.getElementById('closeButtonSettings');
         if (closeButtonSettings) {
             closeButtonSettings.addEventListener('click', () => {
-                window.location.href = '/';  // Redirect to home page or another page
+                window.location.href = '/'; // Redirect to home page or another page
             });
         }
 
-        // Update word count label as slider moves
         const wordCountSlider = document.getElementById("word-count-slider");
         const wordCountLabel = document.getElementById("word-count-label");
 
@@ -97,11 +97,16 @@
             });
         }
 
-        const updateSettings = () => {
-            const checkedCefrLevels = Array.from(document.querySelectorAll('input[name="cefr_levels"]:checked')).map(checkbox => checkbox.value);
-            const checkedWordTypes = Array.from(document.querySelectorAll('input[name="word_types"]:checked')).map(checkbox => checkbox.value);
-            let flag_all_null = document.getElementById('flag_all_null').value;
-            console.log(flag_all_null);
+        const flagAllNullField = document.getElementById("flag_all_null");
+
+        const sendUpdate = (settingName, settingData) => {
+            let flag_all_null = flagAllNullField.value;
+
+            const updateData = {
+                cefr_levels: settingName === 'cefr_levels' ? settingData : [],
+                word_types: settingName === 'word_types' ? settingData : [],
+                flag_all_null: flag_all_null
+            };
 
             fetch("{% url 'update_quiz_settings' %}", {
                 method: 'POST',
@@ -109,18 +114,13 @@
                     'Content-Type': 'application/json',
                     'X-CSRFToken': '{{ csrf_token }}'
                 },
-                body: JSON.stringify({
-                    cefr_levels: checkedCefrLevels,
-                    word_types: checkedWordTypes,
-                    flag_all_null: flag_all_null
-                })
+                body: JSON.stringify(updateData)
             })
             .then(response => response.json())
             .then(data => {
                 document.getElementById("word-count-label").textContent = data.word_count;
                 wordCountSlider.max = data.word_count;
-                console.log('then ', data.flag_all_null);
-                document.getElementById('flag_all_null').value = data.flag_all_null;
+                flagAllNullField.value = data.flag_all_null;
 
                 Object.entries(data.cefr_counts).forEach(([level, count]) => {
                     const span = document.getElementById(`cefr-level-count-${level}`);
@@ -148,8 +148,32 @@
             });
         };
 
-        document.querySelectorAll('input[name="cefr_levels"], input[name="word_types"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateSettings);
+        const updateCefrLevels = () => {
+            const checkedCefrLevels = Array.from(document.querySelectorAll('input[name="cefr_levels"]:checked')).map(checkbox => checkbox.value);
+            if (checkedCefrLevels.length === 0) {
+                flagAllNullField.value = 'true';
+            } else {
+                flagAllNullField.value = 'false';
+            }
+            sendUpdate('cefr_levels', checkedCefrLevels);
+        };
+
+        const updateWordTypes = () => {
+            const checkedWordTypes = Array.from(document.querySelectorAll('input[name="word_types"]:checked')).map(checkbox => checkbox.value);
+            if (checkedWordTypes.length === 0) {
+                flagAllNullField.value = 'true';
+            } else {
+                flagAllNullField.value = 'false';
+            }
+            sendUpdate('word_types', checkedWordTypes);
+        };
+
+        document.querySelectorAll('input[name="cefr_levels"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCefrLevels);
+        });
+
+        document.querySelectorAll('input[name="word_types"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateWordTypes);
         });
 
         const resetButton = document.getElementById('resetSettingsDefault');
@@ -162,8 +186,9 @@
                         'X-CSRFToken': '{{ csrf_token }}'
                     },
                     body: JSON.stringify({
-                        cefr_levels: {{ cefr_levels|safe }},
-                        word_types: {{ word_types|safe }}
+                        setting_name: 'reset',
+                        setting_data: [],
+                        flag_all_null: 'false'
                     })
                 })
                 .then(response => response.json())
@@ -195,6 +220,8 @@
                             checkbox.disabled = data.word_type_total_counts[wordType] === 0;
                         }
                     });
+
+                    flagAllNullField.value = 'false';
                 });
             });
         }
