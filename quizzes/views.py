@@ -57,8 +57,8 @@ def update_quiz_settings(request):
         data = json.loads(request.body)
         cefr_levels = data.get('cefr_levels', [])
         word_types = data.get('word_types', [])
-        is_grow = data.get('is_grow', True)
-
+        is_grow = data.get('is_grow', False)
+        print(is_grow)
         words = Word.objects.all()
 
         cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level.value for level in CefrLevel]}

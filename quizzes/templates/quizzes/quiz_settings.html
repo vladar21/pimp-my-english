@@ -79,7 +79,6 @@
 </div>
 
 <script>
-
 class QuizSettings {
     constructor() {
         this.settings = {
@@ -87,15 +86,17 @@ class QuizSettings {
             word_types: {{ word_types|safe }},
             is_grow: true,
             isSettingsChange: null,
+            total_word_count: {{ word_count }},
         };
 
-        this.previousTotalChecked = this.getTotalChecked();
+        
 
         this.init();
     }
 
     init() {
         this.cacheDomElements();
+        this.previousTotalChecked = this.getTotalChecked();
         this.bindEvents();
         this.updateUI();
     }
@@ -119,6 +120,7 @@ class QuizSettings {
         if (this.wordCountSlider && this.wordCountLabel) {
             this.wordCountSlider.addEventListener("input", () => {
                 this.wordCountLabel.textContent = this.wordCountSlider.value;
+                this.handleSliderChange();
             });
         }
 
@@ -135,9 +137,16 @@ class QuizSettings {
     handleCheckboxChange() {
         const currentTotalChecked = this.getTotalChecked();
         this.settings.is_grow = currentTotalChecked > this.previousTotalChecked;
-        this.previousTotalChecked = currentTotalChecked;
 
         this.updateSettings();
+        this.sendSettingsToServer(() => {
+            this.previousTotalChecked = this.getTotalChecked(); // Update after sending settings to server and updating UI
+        });
+    }
+
+    handleSliderChange() {
+        this.settings.total_word_count = parseInt(this.wordCountSlider.value);
+        this.settings.isSettingsChange = 'total_word_count';
         this.sendSettingsToServer();
     }
 
@@ -170,7 +179,7 @@ class QuizSettings {
         this.sendSettingsToServer();
     }
 
-    sendSettingsToServer() {
+    sendSettingsToServer(callback = null) {
         fetch("{% url 'update_quiz_settings' %}", {
             method: 'POST',
             headers: {
@@ -182,6 +191,7 @@ class QuizSettings {
         .then(response => response.json())
         .then(data => {
             this.updateUI(data);
+            if (callback) callback();
         });
     }
 
@@ -190,10 +200,6 @@ class QuizSettings {
             this.wordCountLabel.textContent = data.word_count;
             this.wordCountSlider.max = data.word_count;
             this.wordCountSlider.value = data.word_count;
-
-            if (this.flagAllNullInput) {
-                this.flagAllNullInput.value = data.flag_all_null ? 'true' : 'false';
-            }
 
             Object.entries(data.cefr_counts).forEach(([level, count]) => {
                 const span = document.getElementById(`cefr-level-count-${level}`);
@@ -225,7 +231,6 @@ class QuizSettings {
 document.addEventListener('DOMContentLoaded', () => {
     new QuizSettings();
 });
-
 
 </script>
 {% endblock %}
