@@ -46,10 +46,10 @@ def quiz_settings(request):
         'word_type_counts': word_type_counts,
         'word_type_total_counts': word_type_counts,
         'selected_word_types': selected_word_types,
-        'flag_all_null': 0
     }
 
     return render(request, 'quizzes/quiz_settings.html', context)
+
 
 @csrf_exempt
 def update_quiz_settings(request):
@@ -57,24 +57,34 @@ def update_quiz_settings(request):
         data = json.loads(request.body)
         cefr_levels = data.get('cefr_levels', [])
         word_types = data.get('word_types', [])
-        flag_all_null = data.get('flag_all_null', 0)
+        is_grow = data.get('is_grow', True)
 
         words = Word.objects.all()
 
         cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level.value for level in CefrLevel]}
         word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in [word_type.value for word_type in WordType]}
 
-        # Check if there are selected CEFR levels or word types
-        if cefr_levels:
-            words = words.filter(cefr_level__in=cefr_levels)
-        elif word_types:
-            words = words.filter(word_type__in=word_types)
-        else:
-            if flag_all_null == 'true' or flag_all_null == '1' or flag_all_null:
-                words = Word.objects.none()
-                flag_all_null = 0
+        if is_grow:
+            if cefr_levels:
+                words1 = words.filter(cefr_level__in=cefr_levels)
             else:
-                flag_all_null = 1
+                words1 = Word.objects.none()
+
+            if word_types:
+                words2 = words.filter(word_type__in=word_types)
+            else:
+                words2 = Word.objects.none()
+
+            words = (words1 | words2).distinct()
+        else:
+            if cefr_levels and word_types:
+                words = words.filter(cefr_level__in=cefr_levels, word_type__in=word_types)
+            elif cefr_levels:
+                words = words.filter(cefr_level__in=cefr_levels)
+            elif word_types:
+                words = words.filter(word_type__in=word_types)
+            else:
+                words = Word.objects.none()
 
         word_count = words.count()
         cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_total_counts}
@@ -86,12 +96,14 @@ def update_quiz_settings(request):
             'cefr_total_counts': cefr_total_counts,
             'word_type_counts': word_type_counts,
             'word_type_total_counts': word_type_total_counts,
-            'flag_all_null': flag_all_null
+
         }
 
         return JsonResponse(response_data)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
 
 
 def rules(request):

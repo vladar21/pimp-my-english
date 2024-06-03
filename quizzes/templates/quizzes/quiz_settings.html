@@ -67,7 +67,6 @@
                         </div>
                     </td>
                 </tr>
-                <input id="flag_all_null" type="hidden" value="{{ flag_all_null }}">
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault" type="button">Reset</button>
@@ -80,151 +79,153 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const closeButtonSettings = document.getElementById('closeButtonSettings');
-        if (closeButtonSettings) {
-            closeButtonSettings.addEventListener('click', () => {
-                window.location.href = '/'; // Redirect to home page or another page
+
+class QuizSettings {
+    constructor() {
+        this.settings = {
+            cefr_levels: {{ cefr_levels|safe }},
+            word_types: {{ word_types|safe }},
+            is_grow: true,
+            isSettingsChange: null,
+        };
+
+        this.previousTotalChecked = this.getTotalChecked();
+
+        this.init();
+    }
+
+    init() {
+        this.cacheDomElements();
+        this.bindEvents();
+        this.updateUI();
+    }
+
+    cacheDomElements() {
+        this.wordCountSlider = document.getElementById("word-count-slider");
+        this.wordCountLabel = document.getElementById("word-count-label");
+        this.closeButtonSettings = document.getElementById('closeButtonSettings');
+        this.resetButton = document.getElementById('resetSettingsDefault');
+        this.cefrCheckboxes = document.querySelectorAll('input[name="cefr_levels"]');
+        this.wordTypeCheckboxes = document.querySelectorAll('input[name="word_types"]');
+    }
+
+    bindEvents() {
+        if (this.closeButtonSettings) {
+            this.closeButtonSettings.addEventListener('click', () => {
+                window.location.href = '/';  // Redirect to home page or another page
             });
         }
 
-        const wordCountSlider = document.getElementById("word-count-slider");
-        const wordCountLabel = document.getElementById("word-count-label");
-
-        if (wordCountSlider && wordCountLabel) {
-            wordCountSlider.addEventListener("input", function() {
-                wordCountLabel.textContent = wordCountSlider.value;
+        if (this.wordCountSlider && this.wordCountLabel) {
+            this.wordCountSlider.addEventListener("input", () => {
+                this.wordCountLabel.textContent = this.wordCountSlider.value;
             });
         }
 
-        const flagAllNullField = document.getElementById("flag_all_null");
-
-        const sendUpdate = (settingName, settingData) => {
-            let flag_all_null = flagAllNullField.value;
-
-            const updateData = {
-                cefr_levels: settingName === 'cefr_levels' ? settingData : [],
-                word_types: settingName === 'word_types' ? settingData : [],
-                flag_all_null: flag_all_null
-            };
-
-            fetch("{% url 'update_quiz_settings' %}", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify(updateData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("word-count-label").textContent = data.word_count;
-                wordCountSlider.max = data.word_count;
-                flagAllNullField.value = data.flag_all_null;
-
-                Object.entries(data.cefr_counts).forEach(([level, count]) => {
-                    const span = document.getElementById(`cefr-level-count-${level}`);
-                    if (span) {
-                        span.textContent = `${count} / ${data.cefr_total_counts[level]}`;
-                    }
-                    const checkbox = document.getElementById(`cefr-checkbox-${level}`);
-                    if (checkbox) {
-                        checkbox.checked = count > 0;
-                        checkbox.disabled = data.cefr_total_counts[level] === 0;
-                    }
-                });
-
-                Object.entries(data.word_type_counts).forEach(([wordType, count]) => {
-                    const span = document.getElementById(`words-types-count-${wordType}`);
-                    if (span) {
-                        span.textContent = `${count} / ${data.word_type_total_counts[wordType]}`;
-                    }
-                    const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
-                    if (checkbox) {
-                        checkbox.checked = count > 0;
-                        checkbox.disabled = data.word_type_total_counts[wordType] === 0;
-                    }
-                });
-            });
-        };
-
-        const updateCefrLevels = () => {
-            const checkedCefrLevels = Array.from(document.querySelectorAll('input[name="cefr_levels"]:checked')).map(checkbox => checkbox.value);
-            if (checkedCefrLevels.length === 0) {
-                flagAllNullField.value = 'true';
-            } else {
-                flagAllNullField.value = 'false';
-            }
-            sendUpdate('cefr_levels', checkedCefrLevels);
-        };
-
-        const updateWordTypes = () => {
-            const checkedWordTypes = Array.from(document.querySelectorAll('input[name="word_types"]:checked')).map(checkbox => checkbox.value);
-            if (checkedWordTypes.length === 0) {
-                flagAllNullField.value = 'true';
-            } else {
-                flagAllNullField.value = 'false';
-            }
-            sendUpdate('word_types', checkedWordTypes);
-        };
-
-        document.querySelectorAll('input[name="cefr_levels"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateCefrLevels);
+        const checkboxes = [...this.cefrCheckboxes, ...this.wordTypeCheckboxes];
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => this.handleCheckboxChange());
         });
 
-        document.querySelectorAll('input[name="word_types"]').forEach(checkbox => {
-            checkbox.addEventListener('change', updateWordTypes);
+        if (this.resetButton) {
+            this.resetButton.addEventListener('click', () => this.resetSettings());
+        }
+    }
+
+    handleCheckboxChange() {
+        const currentTotalChecked = this.getTotalChecked();
+        this.settings.is_grow = currentTotalChecked > this.previousTotalChecked;
+        this.previousTotalChecked = currentTotalChecked;
+
+        this.updateSettings();
+        this.sendSettingsToServer();
+    }
+
+    getTotalChecked() {
+        const checkedCefrLevels = this.cefrCheckboxes ? Array.from(this.cefrCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
+        const checkedWordTypes = this.wordTypeCheckboxes ? Array.from(this.wordTypeCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
+
+        this.settings.cefr_levels = checkedCefrLevels;
+        this.settings.word_types = checkedWordTypes;
+
+        return checkedCefrLevels.length + checkedWordTypes.length;
+    }
+
+    updateSettings() {
+        const checkedCefrLevels = this.cefrCheckboxes ? Array.from(this.cefrCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
+        const checkedWordTypes = this.wordTypeCheckboxes ? Array.from(this.wordTypeCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
+
+        this.settings.cefr_levels = checkedCefrLevels;
+        this.settings.word_types = checkedWordTypes;
+        this.settings.isSettingsChange = 'updated';  // Indicating that settings have been updated
+    }
+
+    resetSettings() {
+        this.settings.cefr_levels = {{ cefr_levels|safe }};
+        this.settings.word_types = {{ word_types|safe }};
+        this.settings.is_grow = true;
+        this.settings.isSettingsChange = null;
+        this.previousTotalChecked = this.getTotalChecked();
+
+        this.sendSettingsToServer();
+    }
+
+    sendSettingsToServer() {
+        fetch("{% url 'update_quiz_settings' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(this.settings)
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.updateUI(data);
         });
+    }
 
-        const resetButton = document.getElementById('resetSettingsDefault');
-        if (resetButton) {
-            resetButton.addEventListener('click', () => {
-                fetch("{% url 'update_quiz_settings' %}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        setting_name: 'reset',
-                        setting_data: [],
-                        flag_all_null: 'false'
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("word-count-label").textContent = data.word_count;
-                    wordCountSlider.max = data.word_count;
-                    wordCountSlider.value = data.word_count;
+    updateUI(data = null) {
+        if (data) {
+            this.wordCountLabel.textContent = data.word_count;
+            this.wordCountSlider.max = data.word_count;
+            this.wordCountSlider.value = data.word_count;
 
-                    Object.entries(data.cefr_counts).forEach(([level, count]) => {
-                        const span = document.getElementById(`cefr-level-count-${level}`);
-                        if (span) {
-                            span.textContent = `${count} / ${data.cefr_total_counts[level]}`;
-                        }
-                        const checkbox = document.getElementById(`cefr-checkbox-${level}`);
-                        if (checkbox) {
-                            checkbox.checked = count > 0;
-                            checkbox.disabled = data.cefr_total_counts[level] === 0;
-                        }
-                    });
+            if (this.flagAllNullInput) {
+                this.flagAllNullInput.value = data.flag_all_null ? 'true' : 'false';
+            }
 
-                    Object.entries(data.word_type_counts).forEach(([wordType, count]) => {
-                        const span = document.getElementById(`words-types-count-${wordType}`);
-                        if (span) {
-                            span.textContent = `${count} / ${data.word_type_total_counts[wordType]}`;
-                        }
-                        const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
-                        if (checkbox) {
-                            checkbox.checked = count > 0;
-                            checkbox.disabled = data.word_type_total_counts[wordType] === 0;
-                        }
-                    });
+            Object.entries(data.cefr_counts).forEach(([level, count]) => {
+                const span = document.getElementById(`cefr-level-count-${level}`);
+                if (span) {
+                    span.textContent = `${count} / ${data.cefr_total_counts[level]}`;
+                }
+                const checkbox = document.getElementById(`cefr-checkbox-${level}`);
+                if (checkbox) {
+                    checkbox.checked = count > 0 && data.cefr_counts[level] === data.cefr_total_counts[level];
+                    checkbox.disabled = data.cefr_total_counts[level] === 0;
+                }
+            });
 
-                    flagAllNullField.value = 'false';
-                });
+            Object.entries(data.word_type_counts).forEach(([wordType, count]) => {
+                const span = document.getElementById(`words-types-count-${wordType}`);
+                if (span) {
+                    span.textContent = `${count} / ${data.word_type_total_counts[wordType]}`;
+                }
+                const checkbox = document.getElementById(`words-types-checkbox-${wordType}`);
+                if (checkbox) {
+                    checkbox.checked = count > 0 && data.word_type_counts[wordType] === data.word_type_total_counts[wordType];
+                    checkbox.disabled = data.word_type_total_counts[wordType] === 0;
+                }
             });
         }
-    });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    new QuizSettings();
+});
+
+
 </script>
 {% endblock %}
