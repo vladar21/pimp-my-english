@@ -27,8 +27,8 @@
                     <td>Total number of words for quiz</td>
                     <td>Total Words</td>
                     <td>
-                        <label for="word-count-slider"><span id="word-count-label">{{ word_count }}</span> words</label>
-                        <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ word_count }}" value="{{ word_count }}">
+                        <label for="word-count-slider"><span id="word-count-label">{{ word_count }} / {{ max_word_count }}</span> words</label>
+                        <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ max_word_count }}" value="{{ word_count }}">                 
                     </td>
                 </tr>
                 <tr class="highlight">
@@ -89,8 +89,6 @@ class QuizSettings {
             total_word_count: {{ word_count }},
         };
 
-        
-
         this.init();
     }
 
@@ -119,7 +117,10 @@ class QuizSettings {
 
         if (this.wordCountSlider && this.wordCountLabel) {
             this.wordCountSlider.addEventListener("input", () => {
-                this.wordCountLabel.textContent = this.wordCountSlider.value;
+                this.updateSliderLabel();
+            });
+
+            this.wordCountSlider.addEventListener("change", () => {
                 this.handleSliderChange();
             });
         }
@@ -132,6 +133,10 @@ class QuizSettings {
         if (this.resetButton) {
             this.resetButton.addEventListener('click', () => this.resetSettings());
         }
+    }
+
+    updateSliderLabel() {
+        this.wordCountLabel.textContent = `${this.wordCountSlider.value} / ${this.wordCountSlider.max}`;
     }
 
     handleCheckboxChange() {
@@ -173,10 +178,13 @@ class QuizSettings {
         this.settings.cefr_levels = {{ cefr_levels|safe }};
         this.settings.word_types = {{ word_types|safe }};
         this.settings.is_grow = true;
-        this.settings.isSettingsChange = null;
+        this.settings.isSettingsChange = 'reset';
+        this.settings.total_word_count = {{ word_count }};
         this.previousTotalChecked = this.getTotalChecked();
 
-        this.sendSettingsToServer();
+        this.sendSettingsToServer(() => {
+            this.previousTotalChecked = this.getTotalChecked(); // Update after sending settings to server and updating UI
+        });
     }
 
     sendSettingsToServer(callback = null) {
@@ -197,8 +205,8 @@ class QuizSettings {
 
     updateUI(data = null) {
         if (data) {
-            this.wordCountLabel.textContent = data.word_count;
-            this.wordCountSlider.max = data.word_count;
+            this.wordCountLabel.textContent = `${data.word_count} / ${data.max_word_count}`;
+            this.wordCountSlider.max = data.max_word_count;
             this.wordCountSlider.value = data.word_count;
 
             Object.entries(data.cefr_counts).forEach(([level, count]) => {
@@ -231,6 +239,7 @@ class QuizSettings {
 document.addEventListener('DOMContentLoaded', () => {
     new QuizSettings();
 });
+
 
 </script>
 {% endblock %}

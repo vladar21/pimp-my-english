@@ -36,8 +36,11 @@ def quiz_settings(request):
     selected_cefr_levels = cefr_levels  # Initially, all levels are selected
     selected_word_types = word_types  # Initially, all word types are selected
 
+    max_word_count = word_count  # Max word count is initially the total number of words
+
     context = {
         'word_count': word_count,
+        'max_word_count': max_word_count,
         'cefr_levels': cefr_levels,
         'cefr_counts': cefr_counts,
         'cefr_total_counts': cefr_counts,
@@ -58,33 +61,53 @@ def update_quiz_settings(request):
         cefr_levels = data.get('cefr_levels', [])
         word_types = data.get('word_types', [])
         is_grow = data.get('is_grow', False)
-        print(is_grow)
+        total_word_count = data.get('total_word_count', 0)
+        isSettingsChange = data.get('isSettingsChange', None)
+ 
         words = Word.objects.all()
+        max_word_count = words.count()
 
         cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level.value for level in CefrLevel]}
         word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in [word_type.value for word_type in WordType]}
 
-        if is_grow:
+        if isSettingsChange == 'reset':
+            words = Word.objects.all()
+        elif isSettingsChange == 'total_word_count' and total_word_count > 0:
+            # Distribute words evenly among selected categories
+            filtered_words = set()
             if cefr_levels:
-                words1 = words.filter(cefr_level__in=cefr_levels)
-            else:
-                words1 = Word.objects.none()
-
+                words_cefr = words.filter(cefr_level__in=cefr_levels)
+                for level in cefr_levels:
+                    level_words = words_cefr.filter(cefr_level=level)[:total_word_count // len(cefr_levels)]
+                    filtered_words.update(level_words)
             if word_types:
-                words2 = words.filter(word_type__in=word_types)
-            else:
-                words2 = Word.objects.none()
-
-            words = (words1 | words2).distinct()
+                words_word_type = words.filter(word_type__in=word_types)
+                for word_type in word_types:
+                    type_words = words_word_type.filter(word_type=word_type)[:total_word_count // len(word_types)]
+                    filtered_words.update(type_words)
+            words = Word.objects.filter(id__in=[word.id for word in filtered_words])
         else:
-            if cefr_levels and word_types:
-                words = words.filter(cefr_level__in=cefr_levels, word_type__in=word_types)
-            elif cefr_levels:
-                words = words.filter(cefr_level__in=cefr_levels)
-            elif word_types:
-                words = words.filter(word_type__in=word_types)
+            if is_grow:
+                if cefr_levels:
+                    words1 = words.filter(cefr_level__in=cefr_levels)
+                else:
+                    words1 = Word.objects.none()
+
+                if word_types:
+                    words2 = words.filter(word_type__in=word_types)
+                else:
+                    words2 = Word.objects.none()
+
+                words = (words1 | words2).distinct()
             else:
-                words = Word.objects.none()
+                if cefr_levels and word_types:
+                    words = words.filter(cefr_level__in=cefr_levels, word_type__in=word_types)
+                elif cefr_levels:
+                    words = words.filter(cefr_level__in=cefr_levels)
+                elif word_types:
+                    words = words.filter(word_type__in=word_types)
+                else:
+                    words = Word.objects.none()
 
         word_count = words.count()
         cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_total_counts}
@@ -92,18 +115,17 @@ def update_quiz_settings(request):
 
         response_data = {
             'word_count': word_count,
+            'max_word_count': max_word_count,
             'cefr_counts': cefr_counts,
             'cefr_total_counts': cefr_total_counts,
             'word_type_counts': word_type_counts,
             'word_type_total_counts': word_type_total_counts,
-
+            'total_word_count': total_word_count,  # Pass back the updated total word count
         }
 
         return JsonResponse(response_data)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
-
-
 
 
 def rules(request):
