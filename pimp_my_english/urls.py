@@ -8,4 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', landing, name='landing'),
     path('quizzes/', include('quizzes.urls')),
+    path('wordsets/', include('wordsets.urls')),
 ]

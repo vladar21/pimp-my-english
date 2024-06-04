@@ -24,15 +24,26 @@
             <tbody>
                 <tr class="highlight">
                     <td>1</td>
-                    <td>Total number of words for quiz</td>
-                    <td>Total Words</td>
+                    <td>Available WordSets</td>
+                    <td>WordSet</td>
                     <td>
-                        <label for="word-count-slider"><span id="word-count-label">{{ word_count }} / {{ max_word_count }}</span> words</label>
-                        <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ max_word_count }}" value="{{ word_count }}">                 
+                        <select id="word-set-select">
+                            <option value="">Select Word Set</option>
+                            <!-- Options will be dynamically populated -->
+                        </select>
                     </td>
                 </tr>
                 <tr class="highlight">
                     <td>2</td>
+                    <td>Total number of words for quiz</td>
+                    <td>Total Words</td>
+                    <td>
+                        <label for="word-count-slider"><span id="word-count-label">{{ word_count }} / {{ max_word_count }}</span> words</label>
+                        <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ max_word_count }}" value="{{ word_count }}">
+                    </td>
+                </tr>
+                <tr class="highlight">
+                    <td>3</td>
                     <td>CEFR levels of words for quiz ('A1', 'B1', 'B2' etc.)</td>
                     <td>CEFR Levels</td>
                     <td>
@@ -50,7 +61,7 @@
                     </td>
                 </tr>
                 <tr class="highlight">
-                    <td>3</td>
+                    <td>4</td>
                     <td>Types of words for quiz ('noun', 'adjective' etc.)</td>
                     <td>Word Types</td>
                     <td>
@@ -70,7 +81,9 @@
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault" type="button">Reset</button>
-                        <button id="saveSettingsDefault" type="submit">Save</button>
+                        <button id="startQuizButton" type="submit">Start</button>
+                        <button id="createWordSetButton" type="button">Create</button>
+                        <button id="editWordSetButton" type="button" style="display:none;">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -87,6 +100,7 @@ class QuizSettings {
             is_grow: true,
             isSettingsChange: null,
             total_word_count: {{ word_count }},
+            word_set: null
         };
 
         this.init();
@@ -97,6 +111,7 @@ class QuizSettings {
         this.previousTotalChecked = this.getTotalChecked();
         this.bindEvents();
         this.updateUI();
+        this.loadWordSets();  // Load WordSets options
     }
 
     cacheDomElements() {
@@ -106,6 +121,10 @@ class QuizSettings {
         this.resetButton = document.getElementById('resetSettingsDefault');
         this.cefrCheckboxes = document.querySelectorAll('input[name="cefr_levels"]');
         this.wordTypeCheckboxes = document.querySelectorAll('input[name="word_types"]');
+        this.wordSetSelect = document.getElementById("word-set-select");
+        this.startQuizButton = document.getElementById("startQuizButton");
+        this.createWordSetButton = document.getElementById("createWordSetButton");
+        this.editWordSetButton = document.getElementById("editWordSetButton");
     }
 
     bindEvents() {
@@ -132,6 +151,68 @@ class QuizSettings {
 
         if (this.resetButton) {
             this.resetButton.addEventListener('click', () => this.resetSettings());
+        }
+
+        if (this.wordSetSelect) {
+            this.wordSetSelect.addEventListener('change', () => this.handleWordSetChange());
+        }
+
+        if (this.createWordSetButton) {
+            this.createWordSetButton.addEventListener('click', () => this.createWordSet());
+        }
+
+        if (this.editWordSetButton) {
+            this.editWordSetButton.addEventListener('click', () => this.editWordSet());
+        }
+    }
+
+    loadWordSets() {
+        fetch("{% url 'wordsets:list_word_sets' %}")
+            .then(response => response.json())
+            .then(data => {
+                this.populateWordSets(data.word_sets);
+            });
+    }
+
+    populateWordSets(wordSets) {
+        wordSets.forEach(set => {
+            const option = document.createElement("option");
+            option.value = set.id;
+            option.text = set.name;
+            this.wordSetSelect.appendChild(option);
+        });
+    }
+
+    handleWordSetChange() {
+        const selectedWordSetId = this.wordSetSelect.value;
+        if (selectedWordSetId) {
+            fetch(`/wordsets/${selectedWordSetId}/words/`)
+                .then(response => response.json())
+                .then(data => {
+                    this.settings.word_set = selectedWordSetId;
+                    this.settings.cefr_levels = data.cefr_levels;
+                    this.settings.word_types = data.word_types;
+                    this.settings.total_word_count = data.word_count;
+
+                    this.updateUI(data);
+
+                    this.createWordSetButton.style.display = "none";
+                    this.editWordSetButton.style.display = "inline-block";
+                });
+        } else {
+            this.createWordSetButton.style.display = "inline-block";
+            this.editWordSetButton.style.display = "none";
+        }
+    }
+
+    createWordSet() {
+        window.location.href = "/wordsets/create/";
+    }
+
+    editWordSet() {
+        const selectedWordSetId = this.wordSetSelect.value;
+        if (selectedWordSetId) {
+            window.location.href = `/wordsets/${selectedWordSetId}/edit/`;
         }
     }
 
@@ -239,7 +320,6 @@ class QuizSettings {
 document.addEventListener('DOMContentLoaded', () => {
     new QuizSettings();
 });
-
-
 </script>
 {% endblock %}
+

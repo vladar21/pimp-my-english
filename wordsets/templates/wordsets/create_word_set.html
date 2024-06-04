@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Create Word Set{% endblock %}
+
+{% block content %}
+<h1>Create Word Set</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+</form>
+{% endblock %}
