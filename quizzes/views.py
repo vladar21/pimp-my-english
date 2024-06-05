@@ -38,6 +38,8 @@ def quiz_settings(request):
 
     max_word_count = word_count  # Max word count is initially the total number of words
 
+    filtered_words = words  # Initially, no filters applied
+
     context = {
         'word_count': word_count,
         'max_word_count': max_word_count,
@@ -49,6 +51,7 @@ def quiz_settings(request):
         'word_type_counts': word_type_counts,
         'word_type_total_counts': word_type_counts,
         'selected_word_types': selected_word_types,
+        'filtered_words': ', '.join(words.values_list('text', flat=True)),  # Add filtered words text to context
     }
 
     return render(request, 'quizzes/quiz_settings.html', context)
@@ -112,6 +115,7 @@ def update_quiz_settings(request):
         word_count = words.count()
         cefr_counts = {level: words.filter(cefr_level=level).count() for level in cefr_total_counts}
         word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_type_total_counts}
+        filtered_words_text = ', '.join(words.values_list('text', flat=True))
 
         response_data = {
             'word_count': word_count,
@@ -121,6 +125,7 @@ def update_quiz_settings(request):
             'word_type_counts': word_type_counts,
             'word_type_total_counts': word_type_total_counts,
             'total_word_count': total_word_count,  # Pass back the updated total word count
+            'filtered_words': filtered_words_text,
         }
 
         return JsonResponse(response_data)

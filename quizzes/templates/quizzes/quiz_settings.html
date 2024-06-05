@@ -78,6 +78,14 @@
                         </div>
                     </td>
                 </tr>
+                <tr class="highlight">
+                    <td>5</td>
+                    <td>Words in WordSet</td>
+                    <td>Words in Set</td>
+                    <td>
+                        <span id="filtered-words">{{ filtered_words }}</span>
+                    </td>
+                </tr>
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault" type="button">Reset</button>
@@ -125,6 +133,7 @@ class QuizSettings {
         this.startQuizButton = document.getElementById("startQuizButton");
         this.createWordSetButton = document.getElementById("createWordSetButton");
         this.editWordSetButton = document.getElementById("editWordSetButton");
+        this.filteredWords = document.getElementById("filtered-words");
     }
 
     bindEvents() {
@@ -313,6 +322,10 @@ class QuizSettings {
                     checkbox.disabled = data.word_type_total_counts[wordType] === 0;
                 }
             });
+
+            if (this.filteredWords) {
+                this.filteredWords.textContent = data.filtered_words;
+            }
         }
     }
 }
