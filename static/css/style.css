@@ -1,3 +1,5 @@
+/* static/css/styles.css */
+
 /* Font face declarations */
 @font-face {
     font-family: 'Lato';
@@ -745,6 +747,24 @@ input[type="checkbox"]::before {
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     height: auto;
 }
+
+/* Add New Word Styles */
+.add-word-btn {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 8px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.add-word-btn:hover {
+    background-color: #45a049;
+}
+
 
 
 /* Add some styles for the table on large screens */

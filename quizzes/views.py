@@ -38,7 +38,7 @@ def quiz_settings(request):
 
     max_word_count = word_count  # Max word count is initially the total number of words
 
-    filtered_words = words  # Initially, no filters applied
+    filtered_words = ', '.join(words.values_list('text', flat=True))  # Initially, no filters applied
 
     context = {
         'word_count': word_count,
@@ -51,7 +51,7 @@ def quiz_settings(request):
         'word_type_counts': word_type_counts,
         'word_type_total_counts': word_type_counts,
         'selected_word_types': selected_word_types,
-        'filtered_words': ', '.join(words.values_list('text', flat=True)),  # Add filtered words text to context
+        'filtered_words': filtered_words,  # Add filtered words text to context
     }
 
     return render(request, 'quizzes/quiz_settings.html', context)
