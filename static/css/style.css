@@ -765,6 +765,23 @@ input[type="checkbox"]::before {
     background-color: #45a049;
 }
 
+/* Filtered words styles */
+.add-word-btn {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 8px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.add-word-btn:hover {
+    background-color: #45a049;
+}
+
 .filtered-word {
     display: inline-block;
     margin: 4px 2px;
@@ -773,10 +790,11 @@ input[type="checkbox"]::before {
     background-color: rgba(240, 240, 240, 0.9);
     color: #333;
     position: relative;
+    cursor: default;
 }
 
 .filtered-word:hover .word-menu {
-    display: block;
+    display: flex;
 }
 
 .filtered-word:hover {
@@ -785,7 +803,7 @@ input[type="checkbox"]::before {
 
 .word-menu {
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 50%;
     transform: translateX(-50%);
     background-color: #333;
@@ -794,6 +812,8 @@ input[type="checkbox"]::before {
     border-radius: 5px;
     display: none;
     z-index: 10;
+    flex-direction: row;
+    gap: 3px;
 }
 
 .word-menu button {
@@ -801,15 +821,15 @@ input[type="checkbox"]::before {
     color: #fff;
     border: none;
     cursor: pointer;
-    margin: 0 5px;
-    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .word-menu button:hover {
-    background-color: #f0f0f0;
+    background-color: #fff;
     color: #333;
 }
-
 
 
 
