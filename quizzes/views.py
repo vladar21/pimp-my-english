@@ -12,18 +12,6 @@ from rest_framework.decorators import api_view
 from wordsets.models import Word, Definition, CefrLevel, WordType
 
 
-def check_media_data(request):
-    words_data = []
-    words = Word.objects.all()
-    for word in words:
-        words_data.append({
-            'text': word.text,
-            'has_image_data': word.image_data is not None,
-            'has_audio_data': word.audio_data is not None,
-        })
-    return JsonResponse(words_data, safe=False)
-
-
 def quiz_settings(request):
     words = Word.objects.all()
     word_count = words.count()
@@ -166,6 +154,18 @@ def submit_quiz_settings(request):
 def submit_quiz_result(request):
     # Логика обработки результатов викторины
     return Response({"message": "Quiz result submitted successfully."}, status=status.HTTP_201_CREATED)
+
+
+def check_media_data(request):
+    words_data = []
+    words = Word.objects.all()
+    for word in words:
+        words_data.append({
+            'text': word.text,
+            'has_image_data': word.image_data is not None,
+            'has_audio_data': word.audio_data is not None,
+        })
+    return JsonResponse(words_data, safe=False)
 
 
 class QuizDataView(APIView):

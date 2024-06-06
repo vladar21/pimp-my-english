@@ -192,7 +192,6 @@ class QuizSettings {
 
             this.filteredWords.addEventListener('mouseout', (event) => {
                 if (event.target.classList.contains('filtered-word') && !event.relatedTarget.closest('.word-menu')) {
-                    // this.hideWordMenu(event.target);
                     this.hideAllWordMenus();
                 }
             });
@@ -202,7 +201,6 @@ class QuizSettings {
                     event.stopPropagation();
                     event.preventDefault();
                     console.log('Edit');
-                    // this.hideWordMenu(event.target.closest('.filtered-word'));
                     this.hideAllWordMenus();
                 }
 
@@ -210,12 +208,11 @@ class QuizSettings {
                     event.stopPropagation();
                     event.preventDefault();
                     console.log('Delete');
-                    // this.hideWordMenu(event.target.closest('.filtered-word'));
                     this.hideAllWordMenus();
                 }
             });
         }
-        
+
         document.addEventListener('mouseout', (event) => {
         if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
             this.hideAllWordMenus();
@@ -324,20 +321,6 @@ class QuizSettings {
         // Logic to add a new word
     }
 
-    // showWordMenu(wordElement) {
-    //     const menu = wordElement.querySelector('.word-menu');
-    //     if (menu) {
-    //         menu.style.display = 'flex';
-    //     }
-    // }
-
-    // hideWordMenu(wordElement) {
-    //     const menu = wordElement.querySelector('.word-menu');
-    //     if (menu) {  
-    //         menu.style.display = 'none';
-    //     }
-    // }
-
     updateSliderLabel() {
         this.wordCountLabel.textContent = `${this.wordCountSlider.value} / ${this.wordCountSlider.max}`;
     }
@@ -402,6 +385,8 @@ class QuizSettings {
         .then(response => response.json())
         .then(data => {
             this.updateUI(data);
+            this.hiddenFilteredWords.dataset.words = data.filtered_words; // Update hidden filtered words
+            this.populateFilteredWords(); // Update filtered words display
             if (callback) callback();
         });
     }
