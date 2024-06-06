@@ -748,7 +748,7 @@ input[type="checkbox"]::before {
     height: auto;
 }
 
-/* Add New Word Styles */
+/* Filtered words styles */
 .add-word-btn {
     display: inline-block;
     margin-bottom: 10px;
@@ -764,6 +764,52 @@ input[type="checkbox"]::before {
 .add-word-btn:hover {
     background-color: #45a049;
 }
+
+.filtered-word {
+    display: inline-block;
+    margin: 4px 2px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #333;
+    position: relative;
+}
+
+.filtered-word:hover .word-menu {
+    display: block;
+}
+
+.filtered-word:hover {
+    z-index: 11;
+}
+
+.word-menu {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    display: none;
+    z-index: 10;
+}
+
+.word-menu button {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.word-menu button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
 
 
 

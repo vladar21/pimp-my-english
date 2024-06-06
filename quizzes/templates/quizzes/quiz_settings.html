@@ -83,8 +83,8 @@
                     <td data-label="Describe">Words in WordSet</td>
                     <td data-label="Name">Words in Set</td>
                     <td data-label="Values">
-                        <button id="add-new-word" class="add-word-btn">Add New Word</button>
-                        <span id="filtered-words">{{ filtered_words }}</span>
+                        <button id="add-word" class="add-word-btn">add word</button>
+                        <div id="filtered-words"></div>
                     </td>
                 </tr>
                 <tr class="highlight total">
@@ -100,6 +100,7 @@
         </table>
     </form>
 </div>
+<div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
 
 <script>
 class QuizSettings {
@@ -120,7 +121,7 @@ class QuizSettings {
         this.cacheDomElements();
         this.previousTotalChecked = this.getTotalChecked();
         this.bindEvents();
-        this.updateUI();
+        this.populateFilteredWords();
         this.loadWordSets();  // Load WordSets options
     }
 
@@ -136,6 +137,8 @@ class QuizSettings {
         this.createWordSetButton = document.getElementById("createWordSetButton");
         this.editWordSetButton = document.getElementById("editWordSetButton");
         this.filteredWords = document.getElementById("filtered-words");
+        this.addWordButton = document.getElementById("add-word");
+        this.hiddenFilteredWords = document.getElementById("hidden-filtered-words");
     }
 
     bindEvents() {
@@ -175,6 +178,61 @@ class QuizSettings {
         if (this.editWordSetButton) {
             this.editWordSetButton.addEventListener('click', () => this.editWordSet());
         }
+
+        if (this.addWordButton) {
+            this.addWordButton.addEventListener('click', () => this.addNewWord());
+        }
+
+        if (this.filteredWords) {
+            this.filteredWords.addEventListener('mouseover', (event) => {
+                if (event.target.classList.contains('filtered-word')) {
+                    this.showWordMenu(event.target);
+                }
+            });
+
+            this.filteredWords.addEventListener('mouseout', (event) => {
+                if (event.target.classList.contains('filtered-word')) {
+                    this.hideWordMenu(event.target);
+                }
+            });
+
+            this.filteredWords.addEventListener('click', (event) => {
+                if (event.target.classList.contains('edit-button')) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    console.log('Edit');
+                    this.hideWordMenu(event.target.closest('.filtered-word'));
+                }
+
+                if (event.target.classList.contains('delete-button')) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    console.log('Delete');
+                    this.hideWordMenu(event.target.closest('.filtered-word'));
+                }
+            });
+        }
+    }
+
+    populateFilteredWords() {
+        const wordsData = this.hiddenFilteredWords.dataset.words.split(', ');
+        this.filteredWords.innerHTML = ''; // Clear existing content
+        wordsData.forEach(word => {
+            const wordElement = document.createElement('span');
+            wordElement.classList.add('filtered-word');
+            wordElement.dataset.word = word;
+            wordElement.textContent = word;      
+
+            const menu = document.createElement('div');
+            menu.classList.add('word-menu');
+            menu.innerHTML = `
+                <button class="edit-button">Edit</button>
+                <button class="delete-button">Del</button>
+            `;
+            wordElement.appendChild(menu);
+
+            this.filteredWords.appendChild(wordElement);
+        });
     }
 
     loadWordSets() {
@@ -224,6 +282,35 @@ class QuizSettings {
         const selectedWordSetId = this.wordSetSelect.value;
         if (selectedWordSetId) {
             window.location.href = `/wordsets/${selectedWordSetId}/edit/`;
+        }
+    }
+
+    editWord(word) {
+        console.log(`Edit word: ${word}`);
+        // Logic to edit word
+    }
+
+    deleteWord(word) {
+        console.log(`Delete word: ${word}`);
+        // Logic to delete word
+    }
+
+    addNewWord() {
+        console.log('Add New Word clicked');
+        // Logic to add a new word
+    }
+
+    showWordMenu(wordElement) {
+        const menu = wordElement.querySelector('.word-menu');
+        if (menu) {
+            menu.style.display = 'flex';
+        }
+    }
+
+    hideWordMenu(wordElement) {
+        const menu = wordElement.querySelector('.word-menu');
+        if (menu) {  
+            menu.style.display = 'none';
         }
     }
 
@@ -326,14 +413,31 @@ class QuizSettings {
             });
 
             if (this.filteredWords) {
-                this.filteredWords.textContent = data.filtered_words;
+                this.filteredWords.innerHTML = '';
+                const words = this.hiddenFilteredWords.dataset.words.split(', ');
+                words.forEach(word => {
+                    const wordElement = document.createElement('span');
+                    wordElement.classList.add('filtered-word');
+                    wordElement.dataset.word = word;
+                    wordElement.textContent = word;   
+                    
+                    const menu = document.createElement('div');
+                    menu.classList.add('word-menu');
+                    menu.innerHTML = `
+                        <button class="edit-button">Edit</button>
+                        <button class="delete-button">Del</button>
+                    `;
+                    wordElement.appendChild(menu);
+                    
+                    this.filteredWords.appendChild(wordElement);
+                });
             }
         }
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new QuizSettings();
+    const quizSettings = new QuizSettings();
 });
 </script>
 {% endblock %}
