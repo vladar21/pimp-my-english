@@ -142,7 +142,7 @@ class Quiz {
   }
 
   stopQuiz() {
-    this.addSpentTimeToLastAttempt();
+    this.addSpentTimeToLastAttempt(true);
     this.isQuizStart = false;
 
     this.toggleVisibility({
@@ -156,8 +156,7 @@ class Quiz {
   }
 
   takeATurn() {
-    this.addSpentTimeToLastAttempt();
-    this.timer = 30; // Reset timer
+    this.addSpentTimeToLastAttempt(false);
     const selectedOption = document.querySelector('input[name="answer-option"]:checked');
     if (!selectedOption) {
       const wrongCountElement = document.getElementById("wrong-count");
@@ -179,12 +178,17 @@ class Quiz {
         this.currentQuiz.spentTime = 0;
         this.data.push(this.currentQuiz);
       }
+      this.timer = 30; // Reset timer for the next question
     }
   }
 
-  addSpentTimeToLastAttempt() {
+  addSpentTimeToLastAttempt(isFinalTurn) {
     if (this.data.length > 0) {
-      this.data[this.data.length - 1].spentTime = 30 - this.timer;
+      if (isFinalTurn) {
+        this.data[this.data.length - 1].spentTime = 30 - this.timer;
+      } else {
+        this.data[this.data.length - 1].spentTime = 30 - this.timer;
+      }
     }
   }
 
@@ -389,6 +393,7 @@ class Quiz {
       this.timer--;
       this.updateTimerDisplay();
       if (this.timer <= 0) {
+        this.addSpentTimeToLastAttempt(false);
         this.takeATurn();
       } else if (this.timer <= 10) {
         this.timerSpinner.style.backgroundColor = this.isTimerSpinnerVisible ? "red" : "white";
@@ -440,12 +445,12 @@ class Quiz {
       return total + correctAnswers;
     }, 0);
 
-    if (totalCorrectAnswers > 0) {
+    if (totalCorrectAnswers > 0 || this.data.length > 0) { // Ensure even if no correct answers, attempt is recorded
       this.winnersArray.push({
         place: 0,
         attempt: this.attempt,
         scores: totalCorrectAnswers,
-        timeSpent: totalTimeSpent,
+        timeSpent: totalTimeSpent // Remove redundant time addition
       });
     }
 
