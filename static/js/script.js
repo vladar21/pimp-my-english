@@ -1,3 +1,5 @@
+// static/js/script.js
+
 class Quiz {
   constructor() {
     this.data = [];
@@ -20,6 +22,7 @@ class Quiz {
     this.quizField = document.getElementById("quiz-field");
 
     this.startQuizButton = document.getElementById("start-quiz-button");
+    this.filteredWordsDiv = document.getElementById("hidden-filtered-words")
 
     this.initialize();
     this.fetchQuizData();
@@ -50,15 +53,16 @@ class Quiz {
     return cookieValue;
   }
 
-  async fetchQuizData(filtered_word_texts = []) {
+  async fetchQuizData() {
     try {
+      const filterWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': this.getCSRFToken()
         },
-        body: JSON.stringify({ filtered_word_texts })
+        body: JSON.stringify({ filtered_word_texts: filterWords })
       });
 
       if (!response.ok) {

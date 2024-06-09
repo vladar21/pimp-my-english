@@ -1,6 +1,7 @@
 # quizzes/views.py
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
@@ -126,29 +127,29 @@ def rules(request):
     return render(request, 'quizzes/rules.html')
 
 
+@csrf_exempt
 def submit_quiz_settings(request):
     if request.method == 'POST':
+        data = json.loads(request.body)
+        filtered_words = data.get('filtered_words', [])
 
-        # Process the settings form submission
-        selected_cefr_levels = request.POST.getlist('cefr_levels')
-        selected_word_types = request.POST.getlist('word_types')
-        word_count = int(request.POST.get('word_count', 10))  # Default to 10 if not provided
+        # Save filtered words to session
+        request.session['filtered_words'] = filtered_words
 
-        # Save the settings to the session or handle them as needed
-        request.session['selected_cefr_levels'] = selected_cefr_levels
-        request.session['selected_word_types'] = selected_word_types
-        request.session['word_count'] = word_count
-
-        # Return a JSON response or redirect as needed
-        return JsonResponse({
-            'status': 'success',
-            'message': 'Settings updated successfully.',
-            'selected_cefr_levels': selected_cefr_levels,
-            'selected_word_types': selected_word_types,
-            'word_count': word_count,
-        })
+        # Redirect to landing page
+        return JsonResponse({'redirect_url': reverse('landing')})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
+
+
+def landing(request):
+    filtered_words = request.session.get('filtered_words', [])
+    print("landing ")
+    print(filtered_words)
+    context = {
+        'filtered_words': filtered_words
+    }
+    return render(request, 'landing.html', context)
 
 
 @api_view(['POST'])

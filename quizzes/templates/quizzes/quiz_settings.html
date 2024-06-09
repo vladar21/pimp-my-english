@@ -90,7 +90,7 @@
                 <tr class="highlight total">
                     <td colspan="4" class="reset-settings-default">
                         <button id="resetSettingsDefault" type="button">Reset</button>
-                        <button id="startQuizButton" type="submit">Start</button>
+                        <button id="startQuizButton" type="button">Start</button>
                         <button id="createWordSetButton" type="button">Create</button>
                         <button id="editWordSetButton" type="button" style="display:none;">Edit</button>
                     </td>
@@ -183,6 +183,10 @@ class QuizSettings {
             this.addWordButton.addEventListener('click', () => this.addNewWord());
         }
 
+        if (this.startQuizButton) {
+            this.startQuizButton.addEventListener("click", (event) => this.startQuiz(event));
+        }
+
         if (this.filteredWords) {
             this.filteredWords.addEventListener('mouseover', (event) => {
                 if (event.target.classList.contains('filtered-word')) {
@@ -214,10 +218,33 @@ class QuizSettings {
         }
 
         document.addEventListener('mouseout', (event) => {
-        if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
-            this.hideAllWordMenus();
-        }
-    });
+            if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
+                this.hideAllWordMenus();
+            }
+        });
+    }
+
+    startQuiz(event) {
+        event.preventDefault();
+        const filteredWords = this.getFilteredWordsFromDiv();
+        
+        fetch("{% url 'submit_quiz_settings' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ filtered_words: filteredWords })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "{% url 'landing' %}";
+        });
+    }
+
+    getFilteredWordsFromDiv() {
+        const hiddenFilteredWords = document.getElementById('hidden-filtered-words');
+        return hiddenFilteredWords ? hiddenFilteredWords.dataset.words.split(', ') : [];
     }
 
     showWordMenu(wordElement) {
