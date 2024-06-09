@@ -22,10 +22,12 @@ class Quiz {
     this.quizField = document.getElementById("quiz-field");
 
     this.startQuizButton = document.getElementById("start-quiz-button");
-    this.filteredWordsDiv = document.getElementById("hidden-filtered-words")
+    this.filteredWordsDiv = document.getElementById("hidden-filtered-words");
 
     this.initialize();
-    this.fetchQuizData();
+    this.fetchQuizData().then(() => {
+        this.checkAutostart();
+    });
   }
 
   initialize() {
@@ -55,14 +57,14 @@ class Quiz {
 
   async fetchQuizData() {
     try {
-      const filterWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
+      const filteredWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': this.getCSRFToken()
         },
-        body: JSON.stringify({ filtered_word_texts: filterWords })
+        body: JSON.stringify({ filtered_word_texts: filteredWords })
       });
 
       if (!response.ok) {
@@ -74,6 +76,14 @@ class Quiz {
       console.log('Fetched filtered quiz data:', this.englishWords);
     } catch (error) {
       console.error('Fetch error:', error);
+    }
+  }
+
+  checkAutostart() {
+    const autostartElement = document.getElementById('autostart');
+    if (autostartElement && autostartElement.dataset.autostart === '1') {
+      console.log('Autostart parameter detected. Starting quiz...');
+      this.startQuiz();
     }
   }
 

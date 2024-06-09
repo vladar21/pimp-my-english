@@ -137,17 +137,17 @@ def submit_quiz_settings(request):
         request.session['filtered_words'] = filtered_words
 
         # Redirect to landing page
-        return JsonResponse({'redirect_url': reverse('landing')})
+        redirect_url = f"{reverse('landing')}"
+        return JsonResponse({'redirect_url': redirect_url})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
 def landing(request):
     filtered_words = request.session.get('filtered_words', [])
-    print("landing ")
-    print(filtered_words)
     context = {
-        'filtered_words': filtered_words
+        'filtered_words': filtered_words,
+        'autostart': 1,
     }
     return render(request, 'landing.html', context)
 
