@@ -1,15 +1,16 @@
 # quizzes/views.py
 
-import base64
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import json
+from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from wordsets.models import Word, Definition, CefrLevel, WordType
+import json
+import base64
 
 
 def quiz_settings(request):
@@ -169,11 +170,22 @@ def check_media_data(request):
 
 
 class QuizDataView(APIView):
-    def get(self, request, format=None):
-        # Query all words from the database
-        words = Word.objects.all()
-        
-        # Structure the data as needed for the quiz
+    @method_decorator(csrf_exempt)
+    def post(self, request, format=None):
+        try:
+            data = request.data
+        except json.JSONDecodeError:
+            return Response({"error": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
+
+        filtered_word_texts = data.get('filtered_word_texts', [])
+        if not filtered_word_texts:
+            words = Word.objects.all()
+        else:
+            words = Word.objects.filter(text__in=filtered_word_texts)
+
+        return self.process_words(words)
+    
+    def process_words(self, words):
         quiz_data = {}
         for word in words:
             definitions = Definition.objects.filter(word=word)
@@ -183,13 +195,11 @@ class QuizDataView(APIView):
                     "translate": {
                         "ru": [{"translation": "translated text in Russian", "definition": None, "sound_url": None}],
                         "ua": [{"translation": "translated text in Ukrainian", "definition": None, "sound_url": None}]
-                        # Add more translations if necessary
                     }
                 }
                 for definition in definitions
             ]
-            
-            # Convert binary data to base64-encoded strings
+
             image_url = f"data:image/jpeg;base64,{base64.b64encode(word.image_data).decode('utf-8')}" if word.image_data else ''
             sound_url = f"data:audio/mpeg;base64,{base64.b64encode(word.audio_data).decode('utf-8')}" if word.audio_data else ''
 
@@ -210,6 +220,48 @@ class QuizDataView(APIView):
             quiz_data[word.text] = word_data
 
         return Response(quiz_data, status=status.HTTP_200_OK)
+
+    # def get(self, request, format=None):
+    #     # Query all words from the database
+    #     words = Word.objects.all()
+        
+    #     # Structure the data as needed for the quiz
+    #     quiz_data = {}
+    #     for word in words:
+    #         definitions = Definition.objects.filter(word=word)
+    #         definition_list = [
+    #             {
+    #                 "definition": definition.definition,
+    #                 "translate": {
+    #                     "ru": [{"translation": "translated text in Russian", "definition": None, "sound_url": None}],
+    #                     "ua": [{"translation": "translated text in Ukrainian", "definition": None, "sound_url": None}]
+    #                     # Add more translations if necessary
+    #                 }
+    #             }
+    #             for definition in definitions
+    #         ]
+            
+    #         # Convert binary data to base64-encoded strings
+    #         image_url = f"data:image/jpeg;base64,{base64.b64encode(word.image_data).decode('utf-8')}" if word.image_data else ''
+    #         sound_url = f"data:audio/mpeg;base64,{base64.b64encode(word.audio_data).decode('utf-8')}" if word.audio_data else ''
+
+    #         word_data = {
+    #             "image_url": image_url,
+    #             "sound_url": sound_url,
+    #             "cefr": {
+    #                 "level": word.cefr_level,
+    #                 "title": CefrLevel(word.cefr_level).label
+    #             },
+    #             "word-types": [
+    #                 {
+    #                     "word-type": word.word_type,
+    #                     "definitions": definition_list
+    #                 }
+    #             ]
+    #         }
+    #         quiz_data[word.text] = word_data
+
+    #     return Response(quiz_data, status=status.HTTP_200_OK)
 
 # class QuizDataView(APIView):
 #     def get(self, request, format=None):

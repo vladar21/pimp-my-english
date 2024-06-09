@@ -35,14 +35,39 @@ class Quiz {
     }
   }
 
-  async fetchQuizData() {
+  getCSRFToken() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, 10) === 'csrftoken=') {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  async fetchQuizData(filtered_word_texts = []) {
     try {
-      const response = await fetch('/quizzes/api/quiz-data/');
+      const response = await fetch('/quizzes/api/quiz-data/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': this.getCSRFToken()
+        },
+        body: JSON.stringify({ filtered_word_texts })
+      });
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      this.englishWords = await response.json();
-      console.log('Fetched quiz data:', this.englishWords); // Debugging line to ensure data is fetched correctly
+
+      const data = await response.json();
+      this.englishWords = data;
+      console.log('Fetched filtered quiz data:', this.englishWords);
     } catch (error) {
       console.error('Fetch error:', error);
     }
