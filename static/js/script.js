@@ -58,6 +58,7 @@ class Quiz {
   async fetchQuizData() {
     try {
       const filteredWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
+      console.log('filteredWords ', filteredWords)
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {

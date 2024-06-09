@@ -179,7 +179,8 @@ class QuizDataView(APIView):
             return Response({"error": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
 
         filtered_word_texts = data.get('filtered_word_texts', [])
-        if not filtered_word_texts:
+        print(f"filtered_word_texts {filtered_word_texts}")
+        if not filtered_word_texts or filtered_word_texts == ['']:
             words = Word.objects.all()
         else:
             words = Word.objects.filter(text__in=filtered_word_texts)
