@@ -92,6 +92,7 @@ class Quiz {
     const autostartElement = document.getElementById('autostart');
     if (autostartElement && autostartElement.dataset.autostart === '1') {
       this.startQuiz();
+      autostartElement.dataset.autostart = '0';
     }
   }
 
@@ -156,7 +157,7 @@ class Quiz {
 
   takeATurn() {
     this.addSpentTimeToLastAttempt();
-    this.timer = 31;
+    this.timer = 30; // Reset timer
     const selectedOption = document.querySelector('input[name="answer-option"]:checked');
     if (!selectedOption) {
       const wrongCountElement = document.getElementById("wrong-count");
@@ -385,11 +386,10 @@ class Quiz {
     this.timer = 30;
     this.updateTimerDisplay();
     this.timerInterval = setInterval(() => {
-      --this.timer;
+      this.timer--;
       this.updateTimerDisplay();
-      if (this.timer < 0) {
-        this.stopTimer();
-        this.stopQuiz();
+      if (this.timer <= 0) {
+        this.takeATurn();
       } else if (this.timer <= 10) {
         this.timerSpinner.style.backgroundColor = this.isTimerSpinnerVisible ? "red" : "white";
         this.timerSpinner.style.color = this.isTimerSpinnerVisible ? "white" : "red";
@@ -492,4 +492,3 @@ class Quiz {
 
 // Initialize quiz
 const quiz = new Quiz();
-
