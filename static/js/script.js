@@ -8,7 +8,7 @@ class Quiz {
     this.isQuizStart = false;
     this.currentQuiz = null;
     this.winnersArray = [];
-    this.attempt = -1;
+    this.attempt = 0;
     this.timer = 0;
     this.timerInterval = null;
     this.isTimerSpinnerVisible = true;
@@ -26,17 +26,27 @@ class Quiz {
 
     this.initialize();
     this.fetchQuizData().then(() => {
-        this.checkAutostart();
+      this.checkAutostart();
     });
   }
 
   initialize() {
     if (this.startQuizButton) {
-      this.startQuizButton.addEventListener("click", () => this.startQuiz());
+      this.startQuizButton.addEventListener("click", this.startQuiz.bind(this));
     }
 
     if (this.showStartWindow) {
-      this.showStartWindow.addEventListener("click", (event) => this.handleStartWindowClick(event));
+      this.showStartWindow.addEventListener("click", this.handleStartWindowClick.bind(this));
+    }
+
+    const nextQuizButton = document.getElementById("next-button");
+    if (nextQuizButton) {
+      nextQuizButton.addEventListener("click", this.takeATurn.bind(this));
+    }
+
+    const stopQuizButton = document.getElementById("stop-button");
+    if (stopQuizButton) {
+      stopQuizButton.addEventListener("click", this.stopQuiz.bind(this));
     }
   }
 
@@ -58,7 +68,6 @@ class Quiz {
   async fetchQuizData() {
     try {
       const filteredWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
-      console.log('filteredWords ', filteredWords)
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {
@@ -74,7 +83,6 @@ class Quiz {
 
       const data = await response.json();
       this.englishWords = data;
-      console.log('Fetched filtered quiz data:', this.englishWords);
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -83,7 +91,6 @@ class Quiz {
   checkAutostart() {
     const autostartElement = document.getElementById('autostart');
     if (autostartElement && autostartElement.dataset.autostart === '1') {
-      console.log('Autostart parameter detected. Starting quiz...');
       this.startQuiz();
     }
   }
@@ -111,40 +118,26 @@ class Quiz {
 
   startQuiz() {
     this.isQuizStart = true;
-    this.toggleVisibility({
-      "rules-start-settings": "none"
-    });
-    this.startTimer();
-
     this.attempt++;
+    this.data = [];
+    this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
+
     this.toggleVisibility({
+      "rules-start-settings": "none",
       "statistic-window": "none",
       "quiz-field": "flex"
     });
 
-    const nextQuizButton = document.getElementById("next-button");
-    if (nextQuizButton) {
-      nextQuizButton.addEventListener("click", () => this.takeATurn());
-    }
+    this.startTimer();
 
-    const stopQuizButton = document.getElementById("stop-button");
-    if (stopQuizButton) {
-      stopQuizButton.addEventListener("click", () => this.stopQuiz());
-    }
+    this.resetQuizStats();
 
-    this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
     const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
     if (randomQuestion) {
       this.currentQuiz = this.displayQuestion(randomQuestion);
       this.currentQuiz.attempt = this.attempt;
       this.data.push(this.currentQuiz);
     }
-
-    document.getElementById("right-count").textContent = "0";
-    document.getElementById("wrong-count").textContent = "0";
-    document.getElementById("answered-count").textContent = "0";
-    this.totalCountElementValue = this.getObjectLength(this.englishWords);
-    this.totalCountElement.textContent = this.totalCountElementValue;
   }
 
   stopQuiz() {
@@ -152,87 +145,13 @@ class Quiz {
     this.isQuizStart = false;
 
     this.toggleVisibility({
-      "rules-start-settings": "flex"
-    });
-
-    this.stopTimer();
-
-    const totalTimeSpent = this.data.reduce((totalTime, quiz) => {
-      if (quiz.attempt === this.attempt) {
-        totalTime += quiz.spentTime;
-      }
-      return totalTime;
-    }, 0);
-
-    this.toggleVisibility({
+      "rules-start-settings": "flex",
       "statistic-window": "block",
       "quiz-field": "none"
     });
 
-    const winnersTable = document.querySelector("#winners-table tbody");
-
-    const totalCorrectAnswers = this.data.reduce((total, quiz) => {
-      const correctAnswers = quiz.answers.filter(
-        (answer) => answer.isCorrect && answer.isUserChoice && quiz.attempt === this.attempt
-      ).length;
-      return total + correctAnswers;
-    }, 0);
-
-    if (totalCorrectAnswers > 0) {
-      this.winnersArray.push({
-        place: 0,
-        attempt: this.attempt,
-        scores: totalCorrectAnswers,
-        timeSpent: totalTimeSpent,
-      });
-    }
-
-    const winnersTableData = Array.from(winnersTable.rows).slice(1).map((row) => {
-      const [place, attempt, scores, timeSpent] = row.cells;
-      return {
-        place: Number(place.textContent),
-        attempt: attempt.textContent.trim(),
-        scores: Number(scores.textContent),
-        timeSpent: Number(timeSpent.textContent),
-      };
-    });
-
-    winnersTableData.forEach((data) => {
-      const existingWinner = this.winnersArray.find((winner) => winner.attempt === data.attempt);
-      if (existingWinner) {
-        existingWinner.place = data.place;
-      }
-    });
-
-    this.winnersArray.sort((a, b) => {
-      if (a.scores !== b.scores) {
-        return b.scores - a.scores;
-      } else {
-        return a.timeSpent - b.timeSpent;
-      }
-    });
-
-    this.winnersArray.forEach((winner, index) => {
-      winner.place = index + 1;
-    });
-
-    winnersTable.innerHTML = "";
-    this.winnersArray.forEach((winner, index) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${winner.place}</td>
-        <td>${this.getAttemptString(winner.attempt)}</td>
-        <td>${winner.scores}</td>
-        <td>${winner.timeSpent}</td>
-      `;
-      if (index < 3) {
-        row.classList.add("highlight");
-      }
-      winnersTable.appendChild(row);
-    });
-
-    const quizsquareFieldElement = document.querySelector(".quizsquare");
-    quizsquareFieldElement.style.background = "rgba(39, 34, 34, 0.7)";
+    this.stopTimer();
+    this.updateWinnersTable();
   }
 
   takeATurn() {
@@ -392,7 +311,6 @@ class Quiz {
       audioSourceElement.type = "audio/mpeg";
       audioButtonPlayElement.id = option.answer;
       audioButtonPlayElement.className = "play-sound-button";
-      // audioButtonPlayElement.textContent = "";
 
       audioButtonPlayElement.onclick = function () {
         document.getElementById(option.answer).play();
@@ -497,15 +415,81 @@ class Quiz {
     return Object.keys(obj).length;
   }
 
+  resetQuizStats() {
+    document.getElementById("right-count").textContent = "0";
+    document.getElementById("wrong-count").textContent = "0";
+    document.getElementById("answered-count").textContent = "0";
+    this.totalCountElementValue = this.getObjectLength(this.englishWords);
+    this.totalCountElement.textContent = this.totalCountElementValue;
+  }
+
+  updateWinnersTable() {
+    const totalTimeSpent = this.data.reduce((totalTime, quiz) => {
+      if (quiz.attempt === this.attempt) {
+        totalTime += quiz.spentTime;
+      }
+      return totalTime;
+    }, 0);
+
+    const winnersTable = document.querySelector("#winners-table tbody");
+
+    const totalCorrectAnswers = this.data.reduce((total, quiz) => {
+      const correctAnswers = quiz.answers.filter(
+        (answer) => answer.isCorrect && answer.isUserChoice && quiz.attempt === this.attempt
+      ).length;
+      return total + correctAnswers;
+    }, 0);
+
+    if (totalCorrectAnswers > 0) {
+      this.winnersArray.push({
+        place: 0,
+        attempt: this.attempt,
+        scores: totalCorrectAnswers,
+        timeSpent: totalTimeSpent,
+      });
+    }
+
+    this.winnersArray.sort((a, b) => {
+      if (a.scores !== b.scores) {
+        return b.scores - a.scores;
+      } else {
+        return a.timeSpent - b.timeSpent;
+      }
+    });
+
+    this.winnersArray.forEach((winner, index) => {
+      winner.place = index + 1;
+    });
+
+    winnersTable.innerHTML = "";
+    this.winnersArray.forEach((winner, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${winner.place}</td>
+        <td>${this.getAttemptString(winner.attempt)}</td>
+        <td>${winner.scores}</td>
+        <td>${winner.timeSpent}</td>
+      `;
+      if (index < 3) {
+        row.classList.add("highlight");
+      }
+      winnersTable.appendChild(row);
+    });
+
+    const quizsquareFieldElement = document.querySelector(".quizsquare");
+    quizsquareFieldElement.style.background = "rgba(39, 34, 34, 0.7)";
+  }
+
   getAttemptString(index) {
     const attemptStrings = [
       "first", "second", "third", "fourth", "fifth", "seventh", "eighth", "ninth", "tenth",
       "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "eighteenth",
       "nineteenth", "twentieth", "twenty-first",
     ];
-    return attemptStrings[index] || "first";
+    return attemptStrings[index - 1] || "first";
   }
 }
 
 // Initialize quiz
 const quiz = new Quiz();
+
