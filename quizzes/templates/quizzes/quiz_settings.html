@@ -180,7 +180,10 @@ class QuizSettings {
         }
 
         if (this.addWordButton) {
-            this.addWordButton.addEventListener('click', () => this.addNewWord());
+            this.addWordButton.addEventListener('click', (event) => {
+                event.preventDefault();
+                this.addNewWord();
+            });
         }
 
         if (this.startQuizButton) {
@@ -211,7 +214,8 @@ class QuizSettings {
                 if (event.target.classList.contains('delete-button')) {
                     event.stopPropagation();
                     event.preventDefault();
-                    console.log('Delete');
+                    const wordElement = event.target.closest('.filtered-word');
+                    this.deleteWord(wordElement);
                     this.hideAllWordMenus();
                 }
             });
@@ -333,14 +337,27 @@ class QuizSettings {
         }
     }
 
-    editWord(word) {
+    editWord(wordElement) {
         console.log(`Edit word: ${word}`);
-        // Logic to edit word
+        // Logic to edite word
     }
 
-    deleteWord(word) {
-        console.log(`Delete word: ${word}`);
+    deleteWord(wordElement) {
         // Logic to delete word
+        const word = wordElement.dataset.word;
+        console.log(`Delete word: ${word}`);
+        this.removeWordFromFiltered(word);
+        this.updateFilteredWords();
+    }
+
+    removeWordFromFiltered(word) {
+        const words = this.hiddenFilteredWords.dataset.words.split(', ').filter(w => w !== word);
+        this.hiddenFilteredWords.dataset.words = words.join(', ');
+    }
+
+    updateFilteredWords() {
+        this.populateFilteredWords();
+        this.sendSettingsToServer();
     }
 
     addNewWord() {
