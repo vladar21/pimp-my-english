@@ -660,6 +660,18 @@ input[type="checkbox"]::before {
 }
 
 #resetSettingsDefault {
+    background-color: rgba(123, 81, 141, 0.85);
+}
+
+#startQuizButton {
+    background-color: rgba(76, 175, 80, 0.9);
+}
+
+#createWordSetButton {
+    background-color: rgba(156, 155, 71, 0.9);
+}
+
+.settings-button {
     font-size: 20px;
     font-weight: bold;
     color: white;
@@ -668,11 +680,18 @@ input[type="checkbox"]::before {
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
-    background-color: rgba(123, 81, 141, 0.85);
 }
 
 #resetSettingsDefault:hover {
     background-color: rgba(85, 56, 97, 0.85);
+}
+
+#startQuizButton:hover {
+    background-color: rgba(37, 150, 36, 0.85);
+}
+
+#createWordSetButton:hover {
+    background-color: rgba(117, 130, 27, 0.85);
 }
 
 #saveSettingsDefault {
