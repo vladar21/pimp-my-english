@@ -56,14 +56,21 @@ def update_quiz_settings(request):
         is_grow = data.get('is_grow', False)
         total_word_count = data.get('total_word_count', 0)
         isSettingsChange = data.get('isSettingsChange', None)
- 
+        filtered_words_from_settings = data.get('filtered_words')
+        use_filtered_words = data.get('use_filtered_words')
+
+        print('filtered words from settings')
+        print(filtered_words_from_settings)
+
         words = Word.objects.all()
         max_word_count = words.count()
 
         cefr_total_counts = {level: words.filter(cefr_level=level).count() for level in [level.value for level in CefrLevel]}
         word_type_total_counts = {word_type: words.filter(word_type=word_type).count() for word_type in [word_type.value for word_type in WordType]}
 
-        if isSettingsChange == 'reset':
+        if use_filtered_words:
+            words = Word.objects.filter(text__in=filtered_words_from_settings)
+        elif isSettingsChange == 'reset':
             words = Word.objects.all()
         elif isSettingsChange == 'total_word_count' and total_word_count > 0:
             # Distribute words evenly among selected categories

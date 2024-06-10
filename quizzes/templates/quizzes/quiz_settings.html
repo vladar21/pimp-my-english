@@ -112,6 +112,8 @@ class QuizSettings {
             isSettingsChange: null,
             total_word_count: {{ word_count }},
             word_set: null,
+            filtered_words: this.getFilteredWordsFromDiv(),
+            use_filtered_words: false,
         };
 
         this.init();
@@ -347,12 +349,14 @@ class QuizSettings {
         const word = wordElement.dataset.word;
         console.log(`Delete word: ${word}`);
         this.removeWordFromFiltered(word);
+        this.settings.use_filtered_words = true;
         this.updateFilteredWords();
     }
 
     removeWordFromFiltered(word) {
         const words = this.hiddenFilteredWords.dataset.words.split(', ').filter(w => w !== word);
         this.hiddenFilteredWords.dataset.words = words.join(', ');
+        this.settings.filtered_words = words;
     }
 
     updateFilteredWords() {
@@ -410,6 +414,7 @@ class QuizSettings {
         this.settings.is_grow = true;
         this.settings.isSettingsChange = 'reset';
         this.settings.total_word_count = {{ word_count }};
+        this.settings.use_filtered_words = false;
         this.previousTotalChecked = this.getTotalChecked();
 
         this.sendSettingsToServer(() => {
@@ -418,6 +423,7 @@ class QuizSettings {
     }
 
     sendSettingsToServer(callback = null) {
+        console.log('update settings send to server ', JSON.stringify(this.settings))
         fetch("{% url 'update_quiz_settings' %}", {
             method: 'POST',
             headers: {
