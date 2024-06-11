@@ -850,7 +850,6 @@ input[type="checkbox"]::before {
     color: #333;
 }
 
-/* Toast and modal windows styles */
 /* Styles for modal window */
 .modal {
     display: none; /* Hidden by default */
@@ -877,12 +876,26 @@ input[type="checkbox"]::before {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-#wordSetTitle {
+#wordSetTitle, #wordSetDescription {
     width: 100%; /* Make the input take the full width */
     padding: 8px; /* Add some padding */
     box-sizing: border-box; /* Include padding in the element's total width and height */
     border: 1px solid #ddd; /* Border similar to table cells */
     border-radius: 4px; /* Slight border radius for better appearance */
+}
+
+#wordSetTitle, #wordSetDescription {
+    font-family: inherit; /* Use the same font as the parent element */
+    font-size: 1em; /* Ensure font size is the same */
+    padding: 10px; /* Ensure padding is consistent */
+    border: 1px solid #ccc; /* Ensure border is consistent */
+    border-radius: 4px; /* Ensure border radius is consistent */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+::placeholder {
+    font-family: monospace;
+    font-size: 1em; /* Adjust the size as needed */
 }
 
 .close-modal {
