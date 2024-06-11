@@ -76,15 +76,22 @@
                                 </label>
                             {% endfor %}
                         </div>
-                    </td>
+                    </td>                    
                 </tr>
                 <tr class="highlight">
                     <td data-label="pp">5</td>
                     <td data-label="Describe">Words in WordSet</td>
                     <td data-label="Name">Words in Set</td>
                     <td data-label="Values">
-                        <button id="add-word" class="add-word-btn">add word</button>
                         <div id="filtered-words"></div>
+                    </td>
+                </tr>
+                <tr class="highlight">
+                    <td data-label="pp">6</td>
+                    <td data-label="Describe">Words not used in WordSet</td>
+                    <td data-label="Name">Unused Words</td>
+                    <td data-label="Values">
+                        <div id="unused-words"></div>
                     </td>
                 </tr>
                 <tr class="highlight total">
@@ -101,6 +108,7 @@
     </form>
 </div>
 <div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
+<div id="hidden-unused-words" data-words="{{ unused_words|safe }}" style="display: none;"></div>
 
 <script>
 class QuizSettings {
@@ -113,6 +121,7 @@ class QuizSettings {
             total_word_count: {{ word_count }},
             word_set: null,
             filtered_words: this.getFilteredWordsFromDiv(),
+            unused_words: this.getUnusedWordsFromDiv(),
             use_filtered_words: false,
         };
 
@@ -124,6 +133,7 @@ class QuizSettings {
         this.previousTotalChecked = this.getTotalChecked();
         this.bindEvents();
         this.populateFilteredWords();
+        this.populateUnusedWords();
         this.loadWordSets();  // Load WordSets options
     }
 
@@ -139,8 +149,10 @@ class QuizSettings {
         this.createWordSetButton = document.getElementById("createWordSetButton");
         this.editWordSetButton = document.getElementById("editWordSetButton");
         this.filteredWords = document.getElementById("filtered-words");
-        this.addWordButton = document.getElementById("add-word");
+        this.unusedWords = document.getElementById("unused-words");
+
         this.hiddenFilteredWords = document.getElementById("hidden-filtered-words");
+        this.hiddenUnusedWords = document.getElementById("hidden-unused-words");
     }
 
     bindEvents() {
@@ -181,13 +193,6 @@ class QuizSettings {
             this.editWordSetButton.addEventListener('click', () => this.editWordSet());
         }
 
-        if (this.addWordButton) {
-            this.addWordButton.addEventListener('click', (event) => {
-                event.preventDefault();
-                this.addNewWord();
-            });
-        }
-
         if (this.startQuizButton) {
             this.startQuizButton.addEventListener("click", (event) => this.startQuiz(event));
         }
@@ -206,13 +211,6 @@ class QuizSettings {
             });
 
             this.filteredWords.addEventListener('click', (event) => {
-                if (event.target.classList.contains('edit-button')) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    console.log('Edit');
-                    this.hideAllWordMenus();
-                }
-
                 if (event.target.classList.contains('delete-button')) {
                     event.stopPropagation();
                     event.preventDefault();
@@ -223,8 +221,32 @@ class QuizSettings {
             });
         }
 
+        if (this.unusedWords) {
+            this.unusedWords.addEventListener('mouseover', (event) => {
+                if (event.target.classList.contains('unused-word')) {
+                    this.showWordMenu(event.target);
+                }
+            });
+
+            this.unusedWords.addEventListener('mouseout', (event) => {
+                if (event.target.classList.contains('unused-word') && !event.relatedTarget.closest('.word-menu')) {
+                    this.hideAllWordMenus();
+                }
+            });
+
+            this.unusedWords.addEventListener('click', (event) => {
+                if (event.target.classList.contains('add-button')) {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    const wordElement = event.target.closest('.unused-word');
+                    this.addWord(wordElement);
+                    this.hideAllWordMenus();
+                }
+            });
+        }
+
         document.addEventListener('mouseout', (event) => {
-            if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
+                if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
                 this.hideAllWordMenus();
             }
         });
@@ -253,6 +275,11 @@ class QuizSettings {
         return hiddenFilteredWords ? hiddenFilteredWords.dataset.words.split(', ') : [];
     }
 
+    getUnusedWordsFromDiv() {
+        const hiddenUnusedWords = document.getElementById('hidden-unused-words');
+        return hiddenUnusedWords ? hiddenUnusedWords.dataset.words.split(', ') : [];
+    }
+
     showWordMenu(wordElement) {
         this.hideAllWordMenus(); // Hide all menus before showing a new one
         const menu = wordElement.querySelector('.word-menu');
@@ -269,9 +296,10 @@ class QuizSettings {
     }
 
     populateFilteredWords() {
-        const wordsData = this.hiddenFilteredWords.dataset.words.split(', ');
+        const wordsData = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(', ') : [];
         this.filteredWords.innerHTML = ''; // Clear existing content
         wordsData.forEach(word => {
+            if (word.trim() === '') return; // Skip empty words
             const wordElement = document.createElement('span');
             wordElement.classList.add('filtered-word');
             wordElement.dataset.word = word;
@@ -280,12 +308,32 @@ class QuizSettings {
             const menu = document.createElement('div');
             menu.classList.add('word-menu');
             menu.innerHTML = `
-                <button class="edit-button">Edit</button>
                 <button class="delete-button">Del</button>
             `;
             wordElement.appendChild(menu);
 
             this.filteredWords.appendChild(wordElement);
+        });
+    }
+
+    populateUnusedWords() {
+        const wordsData = this.hiddenUnusedWords.dataset.words ? this.hiddenUnusedWords.dataset.words.split(', ') : [];
+        this.unusedWords.innerHTML = ''; // Clear existing content
+        wordsData.forEach(word => {
+            if (word.trim() === '') return; // Skip empty words
+            const wordElement = document.createElement('span');
+            wordElement.classList.add('unused-word');
+            wordElement.dataset.word = word;
+            wordElement.textContent = word;      
+
+            const menu = document.createElement('div');
+            menu.classList.add('word-menu');
+            menu.innerHTML = `
+                <button class="add-button">Add</button>
+            `;
+            wordElement.appendChild(menu);
+
+            this.unusedWords.appendChild(wordElement);
         });
     }
 
@@ -339,15 +387,9 @@ class QuizSettings {
         }
     }
 
-    editWord(wordElement) {
-        console.log(`Edit word: ${word}`);
-        // Logic to edite word
-    }
-
     deleteWord(wordElement) {
         // Logic to delete word
         const word = wordElement.dataset.word;
-        console.log(`Delete word: ${word}`);
         this.removeWordFromFiltered(word);
         this.settings.use_filtered_words = true;
         this.updateFilteredWords();
@@ -361,12 +403,28 @@ class QuizSettings {
 
     updateFilteredWords() {
         this.populateFilteredWords();
+        this.populateUnusedWords();
         this.sendSettingsToServer();
     }
 
-    addNewWord() {
-        console.log('Add New Word clicked');
-        // Logic to add a new word
+    addWord(wordElement) {
+        const word = wordElement.dataset.word;
+        this.addWordToFiltered(word);
+        this.removeWordFromUnused(word);
+        this.updateFilteredWords();        
+    }
+
+    removeWordFromUnused(word) {
+        const words = this.hiddenUnusedWords.dataset.words.split(', ').filter(w => w !== word);
+        this.hiddenUnusedWords.dataset.words = words.join(', ');
+        this.settings.unused_words = words;
+    }
+
+    addWordToFiltered(word) {
+        const words = this.hiddenFilteredWords.dataset.words.split(', ');
+        words.push(word);
+        this.hiddenFilteredWords.dataset.words = words.join(', ');
+        this.settings.filtered_words = words;
     }
 
     updateSliderLabel() {
@@ -436,7 +494,9 @@ class QuizSettings {
         .then(data => {
             this.updateUI(data);
             this.hiddenFilteredWords.dataset.words = data.filtered_words; // Update hidden filtered words
+            this.hiddenUnusedWords.dataset.words = data.unused_words; // Update hidden unused words
             this.populateFilteredWords(); // Update filtered words display
+            this.populateUnusedWords(); // Update unused words display
             if (callback) callback();
         });
     }
@@ -471,26 +531,8 @@ class QuizSettings {
                 }
             });
 
-            if (this.filteredWords) {
-                this.filteredWords.innerHTML = '';
-                const words = this.hiddenFilteredWords.dataset.words.split(', ');
-                words.forEach(word => {
-                    const wordElement = document.createElement('span');
-                    wordElement.classList.add('filtered-word');
-                    wordElement.dataset.word = word;
-                    wordElement.textContent = word;   
-                    
-                    const menu = document.createElement('div');
-                    menu.classList.add('word-menu');
-                    menu.innerHTML = `
-                        <button class="edit-button">Edit</button>
-                        <button class="delete-button">Del</button>
-                    `;
-                    wordElement.appendChild(menu);
-                    
-                    this.filteredWords.appendChild(wordElement);
-                });
-            }
+            this.populateFilteredWords();
+            this.populateUnusedWords();
         }
     }
 }

@@ -801,7 +801,7 @@ input[type="checkbox"]::before {
     background-color: #45a049;
 }
 
-.filtered-word {
+.filtered-word, .unused-word {
     display: inline-block;
     margin: 4px 2px;
     padding: 2px 4px;
@@ -812,11 +812,11 @@ input[type="checkbox"]::before {
     cursor: default;
 }
 
-.filtered-word:hover .word-menu {
+.filtered-word:hover .word-menu, .unused-word:hover .word-menu {
     display: flex;
 }
 
-.filtered-word:hover {
+.filtered-word:hover, .unused-word:hover {
     z-index: 11;
 }
 

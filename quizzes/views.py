@@ -56,8 +56,10 @@ def update_quiz_settings(request):
         is_grow = data.get('is_grow', False)
         total_word_count = data.get('total_word_count', 0)
         isSettingsChange = data.get('isSettingsChange', None)
-        filtered_words_from_settings = data.get('filtered_words')
-        use_filtered_words = data.get('use_filtered_words')
+        # filtered_words_from_settings = data.get('filtered_words')
+        # use_filtered_words = data.get('use_filtered_words')
+        filtered_words_from_settings = data.get('filtered_words', [])
+        use_filtered_words = data.get('use_filtered_words', False)
 
         print('filtered words from settings')
         print(filtered_words_from_settings)
@@ -114,6 +116,9 @@ def update_quiz_settings(request):
         word_type_counts = {word_type: words.filter(word_type=word_type).count() for word_type in word_type_total_counts}
         filtered_words_text = ', '.join(words.values_list('text', flat=True))
 
+        all_words = Word.objects.values_list('text', flat=True)
+        unused_words = set(all_words) - set(filtered_words_text.split(', '))
+
         response_data = {
             'word_count': word_count,
             'max_word_count': max_word_count,
@@ -123,6 +128,7 @@ def update_quiz_settings(request):
             'word_type_total_counts': word_type_total_counts,
             'total_word_count': total_word_count,  # Pass back the updated total word count
             'filtered_words': filtered_words_text,
+            'unused_words': ', '.join(unused_words)
         }
 
         return JsonResponse(response_data)
