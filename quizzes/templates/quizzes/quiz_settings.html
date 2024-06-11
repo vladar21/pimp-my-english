@@ -128,6 +128,12 @@
                         </td>
                     </tr>
                     <tr class="highlight">
+                        <td>Description:</td>
+                        <td colspan="2">
+                            <textarea id="wordSetDescription" name="wordSetDescription" required></textarea>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
                         <td colspan="3">Filtered Words:</td>
                     </tr>
                     <tr class="highlight">
@@ -192,6 +198,7 @@ class QuizSettings {
         this.createWordSetModal = document.getElementById("createWordSetModal");
         this.createWordSetForm = document.getElementById("createWordSetForm");
         this.wordSetTitle = document.getElementById("wordSetTitle");
+        this.wordSetDescription = document.getElementById("wordSetDescription");
         this.filteredWordsList = document.getElementById("filtered-words-list");
         this.toastContainer = document.getElementById("toast-container");
     }
@@ -611,13 +618,21 @@ class QuizSettings {
     submitWordSetForm(event) {
         event.preventDefault();
         const title = this.wordSetTitle.value.trim();
+        const description = this.wordSetDescription.value.trim();
+
         if (!title) {
             this.showToast("WordSet title is required.");
             return;
         }
 
+        if (!description) {
+            this.showToast("WordSet description is required.");
+            return;
+        }
+
         const data = {
             title: title,
+            description: description,
             words: this.settings.filtered_words
         };
 

@@ -15,10 +15,16 @@ def create_word_set(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         title = data.get('title')
+        description = data.get('description')
         words = data.get('words', [])
+        print('data ')
+        print(data)
 
         if not title:
             return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
+        
+        if not description:
+            return JsonResponse({'success': False, 'message': 'Description is required.'}, status=400)
 
         if WordSet.objects.filter(name=title).exists():
             return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
@@ -29,7 +35,7 @@ def create_word_set(request):
 
         word_set = WordSet.objects.create(
             name=title,
-            description='',  # Add description if needed
+            description=description,
             created_by=request.user,
             rating=0,  # Initial rating, change as needed
             author_username=request.user.username,
