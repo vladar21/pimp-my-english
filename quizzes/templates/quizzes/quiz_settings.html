@@ -121,7 +121,7 @@
                     <tr class="highlight">
                         <td>WordSet Title:</td>
                         <td>
-                            <input type="text" id="wordSetTitle" name="wordSetTitle" required>
+                            <input type="text" id="wordSetTitle" name="wordSetTitle" placeholder="Input Title ..." required>
                         </td>
                         <td>
                             <button type="submit" class="submit-button">Submit</button>
@@ -130,7 +130,7 @@
                     <tr class="highlight">
                         <td>Description:</td>
                         <td colspan="2">
-                            <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" required></textarea>
+                            <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" placeholder="Input Description ..."></textarea>
                         </td>
                     </tr>
                     <tr class="highlight">
@@ -621,12 +621,12 @@ class QuizSettings {
         const description = this.wordSetDescription.value.trim();
 
         if (!title) {
-            this.showToast("WordSet title is required.");
+            this.showToast("WordSet title is required.", 'error');
             return;
         }
 
         if (!description) {
-            this.showToast("WordSet description is required.");
+            this.showToast("WordSet description is required.", 'error');
             return;
         }
 
@@ -647,29 +647,29 @@ class QuizSettings {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                this.showToast("WordSet created successfully.");
+                this.showToast("WordSet created successfully.", 'success');
                 this.closeCreateWordSetModal();
                 this.loadWordSets();
             } else {
-                this.showToast(data.message || "An error occurred while creating the WordSet.");
+                this.showToast(data.message || "An error occurred while creating the WordSet.", 'error');
             }
         })
         .catch(error => {
             console.error("Error creating WordSet:", error);
-            this.showToast("An error occurred while creating the WordSet.");
+            this.showToast("An error occurred while creating the WordSet.", 'error');
         });
     }
 
-    showToast(message) {
+    showToast(message, type = 'neutral') {
         const toast = document.createElement("div");
-        toast.className = "toast";
+        toast.className = `toast ${type}`;
         toast.innerHTML = `<div id="desc">${message}</div>`;
         this.toastContainer.appendChild(toast);
         toast.classList.add("show");
         setTimeout(() => {
             toast.classList.remove("show");
             this.toastContainer.removeChild(toast);
-        }, 3000);
+        }, 6000);
     }
 }
 

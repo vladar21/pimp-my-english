@@ -895,7 +895,7 @@ input[type="checkbox"]::before {
 
 ::placeholder {
     font-family: monospace;
-    font-size: 1em; /* Adjust the size as needed */
+    font-size: 1em;
 }
 
 .close-modal {
@@ -966,23 +966,42 @@ input[type="checkbox"]::before {
 }
 
 
-/* Styles for toast window */
-.toast {
-    display: none;
+/* CSS for toast notifications */
+#toast-container {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #333;
-    color: #fff;
-    padding: 15px;
+    top: 10px;
+    right: 10px;
+    z-index: 10000;
+}
+
+.toast {
+    padding: 10px;
+    margin-top: 10px;
     border-radius: 5px;
-    z-index: 1001;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .toast.show {
-    display: block;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    opacity: 1;
 }
+
+.toast.success {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.toast.error {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.toast.neutral {
+    background-color: #2196F3;
+    color: #fff;
+}
+
+
 
 @keyframes fadein {
     from {bottom: 0; opacity: 0;}
