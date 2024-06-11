@@ -99,7 +99,7 @@
                         <button id="resetSettingsDefault" type="button" class="settings-button">Reset</button>
                         <button id="startQuizButton" type="button" class="settings-button">Start</button>
                         <button id="createWordSetButton" type="button" class="settings-button">Create</button>
-                        <button id="editWordSetButton" type="button" style="display:none;"  class="settings-button">Edit</button>
+                        <button id="editWordSetButton" type="button" style="display:none;" class="settings-button">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -109,6 +109,41 @@
 </div>
 <div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
 <div id="hidden-unused-words" data-words="{{ unused_words|safe }}" style="display: none;"></div>
+
+<!-- Modal for creating WordSet -->
+<div id="createWordSetModal" class="modal winners-results fit-content">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <form id="createWordSetForm">
+            <table id="wordset-create" class="winners-table">
+                <caption>Create WordSet</caption>
+                <tbody>
+                    <tr class="highlight">
+                        <td>WordSet Title:</td>
+                        <td>
+                            <input type="text" id="wordSetTitle" name="wordSetTitle" required>
+                        </td>
+                        <td>
+                            <button type="submit" class="submit-button">Submit</button>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td colspan="3">Filtered Words:</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td colspan="3">
+                            <div id="filtered-words-list"></div>
+                        </td>                        
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+
+<!-- Toast notification container -->
+<div id="toast-container"></div>
 
 <script>
 class QuizSettings {
@@ -153,6 +188,12 @@ class QuizSettings {
 
         this.hiddenFilteredWords = document.getElementById("hidden-filtered-words");
         this.hiddenUnusedWords = document.getElementById("hidden-unused-words");
+
+        this.createWordSetModal = document.getElementById("createWordSetModal");
+        this.createWordSetForm = document.getElementById("createWordSetForm");
+        this.wordSetTitle = document.getElementById("wordSetTitle");
+        this.filteredWordsList = document.getElementById("filtered-words-list");
+        this.toastContainer = document.getElementById("toast-container");
     }
 
     bindEvents() {
@@ -186,7 +227,7 @@ class QuizSettings {
         }
 
         if (this.createWordSetButton) {
-            this.createWordSetButton.addEventListener('click', () => this.createWordSet());
+            this.createWordSetButton.addEventListener('click', () => this.openCreateWordSetModal());
         }
 
         if (this.editWordSetButton) {
@@ -245,11 +286,28 @@ class QuizSettings {
             });
         }
 
+        if (this.createWordSetForm) {
+            this.createWordSetForm.addEventListener('submit', (event) => this.submitWordSetForm(event));
+        }
+
         document.addEventListener('mouseout', (event) => {
                 if (event.target.classList.contains('word-menu') && !event.relatedTarget.closest('.filtered-word')) {
                 this.hideAllWordMenus();
             }
         });
+
+        if (this.createWordSetModal) {
+            const closeModalButton = this.createWordSetModal.querySelector('.close-modal');
+            if (closeModalButton) {
+                closeModalButton.addEventListener('click', () => this.closeCreateWordSetModal());
+            }
+
+            window.addEventListener('click', (event) => {
+                if (event.target === this.createWordSetModal) {
+                    this.closeCreateWordSetModal();
+                }
+            });
+        }
     }
 
     startQuiz(event) {
@@ -534,6 +592,69 @@ class QuizSettings {
             this.populateFilteredWords();
             this.populateUnusedWords();
         }
+    }
+
+    openCreateWordSetModal() {
+        this.filteredWordsList.innerHTML = '';
+        this.settings.filtered_words.forEach(word => {
+            const wordElement = document.createElement('span');
+            wordElement.textContent = word;
+            this.filteredWordsList.appendChild(wordElement);
+        });
+        this.createWordSetModal.style.display = "block";
+    }
+
+    closeCreateWordSetModal() {
+        this.createWordSetModal.style.display = "none";
+    }
+
+    submitWordSetForm(event) {
+        event.preventDefault();
+        const title = this.wordSetTitle.value.trim();
+        if (!title) {
+            this.showToast("WordSet title is required.");
+            return;
+        }
+
+        const data = {
+            title: title,
+            words: this.settings.filtered_words
+        };
+
+        fetch("{% url 'wordsets:create_word_set' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.showToast("WordSet created successfully.");
+                this.closeCreateWordSetModal();
+                this.loadWordSets();
+            } else {
+                this.showToast(data.message || "An error occurred while creating the WordSet.");
+            }
+        })
+        .catch(error => {
+            console.error("Error creating WordSet:", error);
+            this.showToast("An error occurred while creating the WordSet.");
+        });
+    }
+
+    showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = `<div id="desc">${message}</div>`;
+        this.toastContainer.appendChild(toast);
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+            this.toastContainer.removeChild(toast);
+        }, 3000);
     }
 }
 

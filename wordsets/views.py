@@ -1,12 +1,47 @@
 # wordsets/views.py
 
-import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import WordSet, Word, WordInSet
-from .forms import WordSetForm
+import json
+
+
+@csrf_exempt
+def create_word_set(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        title = data.get('title')
+        words = data.get('words', [])
+
+        if not title:
+            return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
+
+        if WordSet.objects.filter(name=title).exists():
+            return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
+
+        word_objects = Word.objects.filter(text__in=words)
+        if word_objects.count() != len(words):
+            return JsonResponse({'success': False, 'message': 'Some words are invalid.'}, status=400)
+
+        word_set = WordSet.objects.create(
+            name=title,
+            description='',  # Add description if needed
+            created_by=request.user,
+            rating=0,  # Initial rating, change as needed
+            author_username=request.user.username,
+            author_email=request.user.email
+        )
+
+        for word in word_objects:
+            WordInSet.objects.create(word=word, word_set=word_set)
+
+        return JsonResponse({'success': True, 'message': 'WordSet created successfully.'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 
 @login_required
@@ -18,31 +53,27 @@ def list_word_sets(request):
     return JsonResponse({'word_sets': word_set_data})
 
 
-@login_required
-def create_word_set(request):
-    if request.method == 'POST':
-        form = WordSetForm(request.POST)
-        if form.is_valid():
-            word_set = form.save(commit=False)
-            word_set.created_by = request.user
-            word_set.save()
-            return redirect('list_word_sets')
-    else:
-        form = WordSetForm()
-    return render(request, 'wordsets/create_word_set.html', {'form': form})
+@method_decorator(csrf_exempt, name='dispatch')
+class CreateWordSetView(View):
+    def post(self, request):
+        data = json.loads(request.body)
+        title = data.get('title')
+        words = data.get('words', [])
 
+        if not title:
+            return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
 
-@login_required
-def edit_word_set(request, word_set_id):
-    word_set = get_object_or_404(WordSet, id=word_set_id)
-    if request.method == 'POST':
-        form = WordSetForm(request.POST, instance=word_set)
-        if form.is_valid():
-            form.save()
-            return redirect('list_word_sets')
-    else:
-        form = WordSetForm(instance=word_set)
-    return render(request, 'wordsets/edit_word_set.html', {'form': form})
+        if WordSet.objects.filter(name=title).exists():
+            return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
+
+        wordset = WordSet.objects.create(name=title, description='Auto-generated WordSet')
+        for word_text in words:
+            word = Word.objects.filter(text=word_text).first()
+            if word:
+                WordInSet.objects.create(word=word, word_set=wordset)
+
+        return JsonResponse({'success': True, 'message': 'WordSet created successfully.'})
+
 
 @login_required
 def get_word_set_words(request, word_set_id):
