@@ -57,11 +57,8 @@ def create_word_set(request):
 
 @login_required
 def list_word_sets(request):
-    user_word_sets = WordSet.objects.filter(created_by=request.user).order_by('name')
-    all_word_sets = WordSet.objects.filter(created_by__isnull=True).order_by('name')
-    word_sets = list(user_word_sets) + list(all_word_sets)
-    word_set_data = [{'id': ws.id, 'name': ws.name, 'user': ws.created_by is not None} for ws in word_sets]
-    return JsonResponse({'word_sets': word_set_data})
+    word_sets = WordSet.objects.all().values('id', 'name', 'description')
+    return JsonResponse({'word_sets': list(word_sets)})
 
 
 @method_decorator(csrf_exempt, name='dispatch')

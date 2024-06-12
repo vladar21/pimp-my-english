@@ -599,6 +599,24 @@ footer nav a:hover {
     vertical-align: super;
 }
 
+/* Add some styles for the select wordsets */
+#word-set-select {
+    background-color: rgba(49, 111, 119, 0.719);
+    color: whitesmoke;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    font-size: 0.75em;
+    width: 100%;
+    font-family: inherit;
+}
+
+#word-set-select option {
+    background-color: #333;
+    color: whitesmoke;
+    padding: 10px;
+}
+
 /* Style for statistic window control area */
 .rules-start-settings {
     width: 100%;
