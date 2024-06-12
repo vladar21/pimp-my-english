@@ -5,153 +5,155 @@
 {% block title %}Quiz Settings - Pimp My English{% endblock %}
 
 {% block content %}
-<div class="winners-results fit-content">
-    <div class="close-button-div">
-        <button id="closeButtonSettings" class="close-button">x</button>
-    </div>
-    <form id="settings-form" method="post" action="{% url 'submit_quiz_settings' %}">
-        {% csrf_token %}
-        <table id="settings-table" class="winners-table">
-            <caption>Settings</caption>
-            <thead>
-                <tr>
-                    <th>pp</th>
-                    <th>Describe</th>
-                    <th>Name</th>
-                    <th>Values</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="highlight">
-                    <td data-label="pp">1</td>
-                    <td data-label="Describe">Available WordSets</td>
-                    <td data-label="Name">WordSet</td>
-                    <td data-label="Values">
-                        <select id="word-set-select">
-                            <option value="">Select Word Set</option>
-                            <!-- Options will be dynamically populated -->
-                        </select>
-                    </td>
-                </tr>
-                <tr class="highlight">
-                    <td data-label="pp">2</td>
-                    <td data-label="Describe">Total number of words for quiz</td>
-                    <td data-label="Name">Total Words</td>
-                    <td data-label="Values">
-                        <label for="word-count-slider"><span id="word-count-label">{{ word_count }} / {{ max_word_count }}</span> words</label>
-                        <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ max_word_count }}" value="{{ word_count }}">
-                    </td>
-                </tr>
-                <tr class="highlight">
-                    <td data-label="pp">3</td>
-                    <td data-label="Describe">CEFR levels of words for quiz ('A1', 'B1', 'B2' etc.)</td>
-                    <td data-label="Name">CEFR Levels</td>
-                    <td data-label="Values">
-                        <div id="cefr-level-selection">
-                            {% for level in cefr_levels %}
-                                <label>
-                                    <input id="cefr-checkbox-{{ level }}" type="checkbox" name="cefr_levels" value="{{ level }}"
-                                           data-count="{{ cefr_counts|dict:level }}" 
-                                           {% if cefr_counts|dict:level > 0 and level in selected_cefr_levels %}checked{% endif %}
-                                           {% if cefr_total_counts|dict:level == 0 %}disabled{% endif %}>
-                                    {{ level }} (<span id="cefr-level-count-{{ level }}">{{ cefr_counts|dict:level }} / {{ cefr_total_counts|dict:level }}</span> words)
-                                </label>
-                            {% endfor %}
-                        </div>
-                    </td>
-                </tr>
-                <tr class="highlight">
-                    <td data-label="pp">4</td>
-                    <td data-label="Describe">Types of words for quiz ('noun', 'adjective' etc.)</td>
-                    <td data-label="Name">Word Types</td>
-                    <td data-label="Values">
-                        <div id="wordtype-level-selection">
-                            {% for word_type in word_types %}
-                                <label>
-                                    <input id="words-types-checkbox-{{ word_type }}" type="checkbox" name="word_types" value="{{ word_type }}"
-                                           data-count="{{ word_type_counts|dict:word_type }}" 
-                                           {% if word_type_counts|dict:word_type > 0 and word_type in selected_word_types %}checked{% endif %}
-                                           {% if word_type_total_counts|dict:word_type == 0 %}disabled{% endif %}>
-                                    {{ word_type }} (<span id="words-types-count-{{ word_type }}">{{ word_type_counts|dict:word_type }} / {{ word_type_total_counts|dict:word_type }}</span> words)
-                                </label>
-                            {% endfor %}
-                        </div>
-                    </td>                    
-                </tr>
-                <tr class="highlight">
-                    <td data-label="pp">5</td>
-                    <td data-label="Describe">Words in WordSet</td>
-                    <td data-label="Name">Words in Set</td>
-                    <td data-label="Values">
-                        <div id="filtered-words"></div>
-                    </td>
-                </tr>
-                <tr class="highlight">
-                    <td data-label="pp">6</td>
-                    <td data-label="Describe">Words not used in WordSet</td>
-                    <td data-label="Name">Unused Words</td>
-                    <td data-label="Values">
-                        <div id="unused-words"></div>
-                    </td>
-                </tr>
-                <tr class="highlight total">
-                    <td colspan="4" class="reset-settings-default">
-                        <button id="resetSettingsDefault" type="button" class="settings-button">Reset</button>
-                        <button id="startQuizButton" type="button" class="settings-button">Start</button>
-                        <button id="createWordSetButton" type="button" class="settings-button">Create</button>
-                        <button id="editWordSetButton" type="button" style="display:none;" class="settings-button">Edit</button>
-                    </td>
-                </tr>
-            </tbody>
-            
-        </table>
-    </form>
-</div>
-<div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
-<div id="hidden-unused-words" data-words="{{ unused_words|safe }}" style="display: none;"></div>
 
-<!-- Modal for creating WordSet -->
-<div id="createWordSetModal" class="modal winners-results fit-content">
-    <!-- <div class="modal-content"> -->
-        <form id="createWordSetForm" class="modal-content">
-           
-            <table id="wordset-create" class="winners-table">
-                <caption>Create WordSet <span class="close-modal">&times;</span></caption>
+    <div class="winners-results fit-content scroll-wrapper">
+        <div class="close-button-div">
+            <button id="closeButtonSettings" class="close-button">x</button>
+        </div>
+        <form id="settings-form" method="post" action="{% url 'submit_quiz_settings' %}">
+            {% csrf_token %}
+            <table id="settings-table" class="winners-table">
+                <caption>Settings</caption>
+                <thead>
+                    <tr>
+                        <th>pp</th>
+                        <th>Describe</th>
+                        <th>Name</th>
+                        <th>Values</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr class="highlight">
-                        <td>WordSet Title:</td>
-                        <td colspan="2">
-                            <input type="text" id="wordSetTitle" name="wordSetTitle" placeholder="Input Title ..." required>
+                        <td data-label="pp">1</td>
+                        <td data-label="Describe">Available WordSets</td>
+                        <td data-label="Name">WordSet</td>
+                        <td data-label="Values">
+                            <select id="word-set-select">
+                                <option value="">Select Word Set</option>
+                                <!-- Options will be dynamically populated -->
+                            </select>
                         </td>
                     </tr>
                     <tr class="highlight">
-                        <td>Description:</td>
-                        <td colspan="2">
-                            <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" placeholder="Input Description ..."></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <button type="submit" class="submit-button">Submit</button>
+                        <td data-label="pp">2</td>
+                        <td data-label="Describe">Total number of words for quiz</td>
+                        <td data-label="Name">Total Words</td>
+                        <td data-label="Values">
+                            <label for="word-count-slider"><span id="word-count-label">{{ word_count }} / {{ max_word_count }}</span> words</label>
+                            <input type="range" id="word-count-slider" name="word_count" min="3" max="{{ max_word_count }}" value="{{ word_count }}">
                         </td>
                     </tr>
                     <tr class="highlight">
-                        <td colspan="3">Filtered Words:</td>
+                        <td data-label="pp">3</td>
+                        <td data-label="Describe">CEFR levels of words for quiz ('A1', 'B1', 'B2' etc.)</td>
+                        <td data-label="Name">CEFR Levels</td>
+                        <td data-label="Values">
+                            <div id="cefr-level-selection">
+                                {% for level in cefr_levels %}
+                                    <label>
+                                        <input id="cefr-checkbox-{{ level }}" type="checkbox" name="cefr_levels" value="{{ level }}"
+                                               data-count="{{ cefr_counts|dict:level }}" 
+                                               {% if cefr_counts|dict:level > 0 and level in selected_cefr_levels %}checked{% endif %}
+                                               {% if cefr_total_counts|dict:level == 0 %}disabled{% endif %}>
+                                        {{ level }} (<span id="cefr-level-count-{{ level }}">{{ cefr_counts|dict:level }} / {{ cefr_total_counts|dict:level }}</span> words)
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </td>
                     </tr>
                     <tr class="highlight">
-                        <td colspan="3">
-                            <div id="filtered-words-list"></div>
-                        </td>                        
+                        <td data-label="pp">4</td>
+                        <td data-label="Describe">Types of words for quiz ('noun', 'adjective' etc.)</td>
+                        <td data-label="Name">Word Types</td>
+                        <td data-label="Values">
+                            <div id="wordtype-level-selection">
+                                {% for word_type in word_types %}
+                                    <label>
+                                        <input id="words-types-checkbox-{{ word_type }}" type="checkbox" name="word_types" value="{{ word_type }}"
+                                               data-count="{{ word_type_counts|dict:word_type }}" 
+                                               {% if word_type_counts|dict:word_type > 0 and word_type in selected_word_types %}checked{% endif %}
+                                               {% if word_type_total_counts|dict:word_type == 0 %}disabled{% endif %}>
+                                        {{ word_type }} (<span id="words-types-count-{{ word_type }}">{{ word_type_counts|dict:word_type }} / {{ word_type_total_counts|dict:word_type }}</span> words)
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </td>                    
+                    </tr>
+                    <tr class="highlight">
+                        <td data-label="pp">5</td>
+                        <td data-label="Describe">Words in WordSet</td>
+                        <td data-label="Name">Words in Set</td>
+                        <td data-label="Values">
+                            <div id="filtered-words"></div>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td data-label="pp">6</td>
+                        <td data-label="Describe">Words not used in WordSet</td>
+                        <td data-label="Name">Unused Words</td>
+                        <td data-label="Values">
+                            <div id="unused-words"></div>
+                        </td>
+                    </tr>
+                    <tr class="highlight total">
+                        <td colspan="4" class="reset-settings-default">
+                            <button id="resetSettingsDefault" type="button" class="settings-button">Reset</button>
+                            <button id="startQuizButton" type="button" class="settings-button">Start</button>
+                            <button id="createWordSetButton" type="button" class="settings-button">Create</button>
+                            <button id="editWordSetButton" type="button" style="display:none;" class="settings-button">Edit</button>
+                        </td>
                     </tr>
                 </tbody>
+                
             </table>
         </form>
-    <!-- </div> -->
-</div>
+    </div>
+    <div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
+    <div id="hidden-unused-words" data-words="{{ unused_words|safe }}" style="display: none;"></div>
+    
+    <!-- Modal for creating WordSet -->
+    <div id="createWordSetModal" class="modal winners-results fit-content">
+        <!-- <div class="modal-content"> -->
+            <form id="createWordSetForm" class="modal-content">
+               
+                <table id="wordset-create" class="winners-table">
+                    <caption>Create WordSet <span class="close-modal">&times;</span></caption>
+                    <tbody>
+                        <tr class="highlight">
+                            <td>WordSet Title:</td>
+                            <td colspan="2">
+                                <input type="text" id="wordSetTitle" name="wordSetTitle" placeholder="Input Title ..." required>
+                            </td>
+                        </tr>
+                        <tr class="highlight">
+                            <td>Description:</td>
+                            <td colspan="2">
+                                <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" placeholder="Input Description ..."></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <button type="submit" class="submit-button">Submit</button>
+                            </td>
+                        </tr>
+                        <tr class="highlight">
+                            <td colspan="3">Filtered Words:</td>
+                        </tr>
+                        <tr class="highlight">
+                            <td colspan="3">
+                                <div id="filtered-words-list"></div>
+                            </td>                        
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        <!-- </div> -->
+    </div>
+    
+    <!-- Toast notification container -->
+    <div id="toast-container"></div>
 
 
-<!-- Toast notification container -->
-<div id="toast-container"></div>
 
 <script>
 class QuizSettings {
