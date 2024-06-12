@@ -871,8 +871,7 @@ input[type="checkbox"]::before {
     border: 1px solid #888;
     border-radius: 10px;
     margin: auto;
-    width: 100%;
-    width: 80%; /* Adjust the width as needed */
+    width: 80%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -895,12 +894,13 @@ input[type="checkbox"]::before {
 
 ::placeholder {
     font-family: monospace;
-    font-size: 1em;
+    font-size: 0.8em;
 }
 
 .close-modal {
     color: #fff;
     float: right;
+    top: 0;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
@@ -914,7 +914,6 @@ input[type="checkbox"]::before {
 
 #wordset-create {
     width: 100%;
-    margin-top: 10px;
     border-collapse: collapse;
     color: white;
 }
