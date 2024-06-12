@@ -32,6 +32,7 @@
                                 <option value="">Select Word Set</option>
                                 <!-- Options will be dynamically populated -->
                             </select>
+                            <div id="word-set-description" class="description-field"></div>
                         </td>
                     </tr>
                     <tr class="highlight">
@@ -134,6 +135,7 @@
                         <tr>
                             <td colspan="3">
                                 <button type="submit" class="submit-button">Submit</button>
+                                <button type="button" id="deleteWordSetButton" class="submit-button" style="display:none;">Delete</button>
                             </td>
                         </tr>
                         <tr class="highlight">
@@ -205,6 +207,8 @@ class QuizSettings {
         this.wordSetDescription = document.getElementById("wordSetDescription");
         this.filteredWordsList = document.getElementById("filtered-words-list");
         this.toastContainer = document.getElementById("toast-container");
+        this.wordSetDescriptionDisplay = document.getElementById("word-set-description");
+        this.deleteWordSetButton = document.getElementById("deleteWordSetButton");
     }
 
     bindEvents() {
@@ -234,7 +238,7 @@ class QuizSettings {
         }
 
         if (this.wordSetSelect) {
-            this.wordSetSelect.addEventListener('change', () => this.handleWordSetChange());
+            this.wordSetSelect.addEventListener('change', (event) => this.handleWordSetChange(event));
         }
 
         if (this.createWordSetButton) {
@@ -299,6 +303,10 @@ class QuizSettings {
 
         if (this.createWordSetForm) {
             this.createWordSetForm.addEventListener('submit', (event) => this.submitWordSetForm(event));
+        }
+
+        if (this.deleteWordSetButton) {
+            this.deleteWordSetButton.addEventListener('click', () => this.deleteWordSet());
         }
 
         document.addEventListener('mouseout', (event) => {
@@ -418,13 +426,21 @@ class QuizSettings {
         wordSets.forEach(set => {
             const option = document.createElement("option");
             option.value = set.id;
-            option.text = set.name;
+            option.innerHTML = set.name + '&nbsp;=>&nbsp;' + set.description;
+            option.setAttribute('data-description', set.description);
             this.wordSetSelect.appendChild(option);
         });
     }
 
-    handleWordSetChange() {
+    handleWordSetChange(event) {
         const selectedWordSetId = this.wordSetSelect.value;
+        const selectedOption = event.target.selectedOptions[0];
+        selectedOption.innerHTML = selectedOption.textContent.split("=")[0];
+        const description = selectedOption.getAttribute('data-description');
+        const wordSetDescriptionDiv = document.getElementById('word-set-description');
+        wordSetDescriptionDiv.textContent = description || '';
+        wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
+        
         if (selectedWordSetId) {
             fetch(`/wordsets/${selectedWordSetId}/words/`)
                 .then(response => response.json())
@@ -453,6 +469,31 @@ class QuizSettings {
         const selectedWordSetId = this.wordSetSelect.value;
         if (selectedWordSetId) {
             window.location.href = `/wordsets/${selectedWordSetId}/edit/`;
+        }
+    }
+
+    deleteWordSet() {
+        const selectedWordSetId = this.wordSetSelect.value;
+        if (selectedWordSetId) {
+            fetch(`/wordsets/${selectedWordSetId}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.showToast("WordSet deleted successfully.", 'success');
+                    this.loadWordSets(); // Reload word sets
+                } else {
+                    this.showToast(data.message || "An error occurred while deleting the WordSet.", 'error');
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting WordSet:", error);
+                this.showToast("An error occurred while deleting the WordSet.", 'error');
+            });
         }
     }
 

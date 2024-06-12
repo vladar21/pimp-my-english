@@ -600,13 +600,22 @@ footer nav a:hover {
 }
 
 /* Add some styles for the select wordsets */
+.description-field {
+    font-family: sans-serif;
+    font-style: normal;
+    font-size: 0.65em;
+    color: #e7b322;
+    display: block; /* Ensure each description is on a new line */
+    margin-top: 10px;
+}
+
 #word-set-select {
     background-color: rgba(49, 111, 119, 0.719);
     color: whitesmoke;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid white;
-    font-size: 0.75em;
+    font-size: 0.9em;
     width: 100%;
     font-family: inherit;
 }
@@ -615,6 +624,17 @@ footer nav a:hover {
     background-color: #333;
     color: whitesmoke;
     padding: 10px;
+}
+
+#word-set-select {
+    display: flex;
+    flex-direction: column;
+}
+
+#word-set-select option {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
 }
 
 /* Style for statistic window control area */

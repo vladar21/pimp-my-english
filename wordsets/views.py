@@ -55,10 +55,18 @@ def create_word_set(request):
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 
-@login_required
 def list_word_sets(request):
-    word_sets = WordSet.objects.all().values('id', 'name', 'description')
-    return JsonResponse({'word_sets': list(word_sets)})
+    word_sets = WordSet.objects.all()
+    data = [{"id": ws.id, "name": ws.name, "description": ws.description} for ws in word_sets]
+    return JsonResponse({"word_sets": data})
+
+
+def delete_word_set(request, wordset_id):
+    if request.method == 'POST':
+        word_set = get_object_or_404(WordSet, id=wordset_id)
+        word_set.delete()
+        return JsonResponse({'success': True, 'message': 'WordSet deleted successfully.'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
