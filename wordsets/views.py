@@ -17,8 +17,13 @@ def create_word_set(request):
         title = data.get('title')
         description = data.get('description')
         words = data.get('words', [])
-        print('data ')
-        print(data)
+        
+        # Check for unique set of words
+        existing_word_sets = WordSet.objects.all()
+        for word_set in existing_word_sets:
+            existing_words = set(word_set.words.values_list('text', flat=True))
+            if existing_words == set(words):
+                return JsonResponse({'success': False, 'message': 'WordSet with this set of words already exists.'}, status=400)
 
         if not title:
             return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
