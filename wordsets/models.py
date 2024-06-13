@@ -59,7 +59,6 @@ class Word(models.Model):
     country_code = models.CharField(max_length=2, choices=CountryCode.choices)
     word_type = models.CharField(max_length=20, choices=WordType.choices)
     cefr_level = models.CharField(max_length=2, choices=CefrLevel.choices)
-    word_set = models.ForeignKey(WordSet, on_delete=models.CASCADE, related_name='words')
     audio_data = models.BinaryField(blank=True, null=True)
     image_data = models.BinaryField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
