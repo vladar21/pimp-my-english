@@ -1,11 +1,13 @@
 import os
 import django
-from django.conf import settings
-from wordsets.models import Word
 
 # Ensure Django settings are configured
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pimp_my_english.settings')
+
 django.setup()
+
+from django.conf import settings
+from wordsets.models import Word
 
 # Base paths
 base_image_path = os.path.join(settings.BASE_DIR, 'static/images/quiz_images')
@@ -35,4 +37,3 @@ for word in words:
     word.save()
 
 print("Media data update completed.")
-
