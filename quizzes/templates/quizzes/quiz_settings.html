@@ -101,7 +101,7 @@
                             <button id="resetSettingsDefault" type="button" class="settings-button">Reset</button>
                             <button id="startQuizButton" type="button" class="settings-button">Start</button>
                             <button id="createWordSetButton" type="button" class="settings-button">Create</button>
-                            <button id="saveWordSetButton" type="button" style="display:none;" class="settings-button">Save</button>
+                            <button id="saveWordSetButton" type="button" style="display:none;" class="settings-button">Update</button>
                             <button id="deleteWordSetButton" type="button" style="display:none;" class="settings-button">Delete</button>
                         </td>
                     </tr>
@@ -468,44 +468,6 @@ class QuizSettings {
             this.deleteWordSetButton.style.display = "none";
         }
     }
-
-    // handleWordSetChange(event) {
-    //     const selectedWordSetId = this.wordSetSelect.value;
-    //     const selectedOption = event.target.selectedOptions[0];
-    //     selectedOption.innerHTML = selectedOption.textContent.split("=")[0];
-    //     const description = selectedOption.getAttribute('data-description');
-    //     // this.wordSetDescriptionDisplay.textContent = description || '';
-    //     const wordSetDescriptionDiv = document.getElementById('word-set-description');
-    //     wordSetDescriptionDiv.textContent = description || '';
-    //     wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
-
-    //     if (selectedWordSetId) {
-    //         fetch(`/wordsets/${selectedWordSetId}/words/`)
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 this.settings.word_set = selectedWordSetId;
-    //                 this.settings.filtered_words = data.words;
-    //                 this.settings.use_filtered_words = true;
-
-    //                 // Update hidden div with filtered words
-    //                 this.hiddenFilteredWords.dataset.words = data.words.join(', ');
-
-    //                 // Update UI with new settings
-    //                 this.updateFilteredWords();
-                    
-    //                 // Send updated settings to the server
-    //                 this.sendSettingsToServer(() => {
-    //                     this.createWordSetButton.style.display = "none";
-    //                     this.saveWordSetButton.style.display = "inline-block";
-    //                     this.deleteWordSetButton.style.display = "inline-block";
-    //                 });
-    //             });
-    //     } else {
-    //         this.createWordSetButton.style.display = "inline-block";
-    //         this.saveWordSetButton.style.display = "none";
-    //         this.deleteWordSetButton.style.display = "none";
-    //     }
-    // }
 
     saveWordSet() {
         const selectedWordSetId = this.wordSetSelect.value;

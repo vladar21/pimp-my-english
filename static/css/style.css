@@ -718,6 +718,14 @@ input[type="checkbox"]::before {
     background-color: rgba(156, 155, 71, 0.9);
 }
 
+#saveWordSetButton {
+    background-color: rgb(33, 150, 243);
+}
+
+#deleteWordSetButton {
+    background-color: rgb(244, 67, 54);
+}
+
 .settings-button {
     font-size: 20px;
     font-weight: bold;
@@ -739,6 +747,14 @@ input[type="checkbox"]::before {
 
 #createWordSetButton:hover {
     background-color: rgba(117, 130, 27, 0.85);
+}
+
+#saveWordSetButton:hover {
+    background-color:  rgb(29, 124, 202);
+}
+
+#deleteWordSetButton:hover {
+    background-color: rgb(206, 57, 46);
 }
 
 #saveSettingsDefault {
