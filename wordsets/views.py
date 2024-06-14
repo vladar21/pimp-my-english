@@ -6,8 +6,52 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .models import WordSet, Word, WordInSet
+from .models import WordSet, Word
 import json
+
+
+@csrf_exempt
+def create_word_set(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            title = data.get('title')
+            description = data.get('description')
+            words = data.get('words', [])
+
+            # Check for unique set of words
+            existing_word_sets = WordSet.objects.all()
+            for word_set in existing_word_sets:
+                existing_words = set(word_set.words.values_list('text', flat=True))
+                if existing_words == set(words):
+                    return JsonResponse({'success': False, 'message': 'WordSet with this set of words already exists.'}, status=400)
+
+            if not title:
+                return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
+            
+            if not description:
+                return JsonResponse({'success': False, 'message': 'Description is required.'}, status=400)
+            
+            if WordSet.objects.filter(name=title).exists():
+                return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
+
+            word_set = WordSet.objects.create(
+                name=title,
+                description=description,
+                created_by=request.user,
+                rating=0,  # Initialize with 0 or any default value
+                author_username=request.user.username,
+                author_email=request.user.email
+            )
+
+            words_to_add = Word.objects.filter(text__in=words)
+            word_set.words.add(*words_to_add)
+
+            return JsonResponse({'success': True, 'message': 'WordSet created successfully.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
 
 
 @csrf_exempt
@@ -50,54 +94,16 @@ def update_word_set(request, word_set_id):
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
 
 
-@csrf_exempt
-def create_word_set(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            title = data.get('title')
-            description = data.get('description')
-            words = data.get('words', [])
-            
-            # Check for unique set of words
-            existing_word_sets = WordSet.objects.all()
-            for word_set in existing_word_sets:
-                existing_words = set(WordInSet.objects.filter(word_set=word_set).values_list('word__text', flat=True))
-                if existing_words == set(words):
-                    return JsonResponse({'success': False, 'message': 'WordSet with this set of words already exists.'}, status=400)
+@login_required
+def get_word_set_words(request, word_set_id):
+    word_set = get_object_or_404(WordSet, id=word_set_id)
+    words = word_set.words.values_list('text', flat=True)
 
-            if not title:
-                return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
-            
-            if not description:
-                return JsonResponse({'success': False, 'message': 'Description is required.'}, status=400)
+    response_data = {
+        'words': list(words),
+    }
 
-            if WordSet.objects.filter(name=title).exists():
-                return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
-
-            word_objects = Word.objects.filter(text__in=words)
-            if word_objects.count() != len(words):
-                return JsonResponse({'success': False, 'message': 'Some words are invalid.'}, status=400)
-
-            word_set = WordSet.objects.create(
-                name=title,
-                description=description,
-                created_by=request.user,
-                rating=0,  # Initial rating, change as needed
-                author_username=request.user.username,
-                author_email=request.user.email
-            )
-
-            # Add words to WordSet
-            for word_text in words:
-                word = Word.objects.get(text=word_text)
-                WordInSet.objects.create(word_set=word_set, word=word)
-
-            return JsonResponse({'success': True, 'message': 'WordSet created successfully.'})
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)}, status=400)
-        
-    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+    return JsonResponse(response_data)
 
 
 def list_word_sets(request):
@@ -117,39 +123,3 @@ def delete_word_set(request, word_set_id):
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
-
-
-@login_required
-def get_word_set_words(request, word_set_id):
-    word_set = get_object_or_404(WordSet, id=word_set_id)
-    words = word_set.words.all().values_list('text', flat=True)
-
-    response_data = {
-        'words': list(words),
-    }
-
-    return JsonResponse(response_data)
-
-
-# @method_decorator(csrf_exempt, name='dispatch')
-# class CreateWordSetView(View):
-#     def post(self, request):
-#         data = json.loads(request.body)
-#         title = data.get('title')
-#         words = data.get('words', [])
-
-#         if not title:
-#             return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
-
-#         if WordSet.objects.filter(name=title).exists():
-#             return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
-
-#         wordset = WordSet.objects.create(name=title, description='Auto-generated WordSet')
-#         for word_text in words:
-#             word = Word.objects.filter(text=word_text).first()
-#             if word:
-#                 WordInSet.objects.create(word=word, word_set=wordset)
-
-#         return JsonResponse({'success': True, 'message': 'WordSet created successfully.'})
-
-

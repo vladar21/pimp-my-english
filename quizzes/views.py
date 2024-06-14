@@ -63,6 +63,8 @@ def update_quiz_settings(request):
 
         print('filtered words from settings')
         print(filtered_words_from_settings)
+        print('use_filtered_words')
+        print(use_filtered_words)
 
         words = Word.objects.all()
         max_word_count = words.count()

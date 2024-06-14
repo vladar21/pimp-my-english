@@ -101,7 +101,6 @@
                             <button id="resetSettingsDefault" type="button" class="settings-button">Reset</button>
                             <button id="startQuizButton" type="button" class="settings-button">Start</button>
                             <button id="createWordSetButton" type="button" class="settings-button">Create</button>
-                            <!-- <button id="editWordSetButton" type="button" style="display:none;" class="settings-button">Edit</button> -->
                             <button id="saveWordSetButton" type="button" style="display:none;" class="settings-button">Save</button>
                             <button id="deleteWordSetButton" type="button" style="display:none;" class="settings-button">Delete</button>
                         </td>
@@ -116,46 +115,42 @@
     
     <!-- Modal for creating WordSet -->
     <div id="createWordSetModal" class="modal winners-results fit-content">
-        <!-- <div class="modal-content"> -->
-            <form id="createWordSetForm" class="modal-content">
-               
-                <table id="wordset-create" class="winners-table">
-                    <caption>Create WordSet <span class="close-modal">&times;</span></caption>
-                    <tbody>
-                        <tr class="highlight">
-                            <td>WordSet Title:</td>
-                            <td colspan="2">
-                                <input type="text" id="wordSetTitle" name="wordSetTitle" placeholder="Input Title ..." required>
-                            </td>
-                        </tr>
-                        <tr class="highlight">
-                            <td>Description:</td>
-                            <td colspan="2">
-                                <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" placeholder="Input Description ..."></textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <button type="submit" class="submit-button">Submit</button>
-                            </td>
-                        </tr>
-                        <tr class="highlight">
-                            <td colspan="3">Filtered Words:</td>
-                        </tr>
-                        <tr class="highlight">
-                            <td colspan="3">
-                                <div id="filtered-words-list"></div>
-                            </td>                        
-                        </tr>
-                    </tbody>
-                </table>
-            </form>
-        <!-- </div> -->
+        <form id="createWordSetForm" class="modal-content">
+            <table id="wordset-create" class="winners-table">
+                <caption>Create WordSet <span class="close-modal">&times;</span></caption>
+                <tbody>
+                    <tr class="highlight">
+                        <td>WordSet Title:</td>
+                        <td colspan="2">
+                            <input type="text" id="wordSetTitle" name="wordSetTitle" placeholder="Input Title ..." required>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td>Description:</td>
+                        <td colspan="2">
+                            <textarea id="wordSetDescription" name="wordSetDescription" class="full-width" placeholder="Input Description ..."></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <button type="submit" class="submit-button">Submit</button>
+                        </td>
+                    </tr>
+                    <tr class="highlight">
+                        <td colspan="3">Filtered Words:</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td colspan="3">
+                            <div id="filtered-words-list"></div>
+                        </td>                        
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
     
     <!-- Toast notification container -->
     <div id="toast-container"></div>
-
 
 
 <script>
@@ -424,7 +419,6 @@ class QuizSettings {
     }
 
     populateWordSets(wordSets) {
-        
         wordSets.forEach(set => {
             const option = document.createElement("option");
             option.value = set.id;
@@ -654,6 +648,7 @@ class QuizSettings {
             this.populateFilteredWords(); // Update filtered words display
             this.populateUnusedWords(); // Update unused words display
             if (callback) callback();
+            this.settings.use_filtered_words = false;
         });
     }
 
@@ -694,7 +689,8 @@ class QuizSettings {
 
     openCreateWordSetModal() {
         this.filteredWordsList.innerHTML = '';
-        this.settings.filtered_words.forEach(word => {
+        const filteredWords = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(', ') : [];
+        filteredWords.forEach(word => {
             const wordElement = document.createElement('span');
             wordElement.textContent = word;
             this.filteredWordsList.appendChild(wordElement);
@@ -703,6 +699,7 @@ class QuizSettings {
     }
 
     closeCreateWordSetModal() {
+        this.filteredWordsList.innerHTML = '';
         this.createWordSetModal.style.display = "none";
     }
 

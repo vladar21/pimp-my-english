@@ -47,6 +47,7 @@ class WordSet(models.Model):
     approved_by = models.ForeignKey('admin_app.Admin', on_delete=models.SET_NULL, null=True, blank=True)
     author_username = models.CharField(max_length=255)
     author_email = models.EmailField()
+    words = models.ManyToManyField('Word', related_name='word_sets')
 
     class Meta:
         verbose_name = "Word Set"
@@ -67,15 +68,6 @@ class Word(models.Model):
     class Meta:
         verbose_name = "Word"
         verbose_name_plural = "Words"
-
-
-class WordInSet(models.Model):
-    word = models.ForeignKey(Word, on_delete=models.CASCADE)
-    word_set = models.ForeignKey(WordSet, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = "Word in Set"
-        verbose_name_plural = "Words in Sets"
 
 
 class Definition(models.Model):
