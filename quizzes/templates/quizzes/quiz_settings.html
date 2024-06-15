@@ -151,6 +151,7 @@
     
     <!-- Toast notification container -->
     <div id="toast-container"></div>
+    <div id="spinner" class="spinner" style="display: none;"></div>
 
 
 <script>
@@ -328,7 +329,7 @@ class QuizSettings {
     startQuiz(event) {
         event.preventDefault();
         const filteredWords = this.getFilteredWordsFromDiv();
-        
+
         fetch("{% url 'submit_quiz_settings' %}", {
             method: 'POST',
             headers: {
@@ -411,10 +412,16 @@ class QuizSettings {
     }
 
     loadWordSets(selectedWordSetId = null, selectedWordSetDescription = null) {
+        this.showSpinner();
         fetch("{% url 'wordsets:list_word_sets' %}")
             .then(response => response.json())
             .then(data => {
                 this.populateWordSets(data.word_sets, selectedWordSetId, selectedWordSetDescription);
+                this.hideSpinner(); 
+            }).catch(error => {
+                console.error("Error loadWordSets:", error);
+                this.showToast("An error occurred while loadWordSets.", 'error');
+                this.hideSpinner(); 
             });
     }
 
@@ -467,6 +474,7 @@ class QuizSettings {
         wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
 
         if (selectedWordSetId) {
+            this.showSpinner();
             fetch(`/wordsets/${selectedWordSetId}/words/`)
                 .then(response => response.json())
                 .then(data => {
@@ -484,6 +492,12 @@ class QuizSettings {
                         this.deleteWordSetButton.style.display = "inline-block";
                     });
 
+                    this.hideSpinner(); 
+
+                }).catch(error => {
+                    console.error("Error handleWordSetChange:", error);
+                    this.showToast("An error occurred while handleWordSetChange.", 'error');
+                    this.hideSpinner(); 
                 });
         } else {
             this.createWordSetButton.style.display = "inline-block";
@@ -499,6 +513,7 @@ class QuizSettings {
     deleteWordSet() {
         const selectedWordSetId = this.wordSetSelect.value;
         if (selectedWordSetId) {
+            this.showSpinner();
             fetch(`/wordsets/${selectedWordSetId}/delete/`, {
                 method: 'POST',
                 headers: {
@@ -514,10 +529,12 @@ class QuizSettings {
                 } else {
                     this.showToast(data.message || "An error occurred while deleting the WordSet.", 'error');
                 }
+                this.hideSpinner(); 
             })
             .catch(error => {
                 console.error("Error deleting WordSet:", error);
                 this.showToast("An error occurred while deleting the WordSet.", 'error');
+                this.hideSpinner(); 
             });
         }
     }
@@ -618,6 +635,7 @@ class QuizSettings {
 
     sendSettingsToServer(callback = null) {
         console.log('update settings send to server ', JSON.stringify(this.settings))
+        this.showSpinner();
         fetch("{% url 'update_quiz_settings' %}", {
             method: 'POST',
             headers: {
@@ -635,6 +653,12 @@ class QuizSettings {
             this.populateUnusedWords(); // Update unused words display
             if (callback) callback();
             this.settings.use_filtered_words = false;
+            this.hideSpinner(); 
+        })
+        .catch(error => {
+            console.error("Error deleting sendSettingsToServer:", error);
+            this.showToast("An error occurred while sendSettingsToServer.", 'error');
+            this.hideSpinner(); 
         });
     }
 
@@ -742,6 +766,8 @@ class QuizSettings {
             words: this.settings.filtered_words
         };
 
+        this.showSpinner();
+
         fetch(url, {
             method: 'POST',
             headers: {
@@ -760,10 +786,12 @@ class QuizSettings {
             } else {
                 this.showToast(data.message || "An error occurred while saving the WordSet.", 'error');
             }
+            this.hideSpinner(); 
         })
         .catch(error => {
             console.error("Error saving WordSet:", error);
             this.showToast("An error occurred while saving the WordSet.", 'error');
+            this.hideSpinner(); 
         });
     }
 
@@ -777,6 +805,20 @@ class QuizSettings {
             toast.classList.remove("show");
             this.toastContainer.removeChild(toast);
         }, 6000);
+    }
+
+    showSpinner() {
+        const spinner = document.getElementById('spinner');
+        if (spinner) {
+            spinner.style.display = 'block';
+        }
+    }
+
+    hideSpinner() {
+        const spinner = document.getElementById('spinner');
+        if (spinner) {
+            spinner.style.display = 'none';
+        }
     }
 }
 
