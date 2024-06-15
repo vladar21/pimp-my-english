@@ -188,6 +188,7 @@ class QuizSettings {
         this.cefrCheckboxes = document.querySelectorAll('input[name="cefr_levels"]');
         this.wordTypeCheckboxes = document.querySelectorAll('input[name="word_types"]');
         this.wordSetSelect = document.getElementById("word-set-select");
+        this.wordSetDescriptionDisplay = document.getElementById("word-set-description");
         this.startQuizButton = document.getElementById("startQuizButton");
         this.createWordSetButton = document.getElementById("createWordSetButton");
         this.saveWordSetButton = document.getElementById("saveWordSetButton");
@@ -204,7 +205,6 @@ class QuizSettings {
         this.wordSetDescription = document.getElementById("wordSetDescription");
         this.filteredWordsList = document.getElementById("filtered-words-list");
         this.toastContainer = document.getElementById("toast-container");
-        this.wordSetDescriptionDisplay = document.getElementById("word-set-description");
     }
 
     bindEvents() {
@@ -242,7 +242,7 @@ class QuizSettings {
         }
 
         if (this.saveWordSetButton) {
-            this.saveWordSetButton.addEventListener('click', () => this.saveWordSet());
+            this.saveWordSetButton.addEventListener('click', () => this.openEditWordSetModal());
         }
 
         if (this.deleteWordSetButton) {
@@ -444,6 +444,9 @@ class QuizSettings {
         wordSetDescriptionDiv.textContent = description || '';
         wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
 
+        // Remove description from selected option
+        selectedOption.textContent = selectedOption.textContent.split('=>')[0].trim();
+
         if (selectedWordSetId) {
             fetch(`/wordsets/${selectedWordSetId}/words/`)
                 .then(response => response.json())
@@ -470,49 +473,7 @@ class QuizSettings {
     }
 
     saveWordSet() {
-        const selectedWordSetId = this.wordSetSelect.value;
-        const filteredWords = this.getFilteredWordsFromDiv();
-        const wordSetTitle = this.wordSetSelect.selectedOptions[0].textContent.split(' => ')[0].trim();
-        const wordSetDescription = this.wordSetSelect.selectedOptions[0].getAttribute('data-description').trim();
-
-        if (!wordSetTitle) {
-            this.showToast("WordSet title is required.", 'error');
-            return;
-        }
-
-        if (!wordSetTitle) {
-            this.showToast("WordSet description is required.", 'error');
-            return;
-        }
-
-        const data = {
-            title: wordSetTitle,
-            description: wordSetDescription,
-            words: filteredWords
-        };
-
-        fetch(`/wordsets/${selectedWordSetId}/update/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                this.showToast("WordSet updated successfully.", 'success');
-                this.loadWordSets();
-                
-            } else {
-                this.showToast(data.message || "An error occurred while updating the WordSet.", 'error');
-            }
-        })
-        .catch(error => {
-            console.error("Error updating WordSet:", error);
-            this.showToast("An error occurred while updating the WordSet.", 'error');
-        });
+        this.openEditWordSetModal();
     }
 
     deleteWordSet() {
@@ -691,6 +652,8 @@ class QuizSettings {
     }
 
     openCreateWordSetModal() {
+        this.wordSetTitle.value = '';
+        this.wordSetDescription.value = '';
         this.filteredWordsList.innerHTML = '';
         const filteredWords = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(', ') : [];
         filteredWords.forEach(word => {
@@ -698,18 +661,49 @@ class QuizSettings {
             wordElement.textContent = word;
             this.filteredWordsList.appendChild(wordElement);
         });
+        this.createWordSetForm.dataset.wordSetId = '';
+        this.createWordSetModal.style.display = "block";
+    }
+
+    openEditWordSetModal() {
+        const selectedWordSetId = this.wordSetSelect.value;
+        if (!selectedWordSetId) {
+            this.showToast("Please select a WordSet to edit.", 'error');
+            return;
+        }
+
+        this.createWordSetForm.dataset.wordSetId = selectedWordSetId;
+        const selectedOption = this.wordSetSelect.selectedOptions[0];
+        const title = selectedOption.textContent.split('=>')[0].trim();
+        const description = selectedOption.getAttribute('data-description').trim();
+        console.log('title ', title)
+
+        this.wordSetTitle.value = title;
+        this.wordSetDescription.value = description;
+
+        this.filteredWordsList.innerHTML = '';
+        const filteredWords = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(', ') : [];
+        filteredWords.forEach(word => {
+            const wordElement = document.createElement('span');
+            wordElement.textContent = word;
+            this.filteredWordsList.appendChild(wordElement);
+        });
+
         this.createWordSetModal.style.display = "block";
     }
 
     closeCreateWordSetModal() {
         this.filteredWordsList.innerHTML = '';
         this.createWordSetModal.style.display = "none";
+
     }
 
     submitWordSetForm(event) {
         event.preventDefault();
         const title = this.wordSetTitle.value.trim();
         const description = this.wordSetDescription.value.trim();
+        const wordSetId = this.createWordSetForm.dataset.wordSetId;
+        const url = wordSetId ? `/wordsets/${wordSetId}/update/` : "{% url 'wordsets:create_word_set' %}";
 
         if (!title) {
             this.showToast("WordSet title is required.", 'error');
@@ -727,7 +721,7 @@ class QuizSettings {
             words: this.settings.filtered_words
         };
 
-        fetch("{% url 'wordsets:create_word_set' %}", {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -738,16 +732,18 @@ class QuizSettings {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                this.showToast("WordSet created successfully.", 'success');
+                
+                const message = wordSetId ? "WordSet updated successfully." : "WordSet created successfully.";
+                this.showToast(message, 'success');
                 this.closeCreateWordSetModal();
                 this.loadWordSets();
             } else {
-                this.showToast(data.message || "An error occurred while creating the WordSet.", 'error');
+                this.showToast(data.message || "An error occurred while saving the WordSet.", 'error');
             }
         })
         .catch(error => {
-            console.error("Error creating WordSet:", error);
-            this.showToast("An error occurred while creating the WordSet.", 'error');
+            console.error("Error saving WordSet:", error);
+            this.showToast("An error occurred while saving the WordSet.", 'error');
         });
     }
 
