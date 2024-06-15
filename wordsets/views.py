@@ -18,6 +18,8 @@ def create_or_update_word_set(request, word_set_id=None):
             title = data.get('title')
             description = data.get('description')
             words = data.get('words', [])
+            print('words')
+            print(words)
 
             if word_set_id:
                 word_set = get_object_or_404(WordSet, id=word_set_id)
@@ -51,6 +53,15 @@ def create_or_update_word_set(request, word_set_id=None):
 
             words_to_add = Word.objects.filter(text__in=words)
             word_set.words.set(words_to_add)
+
+            response_data = {
+                'success': True,
+                'message': 'WordSet created successfully.' if not word_set_id else 'WordSet updated successfully.',
+                'word_set_id': word_set.id,
+                'description': word_set.description,
+            }
+
+            return JsonResponse(response_data)
 
             return JsonResponse({'success': True, 'message': 'WordSet created successfully.' if not word_set_id else 'WordSet updated successfully.'})
         except Exception as e:

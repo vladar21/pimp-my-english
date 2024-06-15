@@ -752,13 +752,18 @@ class QuizSettings {
 
         if (!title) {
             this.showToast("WordSet title is required.", 'error');
+            this.hideSpinner();
             return;
         }
 
         if (!description) {
             this.showToast("WordSet description is required.", 'error');
+            this.hideSpinner();
             return;
         }
+
+        const filteredWords = this.getFilteredWordsFromDiv();
+        this.settings.filtered_words = filteredWords;
 
         const data = {
             title: title,
@@ -782,7 +787,8 @@ class QuizSettings {
                 const message = wordSetId ? "WordSet updated successfully." : "WordSet created successfully.";
                 this.showToast(message, 'success');
                 this.closeCreateWordSetModal();
-                this.loadWordSets(wordSetId, description);
+                this.loadWordSets(data.word_set_id, data.description);
+                this.wordSetSelect.value = data.word_set_id;
             } else {
                 this.showToast(data.message || "An error occurred while saving the WordSet.", 'error');
             }
