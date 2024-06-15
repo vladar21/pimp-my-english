@@ -448,10 +448,22 @@ class QuizSettings {
             const selectedOption = this.wordSetSelect.selectedOptions[0];
             selectedOption.textContent = selectedOption.getAttribute('data-name'); 
             this.wordSetDescriptionDisplay.textContent = selectedWordSetDescription;
+
+            // Show Update and Delete buttons if a valid WordSet is selected
+            this.saveWordSetButton.style.display = "inline-block";
+            this.deleteWordSetButton.style.display = "inline-block";
+            this.createWordSetButton.style.display = "none";
+        } else {
+            // Hide Update and Delete buttons if no valid WordSet is selected
+            this.saveWordSetButton.style.display = "none";
+            this.deleteWordSetButton.style.display = "none";
+            this.createWordSetButton.style.display = "inline-block";
         }
     }
 
     handleWordSetChange(event) {
+        console.log('handleWordSetChange');
+        this.showSpinner();
         const selectedWordSetId = this.wordSetSelect.value;
         const selectedOption = event.target.selectedOptions[0];
         const description = selectedOption.getAttribute('data-description');
@@ -472,9 +484,9 @@ class QuizSettings {
         const wordSetDescriptionDiv = document.getElementById('word-set-description');
         wordSetDescriptionDiv.textContent = description || '';
         wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
-
+console.log('selectedWordSetId ' + selectedWordSetId);
         if (selectedWordSetId) {
-            this.showSpinner();
+           
             fetch(`/wordsets/${selectedWordSetId}/words/`)
                 .then(response => response.json())
                 .then(data => {
@@ -497,13 +509,14 @@ class QuizSettings {
                 }).catch(error => {
                     console.error("Error handleWordSetChange:", error);
                     this.showToast("An error occurred while handleWordSetChange.", 'error');
-                    this.hideSpinner(); 
                 });
         } else {
-            this.createWordSetButton.style.display = "inline-block";
-            this.saveWordSetButton.style.display = "none";
-            this.deleteWordSetButton.style.display = "none";
+            this.resetSettings();
+            // this.createWordSetButton.style.display = "inline-block";
+            // this.saveWordSetButton.style.display = "none";
+            // this.deleteWordSetButton.style.display = "none";
         }
+        this.hideSpinner();
     }
 
     saveWordSet() {
@@ -630,6 +643,9 @@ class QuizSettings {
         this.sendSettingsToServer(() => {
             this.previousTotalChecked = this.getTotalChecked(); // Update after sending settings to server and updating UI
             this.wordSetDescriptionDisplay.textContent = '';
+            this.createWordSetButton.style.display = "inline-block";
+            this.saveWordSetButton.style.display = "none";
+            this.deleteWordSetButton.style.display = "none";
         });
     }
 
@@ -789,6 +805,7 @@ class QuizSettings {
                 this.closeCreateWordSetModal();
                 this.loadWordSets(data.word_set_id, data.description);
                 this.wordSetSelect.value = data.word_set_id;
+                this.handleWordSetChange({ target: this.wordSetSelect });
             } else {
                 this.showToast(data.message || "An error occurred while saving the WordSet.", 'error');
             }
