@@ -418,7 +418,8 @@ class QuizSettings {
             .then(data => {
                 this.populateWordSets(data.word_sets, selectedWordSetId, selectedWordSetDescription);
                 this.hideSpinner(); 
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.error("Error loadWordSets:", error);
                 this.showToast("An error occurred while loadWordSets.", 'error');
                 this.hideSpinner(); 
@@ -484,9 +485,8 @@ class QuizSettings {
         const wordSetDescriptionDiv = document.getElementById('word-set-description');
         wordSetDescriptionDiv.textContent = description || '';
         wordSetDescriptionDiv.style.display = description ? 'block' : 'none';
-console.log('selectedWordSetId ' + selectedWordSetId);
-        if (selectedWordSetId) {
-           
+
+        if (selectedWordSetId) {           
             fetch(`/wordsets/${selectedWordSetId}/words/`)
                 .then(response => response.json())
                 .then(data => {
@@ -502,19 +502,16 @@ console.log('selectedWordSetId ' + selectedWordSetId);
                         this.createWordSetButton.style.display = "none";
                         this.saveWordSetButton.style.display = "inline-block";
                         this.deleteWordSetButton.style.display = "inline-block";
+                        this.hideSpinner(); 
                     });
-
-                    this.hideSpinner(); 
-
-                }).catch(error => {
+                })
+                .catch(error => {
                     console.error("Error handleWordSetChange:", error);
                     this.showToast("An error occurred while handleWordSetChange.", 'error');
+                    this.hideSpinner(); 
                 });
         } else {
             this.resetSettings();
-            // this.createWordSetButton.style.display = "inline-block";
-            // this.saveWordSetButton.style.display = "none";
-            // this.deleteWordSetButton.style.display = "none";
         }
         this.hideSpinner();
     }
@@ -554,10 +551,12 @@ console.log('selectedWordSetId ' + selectedWordSetId);
 
     deleteWord(wordElement) {
         // Logic to delete word
+        this.showSpinner();
         const word = wordElement.dataset.word;
         this.removeWordFromFiltered(word);
         this.settings.use_filtered_words = true;
         this.updateFilteredWords();
+        this.hideSpinner();
     }
 
     removeWordFromFiltered(word) {
@@ -567,16 +566,19 @@ console.log('selectedWordSetId ' + selectedWordSetId);
     }
 
     updateFilteredWords() {
+        this.showSpinner();
         this.populateFilteredWords();
         this.populateUnusedWords();
         this.sendSettingsToServer();
     }
 
     addWord(wordElement) {
+        this.showSpinner();
         const word = wordElement.dataset.word;
         this.addWordToFiltered(word);
         this.removeWordFromUnused(word);
-        this.updateFilteredWords();        
+        this.updateFilteredWords();
+        this.hideSpinner();
     }
 
     removeWordFromUnused(word) {
@@ -597,12 +599,14 @@ console.log('selectedWordSetId ' + selectedWordSetId);
     }
 
     handleCheckboxChange() {
+        this.showSpinner();
         const currentTotalChecked = this.getTotalChecked();
         this.settings.is_grow = currentTotalChecked > this.previousTotalChecked;
 
         this.updateSettings();
         this.sendSettingsToServer(() => {
             this.previousTotalChecked = this.getTotalChecked(); // Update after sending settings to server and updating UI
+            this.hideSpinner();
         });
     }
 
@@ -613,6 +617,7 @@ console.log('selectedWordSetId ' + selectedWordSetId);
     }
 
     getTotalChecked() {
+        this.showSpinner();
         const checkedCefrLevels = this.cefrCheckboxes ? Array.from(this.cefrCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
         const checkedWordTypes = this.wordTypeCheckboxes ? Array.from(this.wordTypeCheckboxes).filter(checkbox => checkbox.checked).map(checkbox => checkbox.value) : [];
 
@@ -632,6 +637,7 @@ console.log('selectedWordSetId ' + selectedWordSetId);
     }
 
     resetSettings() {
+        this.showSpinner();
         this.settings.cefr_levels = {{ cefr_levels|safe }};
         this.settings.word_types = {{ word_types|safe }};
         this.settings.is_grow = true;
@@ -646,6 +652,7 @@ console.log('selectedWordSetId ' + selectedWordSetId);
             this.createWordSetButton.style.display = "inline-block";
             this.saveWordSetButton.style.display = "none";
             this.deleteWordSetButton.style.display = "none";
+            this.hideSpinner();
         });
     }
 
@@ -679,6 +686,7 @@ console.log('selectedWordSetId ' + selectedWordSetId);
     }
 
     updateUI(data = null) {
+        this.showSpinner();
         if (data) {
             this.wordCountLabel.textContent = `${data.word_count} / ${data.max_word_count}`;
             this.wordCountSlider.max = data.max_word_count;
@@ -711,6 +719,7 @@ console.log('selectedWordSetId ' + selectedWordSetId);
             this.populateFilteredWords();
             this.populateUnusedWords();
         }
+        this.hideSpinner(); 
     }
 
     openCreateWordSetModal() {
