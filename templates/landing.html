@@ -101,15 +101,19 @@
                 })
                 .catch(error => console.error("Error loading word sets:", error));
         }
-
+        
         // Fetch filtered words based on selected word set
         function fetchFilteredWords(wordSetId) {
-            fetch(`/wordsets/${wordSetId}/words/`)
-                .then(response => response.json())
-                .then(data => {
-                    hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
-                })
-                .catch(error => console.error("Error fetching filtered words:", error));
+        fetch(`/wordsets/${wordSetId}/words/`)
+            .then(response => response.json())
+            .then(data => {
+            const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
+            hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
+            const filteredWords = data.words;
+            // Initialize quiz
+            const quiz = new Quiz(filteredWords);
+            })
+            .catch(error => console.error("Error fetching filtered words:", error));
         }
 
         // Handle change event for word set select
@@ -138,6 +142,8 @@
             // Clear the winners table body
             winnersTableBody.innerHTML = '';
         }
+
+
 
     });
 </script>

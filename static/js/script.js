@@ -1,7 +1,8 @@
 // static/js/script.js
 
 class Quiz {
-  constructor() {
+  constructor(filteredWords) {
+    this.filteredWords = filteredWords || [];
     this.data = [];
     this.englishWords = {};
     this.englishWordsRandomQuestion = {};
@@ -67,14 +68,15 @@ class Quiz {
 
   async fetchQuizData() {
     try {
-      const filteredWords = this.filteredWordsDiv ? this.filteredWordsDiv.dataset.words.split(', ') : [];
+      console.log("Dataset Words: ", this.filteredWords);
+
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': this.getCSRFToken()
         },
-        body: JSON.stringify({ filtered_word_texts: filteredWords })
+        body: JSON.stringify({ filtered_word_texts: this.filteredWords })
       });
 
       if (!response.ok) {
@@ -83,6 +85,7 @@ class Quiz {
 
       const data = await response.json();
       this.englishWords = data;
+      console.log("Fetched Data: ", this.englishWords); // Debugging
     } catch (error) {
       console.error('Fetch error:', error);
     }
@@ -121,7 +124,16 @@ class Quiz {
     this.isQuizStart = true;
     this.attempt++;
     this.data = [];
-    this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
+    // Initialize englishWordsRandomQuestion with filtered words only
+    this.englishWordsRandomQuestion = this.filteredWords.reduce((obj, key) => {
+      if (this.englishWords[key]) {
+        obj[key] = this.englishWords[key];
+      }
+      return obj;
+    }, {});
+
+    console.log("Starting Quiz with Filtered Words:", this.filteredWords);
+    console.log("Filtered Words for Quiz:", this.englishWordsRandomQuestion);
 
     this.toggleVisibility({
       "rules-start-settings": "none",
@@ -138,6 +150,8 @@ class Quiz {
       this.currentQuiz = this.displayQuestion(randomQuestion);
       this.currentQuiz.attempt = this.attempt;
       this.data.push(this.currentQuiz);
+    } else {
+      console.error("No valid question to display."); // Debugging
     }
   }
 
@@ -212,7 +226,7 @@ class Quiz {
   getRandomQuestion(englishWordsRandomQuestion) {
     const wordKeys = Object.keys(englishWordsRandomQuestion);
     if (wordKeys.length === 0) {
-      console.error("No words available for the quiz.");
+      console.error("No words available for the quiz."); // Debugging
       return null;
     }
     const randomIndex = Math.floor(Math.random() * wordKeys.length);
@@ -424,7 +438,7 @@ class Quiz {
     document.getElementById("right-count").textContent = "0";
     document.getElementById("wrong-count").textContent = "0";
     document.getElementById("answered-count").textContent = "0";
-    this.totalCountElementValue = this.getObjectLength(this.englishWords);
+    this.totalCountElementValue = this.getObjectLength(this.englishWordsRandomQuestion);
     this.totalCountElement.textContent = this.totalCountElementValue;
   }
 
@@ -496,4 +510,5 @@ class Quiz {
 }
 
 // Initialize quiz
-const quiz = new Quiz();
+// const quiz = new Quiz();
+
