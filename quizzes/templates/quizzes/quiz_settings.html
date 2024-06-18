@@ -28,7 +28,7 @@
                         <td data-label="Describe">Available WordSets</td>
                         <td data-label="Name">WordSet</td>
                         <td data-label="Values">
-                            <select id="word-set-select">
+                            <select id="word-set-select" class="word-set-select">
                                 <option value="">Select Word Set</option>
                                 {% for ws in word_sets %}
                                     <option value="{{ ws.id }}" data-description="{{ ws.description }}" data-name="{{ ws.name }}" {% if ws.id|stringformat:"i" == selected_word_set|stringformat:"i" %}selected{% endif %}>

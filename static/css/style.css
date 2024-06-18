@@ -437,15 +437,6 @@ footer nav a:hover {
     color: #e49d87;
 }
 
-/* Select WrodSet styles */
-.word-set-select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
-
-
 /* Start Button */
 #start-quiz-button {
     font-size: 18px;
@@ -618,7 +609,7 @@ footer nav a:hover {
     margin-top: 10px;
 }
 
-#word-set-select {
+.word-set-select {
     background-color: rgba(49, 111, 119, 0.719);
     color: whitesmoke;
     padding: 10px;
@@ -629,21 +620,28 @@ footer nav a:hover {
     font-family: inherit;
 }
 
-#word-set-select option {
+.word-set-select option {
     background-color: #333;
     color: whitesmoke;
     padding: 10px;
 }
 
-#word-set-select {
+.word-set-select {
     display: flex;
     flex-direction: column;
 }
 
-#word-set-select option {
+.word-set-select option {
     display: flex;
     justify-content: space-between;
     padding: 5px 10px;
+}
+
+.landing-select {
+    width:fit-content;
+    margin-top:10px;
+    font-size:1.5em;
+    font-family: 'Caveat', cursive;
 }
 
 /* Style for statistic window control area */
