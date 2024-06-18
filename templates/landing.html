@@ -70,11 +70,68 @@
 
     <div id="rules-start-settings" class="rules-start-settings">
         <a href="{% url 'rules' %}" id="rules-link" class="rules-link">Rules</a>
+        <select id="wordSetSelectLanding" class="word-set-select">
+            <option value="">Select Word Set</option>
+        </select>
         <button id="start-quiz-button">Start</button>
         <a href="{% url 'quiz_settings' %}" id="settings-link" class="settings-link">Settings</a>
     </div>
 </div>
 <div id="hidden-filtered-words" data-words="{{ filtered_words|join:', ' }}" style="display: none;"></div>
 <div id="hidden-unused-words" data-words="{{ unused_words|join:', ' }}" style="display: none;"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const wordSetSelectLanding = document.getElementById('wordSetSelectLanding');
+        const settingsLink = document.getElementById('settings-link');
+        const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
+
+        // Load word sets
+        function loadWordSets() {
+            fetch("{% url 'wordsets:list_word_sets' %}")
+                .then(response => response.json())
+                .then(data => {
+                    data.word_sets.forEach(set => {
+                        const option = document.createElement("option");
+                        option.value = set.id;
+                        option.textContent = set.name;
+                        wordSetSelectLanding.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error loading word sets:", error));
+        }
+
+        // Fetch filtered words based on selected word set
+        function fetchFilteredWords(wordSetId) {
+            fetch(`/wordsets/${wordSetId}/words/`)
+                .then(response => response.json())
+                .then(data => {
+                    hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
+                })
+                .catch(error => console.error("Error fetching filtered words:", error));
+        }
+
+        // Handle change event for word set select
+        wordSetSelectLanding.addEventListener('change', () => {
+            const selectedWordSetId = wordSetSelectLanding.value;
+            if (selectedWordSetId) {
+                fetchFilteredWords(selectedWordSetId);
+            } else {
+                hiddenFilteredWordsDiv.dataset.words = '';
+            }
+        });
+
+        // Load word sets on page load
+        loadWordSets();
+
+        // Redirect to settings with selected word set
+        settingsLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            const selectedWordSetId = wordSetSelectLanding.value;
+            const settingsUrl = selectedWordSetId ? `{% url 'quiz_settings' %}?word_set_id=${selectedWordSetId}` : "{% url 'quiz_settings' %}";
+            window.location.href = settingsUrl;
+        });
+    });
+</script>
 
 {% endblock %}

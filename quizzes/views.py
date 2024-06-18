@@ -4,18 +4,29 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from wordsets.models import Word, Definition, CefrLevel, WordType
+from wordsets.models import Word,  WordSet, Definition, CefrLevel, WordType
 import json
 import base64
 
 
 def quiz_settings(request):
-    words = Word.objects.all()
+    word_set_id = request.GET.get('word_set_id')
+
+    if word_set_id:
+        word_set = WordSet.objects.get(id=word_set_id)
+        words = word_set.words.all()
+        selected_word_set = word_set.id
+        selected_word_set_description = word_set.description
+    else:
+        words = Word.objects.all()
+        selected_word_set = None
+        selected_word_set_description = None
+
     word_count = words.count()
 
     cefr_levels = [level.value for level in CefrLevel]
@@ -26,10 +37,11 @@ def quiz_settings(request):
     selected_cefr_levels = cefr_levels  # Initially, all levels are selected
     selected_word_types = word_types  # Initially, all word types are selected
 
-    max_word_count = word_count  # Max word count is initially the total number of words
+    max_word_count = Word.objects.all().count()  # Max word count is initially the total number of words
 
     filtered_words = ', '.join(words.values_list('text', flat=True))  # Initially, no filters applied
-
+    print('selected_word_set')
+    print(selected_word_set)
     context = {
         'word_count': word_count,
         'max_word_count': max_word_count,
@@ -42,6 +54,8 @@ def quiz_settings(request):
         'word_type_total_counts': word_type_counts,
         'selected_word_types': selected_word_types,
         'filtered_words': filtered_words,  # Add filtered words text to context
+        'selected_word_set': selected_word_set,
+        'selected_word_set_description': selected_word_set_description,
     }
 
     return render(request, 'quizzes/quiz_settings.html', context)
@@ -160,11 +174,29 @@ def submit_quiz_settings(request):
 
 def landing(request):
     filtered_words = request.session.get('filtered_words', [])
+    word_sets = WordSet.objects.all()
     context = {
         'filtered_words': filtered_words,
-        'autostart': 1,
+        'autostart': 0,
+        'word_sets': word_sets,
     }
     return render(request, 'landing.html', context)
+
+
+@csrf_exempt
+def start_quiz_with_word_set(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        word_set_id = data.get('word_set_id')
+        word_set = get_object_or_404(WordSet, id=word_set_id)
+        words = word_set.words.values_list('text', flat=True)
+        
+        # Save filtered words to session
+        request.session['filtered_words'] = list(words)
+        
+        return JsonResponse({'redirect_url': reverse('landing')})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
 
 
 @api_view(['POST'])

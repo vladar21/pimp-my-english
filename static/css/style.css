@@ -437,6 +437,15 @@ footer nav a:hover {
     color: #e49d87;
 }
 
+/* Select WrodSet styles */
+.word-set-select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+
 /* Start Button */
 #start-quiz-button {
     font-size: 18px;

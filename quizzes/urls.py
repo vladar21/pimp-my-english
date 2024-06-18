@@ -1,7 +1,7 @@
 # quizzes/urls.py
 
 from django.urls import path
-from .views import QuizDataView, quiz_settings, submit_quiz_settings, update_quiz_settings, submit_quiz_result, landing
+from .views import QuizDataView, quiz_settings, submit_quiz_settings, update_quiz_settings, submit_quiz_result, landing, start_quiz_with_word_set
 from . import views
 
 urlpatterns = [

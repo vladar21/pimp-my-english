@@ -30,9 +30,17 @@
                         <td data-label="Values">
                             <select id="word-set-select">
                                 <option value="">Select Word Set</option>
-                                <!-- Options will be dynamically populated -->
+                                {% for ws in word_sets %}
+                                    <option value="{{ ws.id }}" data-description="{{ ws.description }}" data-name="{{ ws.name }}" {% if ws.id|stringformat:"i" == selected_word_set|stringformat:"i" %}selected{% endif %}>
+                                        {{ ws.name }} => {{ ws.description }}
+                                    </option>
+                                {% endfor %}
                             </select>
-                            <div id="word-set-description" class="description-field"></div>
+                            <div id="word-set-description" class="description-field">
+                                {% if selected_word_set_description %}
+                                    {{ selected_word_set_description }}
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                     <tr class="highlight">
@@ -163,7 +171,8 @@ class QuizSettings {
             is_grow: true,
             isSettingsChange: null,
             total_word_count: {{ word_count }},
-            word_set: null,
+            word_set: {{ selected_word_set|default_if_none:"null" }},
+            selected_word_set_description: "{{ selected_word_set_description|escapejs }}",
             filtered_words: this.getFilteredWordsFromDiv(),
             unused_words: this.getUnusedWordsFromDiv(),
             use_filtered_words: false,
@@ -178,7 +187,7 @@ class QuizSettings {
         this.bindEvents();
         this.populateFilteredWords();
         this.populateUnusedWords();
-        this.loadWordSets();  // Load WordSets options
+        this.loadWordSets(this.settings.word_set, this.settings.selected_word_set_description);  // Load WordSets options
     }
 
     cacheDomElements() {
@@ -416,6 +425,7 @@ class QuizSettings {
         fetch("{% url 'wordsets:list_word_sets' %}")
             .then(response => response.json())
             .then(data => {
+                console.log("Loaded Word Sets:", data.word_sets);
                 this.populateWordSets(data.word_sets, selectedWordSetId, selectedWordSetDescription);
                 this.hideSpinner(); 
             })
@@ -427,6 +437,9 @@ class QuizSettings {
     }
 
     populateWordSets(wordSets, selectedWordSetId = null, selectedWordSetDescription = null) {
+        console.log("Selected Word Set ID:", selectedWordSetId);
+        console.log("Word Sets:", wordSets);
+
         this.wordSetSelect.innerHTML = '';
 
         const emptyOption = document.createElement("option");
@@ -439,23 +452,25 @@ class QuizSettings {
             option.value = set.id;
             option.innerHTML = `${set.name} => ${set.description}`;
             option.setAttribute('data-description', set.description);
+
+            if (selectedWordSetId && set.id == selectedWordSetId) {
+                option.setAttribute('selected', 'selected');
+            }
+
             option.setAttribute('data-name', set.name);
             this.wordSetSelect.appendChild(option);
         });
 
-        // Restore selected value after populating options if provided
         if (selectedWordSetId) {
             this.wordSetSelect.value = selectedWordSetId;
             const selectedOption = this.wordSetSelect.selectedOptions[0];
-            selectedOption.textContent = selectedOption.getAttribute('data-name'); 
+            selectedOption.textContent = selectedOption.getAttribute('data-name');
             this.wordSetDescriptionDisplay.textContent = selectedWordSetDescription;
 
-            // Show Update and Delete buttons if a valid WordSet is selected
             this.saveWordSetButton.style.display = "inline-block";
             this.deleteWordSetButton.style.display = "inline-block";
             this.createWordSetButton.style.display = "none";
         } else {
-            // Hide Update and Delete buttons if no valid WordSet is selected
             this.saveWordSetButton.style.display = "none";
             this.deleteWordSetButton.style.display = "none";
             this.createWordSetButton.style.display = "inline-block";
