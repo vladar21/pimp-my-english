@@ -1,8 +1,8 @@
 // static/js/script.js
 
 class Quiz {
-  constructor(filteredWords) {
-    this.filteredWords = filteredWords || [];
+  constructor(filteredWords = []) {
+    this.filteredWords = filteredWords;
     this.data = [];
     this.englishWords = {};
     this.englishWordsRandomQuestion = {};
@@ -68,8 +68,7 @@ class Quiz {
 
   async fetchQuizData() {
     try {
-      console.log("Dataset Words: ", this.filteredWords);
-
+      this.showSpinner();
       const response = await fetch('/quizzes/api/quiz-data/', {
         method: 'POST',
         headers: {
@@ -86,8 +85,10 @@ class Quiz {
       const data = await response.json();
       this.englishWords = data;
       console.log("Fetched Data: ", this.englishWords); // Debugging
+      this.hideSpinner();
     } catch (error) {
       console.error('Fetch error:', error);
+      this.hideSpinner();
     }
   }
 
@@ -124,16 +125,7 @@ class Quiz {
     this.isQuizStart = true;
     this.attempt++;
     this.data = [];
-    // Initialize englishWordsRandomQuestion with filtered words only
-    this.englishWordsRandomQuestion = this.filteredWords.reduce((obj, key) => {
-      if (this.englishWords[key]) {
-        obj[key] = this.englishWords[key];
-      }
-      return obj;
-    }, {});
-
-    console.log("Starting Quiz with Filtered Words:", this.filteredWords);
-    console.log("Filtered Words for Quiz:", this.englishWordsRandomQuestion);
+    this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(this.englishWords));
 
     this.toggleVisibility({
       "rules-start-settings": "none",
@@ -438,7 +430,7 @@ class Quiz {
     document.getElementById("right-count").textContent = "0";
     document.getElementById("wrong-count").textContent = "0";
     document.getElementById("answered-count").textContent = "0";
-    this.totalCountElementValue = this.getObjectLength(this.englishWordsRandomQuestion);
+    this.totalCountElementValue = this.getObjectLength(this.englishWords);
     this.totalCountElement.textContent = this.totalCountElementValue;
   }
 
@@ -481,6 +473,7 @@ class Quiz {
     });
 
     winnersTable.innerHTML = "";
+
     this.winnersArray.forEach((winner, index) => {
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -501,14 +494,24 @@ class Quiz {
 
   getAttemptString(index) {
     const attemptStrings = [
-      "first", "second", "third", "fourth", "fifth", "seventh", "eighth", "ninth", "tenth",
-      "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "eighteenth",
-      "nineteenth", "twentieth", "twenty-first",
+      "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth",
+      "eleventh", "twelfth", "thirteenth", "fourteenth", "fifteenth", "sixteenth", "seventeenth",
+      "eighteenth", "nineteenth", "twentieth", "twenty-first",
     ];
     return attemptStrings[index - 1] || "first";
   }
+
+  showSpinner() {
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner';
+    document.body.appendChild(spinner);
+  }
+
+  hideSpinner() {
+    const spinner = document.querySelector('.spinner');
+    if (spinner) {
+      spinner.remove();
+    }
+  }
+
 }
-
-// Initialize quiz
-// const quiz = new Quiz();
-

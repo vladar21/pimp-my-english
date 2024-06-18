@@ -72,8 +72,11 @@ def create_or_update_word_set(request, word_set_id=None):
 
 @login_required
 def get_word_set_words(request, word_set_id):
-    word_set = get_object_or_404(WordSet, id=word_set_id)
-    words = word_set.words.values_list('text', flat=True)
+    if word_set_id == 0:
+        words = Word.objects.values_list('text', flat=True)
+    else:
+        word_set = get_object_or_404(WordSet, id=word_set_id)
+        words = word_set.words.values_list('text', flat=True)
 
     response_data = {
         'words': list(words),

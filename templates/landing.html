@@ -54,12 +54,12 @@
             <table id="winners-table" class="winners-table">
                 <caption>Winners Results</caption>
                 <thead>
-                    <tr>
+                   
                         <th>Place</th>
                         <th>Attempt</th>
                         <th>Scores</th>
                         <th>Time</th>
-                    </tr>
+                
                 </thead>
                 <tbody>
                     <!-- Winners' results will be added here dynamically -->
@@ -71,7 +71,7 @@
     <div id="rules-start-settings" class="rules-start-settings">
         <a href="{% url 'rules' %}" id="rules-link" class="rules-link">Rules</a>
         <select id="wordSetSelectLanding" class="word-set-select landing-select">
-            <option value="">Select Word Set</option>
+            <option value="0">Select Word Set</option>
         </select>
         <button id="start-quiz-button">Start</button>
         <a href="{% url 'quiz_settings' %}" id="settings-link" class="settings-link">Settings</a>
@@ -86,9 +86,11 @@
         const settingsLink = document.getElementById('settings-link');
         const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
         const winnersTableBody = document.querySelector('#winners-table tbody');
+        let currentQuiz = null;
 
         // Load word sets
         function loadWordSets() {
+            showSpinner();
             fetch("{% url 'wordsets:list_word_sets' %}")
                 .then(response => response.json())
                 .then(data => {
@@ -98,33 +100,59 @@
                         option.textContent = set.name;
                         wordSetSelectLanding.appendChild(option);
                     });
+                    hideSpinner();
                 })
-                .catch(error => console.error("Error loading word sets:", error));
+                .catch(error => {
+                    console.error("Error loading word sets:", error)
+                    hideSpinner();
+                });
+        }
+
+        // Show spinner
+        function showSpinner() {
+            const spinner = document.createElement('div');
+            spinner.className = 'spinner';
+            document.body.appendChild(spinner);
+        }
+
+        // Hide spinner
+        function hideSpinner() {
+            const spinner = document.querySelector('.spinner');
+            if (spinner) {
+                spinner.remove();
+            }
         }
         
         // Fetch filtered words based on selected word set
-        function fetchFilteredWords(wordSetId) {
-        fetch(`/wordsets/${wordSetId}/words/`)
-            .then(response => response.json())
-            .then(data => {
-            const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
-            hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
-            const filteredWords = data.words;
-            // Initialize quiz
-            const quiz = new Quiz(filteredWords);
-            })
-            .catch(error => console.error("Error fetching filtered words:", error));
+        function fetchFilteredWords(wordSetId) {            
+            hiddenFilteredWordsDiv.dataset.words = '';
+            showSpinner();
+            
+            let url = wordSetId ? `/wordsets/${wordSetId}/words/` : `/wordsets/0/words/`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
+                    initializeQuiz(data.words);
+                    hideSpinner();
+                })
+                .catch(error => {
+                    console.error("Error fetching filtered words:", error);
+                    hideSpinner();
+                });
         }
 
-        // Handle change event for word set select
-        wordSetSelectLanding.addEventListener('change', () => {
-            resetWinnersTable();
-            const selectedWordSetId = wordSetSelectLanding.value;
-            if (selectedWordSetId) {
-                fetchFilteredWords(selectedWordSetId);
-            } else {
-                hiddenFilteredWordsDiv.dataset.words = '';
-            }
+
+        // Initialize quiz
+        function initializeQuiz(filteredWords) {
+            currentQuiz = new Quiz(filteredWords);
+        }
+
+        // Event listener for changing the word set
+        wordSetSelectLanding.addEventListener('change', function () {
+            const selectedWordSetId = this.value;
+            fetchFilteredWords(selectedWordSetId);
         });
 
         // Load word sets on page load
@@ -138,13 +166,11 @@
             window.location.href = settingsUrl;
         });
 
-        function resetWinnersTable() {
-            // Clear the winners table body
-            winnersTableBody.innerHTML = '';
+        // Initial call to set up the quiz with default word set
+        const defaultWordSetId = wordSetSelectLanding.value;
+        if (defaultWordSetId) {
+            fetchFilteredWords(defaultWordSetId);
         }
-
-
-
     });
 </script>
 
