@@ -164,40 +164,42 @@ class Quiz {
   }
 
   takeATurn() {
-      console.log("Starting takeATurn");
-      this.addSpentTimeToLastAttempt(false);
-      const selectedOption = document.querySelector('input[name="answer-option"]:checked');
-      if (!selectedOption) {
-          const wrongCountElement = document.getElementById("wrong-count");
-          wrongCountElement.textContent = parseInt(wrongCountElement.textContent) + 1;
-      }
+    console.log("Starting takeATurn");
+    this.addSpentTimeToLastAttempt(false);
+    const selectedOption = document.querySelector('input[name="answer-option"]:checked');
+    if (!selectedOption) {
+        const wrongCountElement = document.getElementById("wrong-count");
+        wrongCountElement.textContent = parseInt(wrongCountElement.textContent) + 1;
+    }
 
-      this.checkLastAnswer();
+    this.checkLastAnswer();
 
-      const answeredCountElement = document.getElementById("answered-count");
-      const answered = parseInt(answeredCountElement.textContent) + 1;
-      answeredCountElement.textContent = answered;
+    const answeredCountElement = document.getElementById("answered-count");
+    const answered = parseInt(answeredCountElement.textContent) + 1;
+    answeredCountElement.textContent = answered;
 
-      console.log(`Answered: ${answered} / Total: ${this.totalCountElementValue}`);
+    console.log(`Answered: ${answered} / Total: ${this.totalCountElementValue}`);
 
-      if (answered >= this.totalCountElementValue) {
-          this.stopQuiz();
-          this.destroy();
-      } else {
-          const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
-          if (randomQuestion) {
-              this.currentQuiz = this.displayQuestion(randomQuestion);
-              this.currentQuiz.attempt = this.attempt;
-              this.currentQuiz.spentTime = 0;
-              this.data.push(this.currentQuiz);
-              console.log("Current Quiz Data: ", this.data);
-          }else{
-            console.error("No valid question to display."); // Debugging
-          }
-          this.timer = 30; // Reset timer for the next question
-      }
-      console.log("Current Quiz Data: ", this.data);
+    if (answered >= this.totalCountElementValue) {
+        this.stopQuiz();
+        console.log("All questions answered, stopping the quiz.");
+    } else {
+        const randomQuestion = this.getRandomQuestion(this.englishWordsRandomQuestion);
+        if (randomQuestion) {
+            this.currentQuiz = this.displayQuestion(randomQuestion);
+            this.currentQuiz.attempt = this.attempt;
+            this.currentQuiz.spentTime = 0;
+            this.data.push(this.currentQuiz);
+            console.log("Current Quiz Data: ", this.data);
+        } else {
+            console.error("No valid question to display.");
+            this.stopQuiz();
+        }
+        this.timer = 30; // Reset timer for the next question
+    }
+    console.log("Current Quiz Data: ", this.data);
   }
+
 
   addSpentTimeToLastAttempt(isFinalTurn) {
     if (this.data.length > 0) {
@@ -227,46 +229,49 @@ class Quiz {
   }
 
   getRandomQuestion(englishWordsRandomQuestion) {
-      const wordKeys = Object.keys(englishWordsRandomQuestion);
-      if (wordKeys.length === 0) {
-          console.error("No words available for the quiz."); // Debugging
-          return null;
-      }
-      const randomIndex = Math.floor(Math.random() * wordKeys.length);
-      const selectedWordKey = wordKeys[randomIndex];
-      const wordObject = this.englishWords[selectedWordKey];
+    const wordKeys = Object.keys(englishWordsRandomQuestion);
+    if (wordKeys.length === 0) {
+        console.error("No words available for the quiz."); // Debugging
+        return null;
+    }
+    const randomIndex = Math.floor(Math.random() * wordKeys.length);
+    const selectedWordKey = wordKeys[randomIndex];
+    const wordObject = this.englishWords[selectedWordKey];
 
-      console.log(`Selected word: ${selectedWordKey}, Index: ${randomIndex}`);
+    console.log(`Selected word: ${selectedWordKey}, Index: ${randomIndex}`);
 
-      if (!wordObject || !wordObject["word-types"] || wordObject["word-types"].length === 0) {
-          console.error(`Word "${selectedWordKey}" does not have valid word-types.`);
-          return null;
-      }
+    if (!wordObject || !wordObject["word-types"] || wordObject["word-types"].length === 0) {
+        console.error(`Word "${selectedWordKey}" does not have valid word-types.`);
+        delete englishWordsRandomQuestion[selectedWordKey]; 
+        return this.getRandomQuestion(englishWordsRandomQuestion); // Try another word
+    }
 
-      const randomWordType = wordObject["word-types"][Math.floor(Math.random() * wordObject["word-types"].length)];
+    const randomWordType = wordObject["word-types"][Math.floor(Math.random() * wordObject["word-types"].length)];
 
-      if (!randomWordType || !randomWordType.definitions || randomWordType.definitions.length === 0) {
-          console.error(`Word type for "${selectedWordKey}" does not have valid definitions.`);
-          return null;
-      }
+    if (!randomWordType || !randomWordType.definitions || randomWordType.definitions.length === 0) {
+        console.error(`Word type for "${selectedWordKey}" does not have valid definitions.`);
+        delete englishWordsRandomQuestion[selectedWordKey]; 
+        return this.getRandomQuestion(englishWordsRandomQuestion); // Try another word
+    }
 
-      const randomDefinition = randomWordType.definitions[Math.floor(Math.random() * randomWordType.definitions.length)];
+    const randomDefinition = randomWordType.definitions[Math.floor(Math.random() * randomWordType.definitions.length)];
 
-      const question = {
-          word: selectedWordKey,
-          wordType: randomWordType["word-type"],
-          definition: randomDefinition.definition,
-          translations: randomDefinition.translate,
-          imageUrl: wordObject.image_url,
-          soundUrl: wordObject.sound_url,
-          cefrLevel: wordObject.cefr.level,
-          cefrTitle: wordObject.cefr.title,
-      };
+    const question = {
+        word: selectedWordKey,
+        wordType: randomWordType["word-type"],
+        definition: randomDefinition.definition,
+        translations: randomDefinition.translate,
+        imageUrl: wordObject.image_url,
+        soundUrl: wordObject.sound_url,
+        cefrLevel: wordObject.cefr.level,
+        cefrTitle: wordObject.cefr.title,
+    };
 
-      delete englishWordsRandomQuestion[selectedWordKey];
-      console.log("Remaining words after deletion: ", englishWordsRandomQuestion);
-      return question;
+    delete englishWordsRandomQuestion[selectedWordKey];
+    console.log("Remaining words after deletion: ", englishWordsRandomQuestion);
+    return question;
   }
+
 
   displayQuestion(question) {
     if (!question) {
@@ -444,7 +449,12 @@ class Quiz {
     document.getElementById("right-count").textContent = "0";
     document.getElementById("wrong-count").textContent = "0";
     document.getElementById("answered-count").textContent = "0";
-    this.totalCountElementValue = this.totalCountElement = this.getObjectLength(this.englishWords);
+    // Get the number of words from the hidden div
+    const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
+    const words = hiddenFilteredWordsDiv.dataset.words ? hiddenFilteredWordsDiv.dataset.words.split(', ') : [];
+    this.totalCountElementValue = words.length;
+    console.log(`Starting new quiz with total count: ${this.totalCountElementValue}`);
+    // this.totalCountElementValue = this.totalCountElement = this.getObjectLength(this.englishWords);
     this.totalCountElement = document.getElementById("total-count");
     this.totalCountElement.textContent = this.totalCountElementValue;
   }
@@ -543,29 +553,23 @@ class Quiz {
   destroy() {
 
     this.stopTimer();
-    // // Clear the timer
-    // clearInterval(this.timerInterval);
+    clearInterval(this.timerInterval);
 
-    // // Reset counters and states
-    // this.filteredWords = [];
-    // this.data = [];
-    // this.englishWords = {};
-    // this.englishWordsRandomQuestion = {};
-    // this.isQuizStart = false;
-    // this.currentQuiz = null;
-    // this.winnersArray = [];
-    // // this.timer = 30;
-    // // this.isTimerSpinnerVisible = true;
+    this.isQuizStart = false;
+    this.currentQuiz = null;
+    this.timer = 0;
+    this.isTimerSpinnerVisible = true;
 
-    // // Clear HTML elements
-    // document.getElementById("right-count").textContent = "0";
-    // document.getElementById("wrong-count").textContent = "0";
-    // document.getElementById("answered-count").textContent = "0";
+    document.getElementById("right-count").textContent = "0";
+    document.getElementById("wrong-count").textContent = "0";
+    document.getElementById("answered-count").textContent = "0";
 
-    // const startQuizButton = document.querySelector('#start-quiz-button');
-    // if (startQuizButton) {
-    //     startQuizButton.disabled = false; // Ensure start button is enabled
-    // }
+    const startQuizButton = document.querySelector('#start-quiz-button');
+    if (startQuizButton) {
+        startQuizButton.disabled = false; // Ensure start button is enabled
+    }
+
+    console.log("Quiz destroyed, necessary parameters reset.");
   }
 
 }
