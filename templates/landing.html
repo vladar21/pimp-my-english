@@ -85,6 +85,7 @@
         const wordSetSelectLanding = document.getElementById('wordSetSelectLanding');
         const settingsLink = document.getElementById('settings-link');
         const hiddenFilteredWordsDiv = document.getElementById('hidden-filtered-words');
+        const winnersTableBody = document.querySelector('#winners-table tbody');
 
         // Load word sets
         function loadWordSets() {
@@ -113,6 +114,7 @@
 
         // Handle change event for word set select
         wordSetSelectLanding.addEventListener('change', () => {
+            resetWinnersTable();
             const selectedWordSetId = wordSetSelectLanding.value;
             if (selectedWordSetId) {
                 fetchFilteredWords(selectedWordSetId);
@@ -131,6 +133,12 @@
             const settingsUrl = selectedWordSetId ? `{% url 'quiz_settings' %}?word_set_id=${selectedWordSetId}` : "{% url 'quiz_settings' %}";
             window.location.href = settingsUrl;
         });
+
+        function resetWinnersTable() {
+            // Clear the winners table body
+            winnersTableBody.innerHTML = '';
+        }
+
     });
 </script>
 
