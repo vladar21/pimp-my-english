@@ -132,8 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsLink.addEventListener('click', (event) => {
         event.preventDefault();
         const selectedWordSetId = wordSetSelectLanding.value;
-        const settingsUrl = selectedWordSetId ? `/quizzes/settings?word_set_id=${selectedWordSetId}` : "/quizzes/settings";
-        window.location.href = settingsUrl;
+        if (selectedWordSetId && selectedWordSetId !== "0") {
+            const settingsUrl = `/quizzes/settings?word_set_id=${selectedWordSetId}`;
+            window.location.href = settingsUrl;
+        } else {
+            const settingsUrl = "/quizzes/settings";
+            window.location.href = settingsUrl;
+        }
     });
 });
 

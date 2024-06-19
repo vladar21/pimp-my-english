@@ -17,8 +17,8 @@ import base64
 def quiz_settings(request):
     word_set_id = request.GET.get('word_set_id')
 
-    if word_set_id:
-        word_set = WordSet.objects.get(id=word_set_id)
+    if word_set_id and word_set_id != "0":
+        word_set = get_object_or_404(WordSet, id=word_set_id)
         words = word_set.words.all()
         selected_word_set = word_set.id
         selected_word_set_description = word_set.description
