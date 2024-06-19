@@ -79,7 +79,7 @@ main {
     display: flex;
     align-items: top;
     justify-content: center;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 /* Footer styles */
@@ -1092,6 +1092,255 @@ input[type="checkbox"]::before {
 }
 /* finish spinner's styles */
 
+
+/* Auth forms styles */
+/* Styles for login and signup page elements */
+
+.login-form-container h1 {
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 15px;
+    border-radius: 5px;
+    /* font-size: 2em; */
+    font-family: 'Lato', sans-serif;
+    margin:0px;
+}
+
+.login-form-container > p {
+    font-size: 1.5em;
+}
+
+.login-form-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* font-size: 2em;  */
+}
+
+.login-form-container form label {
+    font-size: 2em;
+    margin-bottom: 10px;
+    font-family: 'Caveat', cursive;
+}
+
+body > main > div > div > form > label:nth-child(6) {
+    font-size: 1.5em;
+}
+
+.login-form-container form input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.5em;
+    font-family: 'Caveat', cursive;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #333;
+}
+
+.login-form-container form input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-bottom: 20px;
+}
+
+.login-form-container form button[type="submit"] {
+    background-color: rgba(76, 175, 80, 0.9);
+    border: none;
+    padding: 10px 20px;
+    font-size: 2em;
+    font-family: 'Caveat', cursive;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.login-form-container form button[type="submit"]:hover {
+    background-color: rgba(78, 51, 90, 0.9);
+}
+
+.login-form-container a {
+    color: #333;
+    text-decoration: none;
+    /* font-size: 1.2em; */
+    margin-top: 10px;
+    font-family: 'Caveat', cursive;
+}
+
+.login-form-container span > a {
+    color: #fcf9f9;
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 5px;
+    border-radius: 5px;
+    /* font-size: 0.95em; */
+    border-radius: 40%;
+}
+
+.login-form-container a:hover {
+    text-decoration: underline;
+    color: whitesmoke;
+}
+
+.login-form-container {
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+    background-color: rgba(49, 111, 119, 0.719);
+    color: whitesmoke;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* margin-top: 10px; */
+    /* font-size: 1.3em; */
+    font-family: 'Caveat', cursive;
+    align-items: center;
+}
+
+.login-background {
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+    color: whitesmoke;
+    font-family: 'Lato', sans-serif;
+    height: fit-content;
+    background-color: rgba(39, 34, 34, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: first baseline;
+    padding: 30px;
+    padding-top: 20px;
+    border-radius: 5px;
+    min-width: 60%;
+}
+
+
+
+/* 
+.login-form-container h1 {
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 2em;
+    font-family: 'Lato', sans-serif;
+}
+
+.login-form-container p {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.login-form-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-form-container form label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    font-family: 'Caveat', cursive;
+}
+
+.login-form-container form input[type="text"],
+.login-form-container form input[type="password"],
+.login-form-container form input[type="email"],
+.login-form-container form input[type="checkbox"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.5em;
+    font-family: 'Caveat', cursive;
+    background-color: rgba(240, 240, 240, 0.9);
+    color: #333;
+}
+
+.login-form-container form input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-bottom: 20px;
+}
+
+.login-form-container form button[type="submit"] {
+    background-color: rgba(76, 175, 80, 0.9);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.5em;
+    font-family: 'Caveat', cursive;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.login-form-container form button[type="submit"]:hover {
+    background-color: rgba(78, 51, 90, 0.9);
+}
+
+.login-form-container a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-top: 10px;
+    font-family: 'Caveat', cursive;
+}
+
+.login-form-container span > a {
+    color: #fcf9f9;
+    background-color: rgba(123, 81, 141, 0.9);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.95em;
+    border-radius: 40%;
+}
+
+.login-form-container a:hover {
+    text-decoration: underline;
+    color: whitesmoke;
+}
+
+.login-form-container {
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+    background-color: rgba(49, 111, 119, 0.719);
+    color: whitesmoke;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin-top: 10px;
+    font-size: 1.5em;
+    font-family: 'Caveat', cursive;
+    align-items: center;
+}
+
+.login-background {
+    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+    color: whitesmoke;
+    font-family: 'Lato', sans-serif;
+    height: fit-content;
+    background-color: rgba(39, 34, 34, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 30px;
+    padding-top: 20px;
+    border-radius: 5px;
+    width: fit-content;
+    margin: 20px auto;
+    
+} */
+
+/* Finished styles for auth forms */
 
 @keyframes fadein {
     from {bottom: 0; opacity: 0;}

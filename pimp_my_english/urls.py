@@ -9,4 +9,6 @@ urlpatterns = [
     path('', landing, name='landing'),
     path('quizzes/', include('quizzes.urls')),
     path('wordsets/', include('wordsets.urls')),
+    path('users/', include('users.urls')),
+    # path('subscriptions/', include('subscriptions.urls')),
 ]

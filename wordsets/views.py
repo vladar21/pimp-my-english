@@ -70,7 +70,6 @@ def create_or_update_word_set(request, word_set_id=None):
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
 
 
-@login_required
 def get_word_set_words(request, word_set_id):
     if word_set_id == 0:
         words = Word.objects.values_list('text', flat=True)

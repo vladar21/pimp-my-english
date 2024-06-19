@@ -1,0 +1,35 @@
+<!-- users/templates/accounts/signup.html -->
+
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}
+    {% trans "Sign Up" %}
+{% endblock head_title %}
+{% block content %}
+<div class="login-background">
+
+    <div class="login-form-container">
+        <h1>{% trans "Sign Up" %}</h1>        
+        <p>
+            {% blocktranslate %}Already have an account? Then please <span><a href="{{ login_url }}">sign in</a></span> first.{% endblocktranslate %}
+        </p>
+        {% url 'account_signup' as signup_url %}
+        <form method="post" action="{{ signup_url }}">
+            {% csrf_token %}
+            {{ redirect_field }}
+            <label for="id_username">{% trans "Username" %}:</label>
+            {{ form.username }}
+            <label for="id_email">{% trans "Email" %}:</label>
+            {{ form.email }}
+            <label for="id_password1">{% trans "Password" %}:</label>
+            {{ form.password1 }}
+            <label for="id_password2">{% trans "Confirm Password" %}:</label>
+            {{ form.password2 }}
+            <button type="submit">{% trans "Sign Up" %}</button>
+        </form>
+       
+    </div>
+</div>
+{% endblock content %}
+

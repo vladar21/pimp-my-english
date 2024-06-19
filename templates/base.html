@@ -18,11 +18,18 @@
 <body class="body-css">
     <header class="header-css">
         <nav>
-            <ul class="menu">
-                <li><a href="/">Home</a></li>
+            <ul  class="menu">
+                <li><a href="{% url 'landing' %}">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/contact">Contact</a></li>
-                <li><a href="/login">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                    <li><a href="{% url 'quiz_settings' %}">Quiz Settings</a></li>
+                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'account_login' %}">Login</a></li>
+                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
