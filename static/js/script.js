@@ -460,13 +460,24 @@ class Quiz {
     };
     this.winnersArray.push(winnerData);
     
+    this.winnersArray.sort((a, b) => b.scores - a.scores);
+
     winnersTableBody.innerHTML = '';
     this.winnersArray.forEach((winner, index) => {
         const tr = document.createElement('tr');
+
+        if (index === 0) {
+            tr.classList.add('first-place');
+        } else if (index === 1) {
+            tr.classList.add('second-place');
+        } else if (index === 2) {
+            tr.classList.add('third-place');
+        }
+
         tr.innerHTML = `<td>${index + 1}</td><td>${winner.attempt}</td><td>${winner.scores}</td><td>${winner.time}</td>`;
         winnersTableBody.appendChild(tr);
     });
-  }
+}
 
   getAttemptString(attempt) {
     const attempts = [

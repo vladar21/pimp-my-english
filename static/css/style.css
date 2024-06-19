@@ -1103,6 +1103,10 @@ input[type="checkbox"]::before {
     to {bottom: 0; opacity: 0;}
 }
 
+/* Styles for winners table first three places */
+.first-place, .second-place, .third-place{
+    background-color: rgba(161, 156, 123, 0.5);
+}
 
 
 /* Add some styles for the table on large screens */
