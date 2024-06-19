@@ -41,12 +41,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # Example social account provider
+    'allauth.socialaccount.providers.google',
+    # Example social account provider
+    'allauth.socialaccount.providers.facebook',
     'rest_framework',
     'accounts',
     'subscriptions',
     'wordsets',
     'quizzes',
     'admin_app',
+    'users',
 ]
 
 MIDDLEWARE = [
