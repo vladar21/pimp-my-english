@@ -175,6 +175,10 @@ def submit_quiz_settings(request):
 def landing(request):
     filtered_words = request.session.get('filtered_words', [])
     word_sets = WordSet.objects.all()
+    print('filtered words ')
+    print(filtered_words)
+    print('wordsets ')
+    print(word_sets)
     context = {
         'filtered_words': filtered_words,
         'autostart': 0,
