@@ -12,11 +12,12 @@
     <div class="login-form-container">       
         <h1>Manage Subscription</h1>
         <p>Your subscription is active.</p>
+        <br>
         <form action="{% url 'manage_subscription' %}" method="post">
             {% csrf_token %}
             <button type="submit">Cancel Subscription</button>
         </form>
-      
+        <br>
        
     </div>
 

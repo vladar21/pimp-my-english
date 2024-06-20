@@ -3,15 +3,17 @@
 {% load i18n %}
 
 {% block head_title %}
-    {% trans "Subscription Error" %}
+    Subscription Error
 {% endblock head_title %}
 
 {% block content %}
 <div class="login-form-container">
-    <h1>{% trans "Subscription Error" %}</h1>
-    <p>{% trans "There was an error processing your subscription." %}</p>
+    <h1>Subscription Error</h1>
+    <p>There was an error processing your subscription:</p>
     <p>{{ error }}</p>
-    <a href="{% url 'create_subscription' %}">{% trans "Try again" %}</a>
+    <br>
+    <span><a href="{% url 'create_subscription' %}">{% trans "Try again" %}</a></span>
+    <br>
 </div>
    
 {% endblock content %}
