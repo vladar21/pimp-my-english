@@ -1,3 +1,5 @@
+# pimp_my_english/settings.py
+
 """
 Django settings for pimp_my_english project.
 

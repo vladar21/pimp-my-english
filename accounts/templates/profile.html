@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="winners-results scroll-wrapper">
+  <div class="login-form-container">
+  <h1>Profile</h1>
+  <br>
+  <span>Welcome, {{ user.email }}!</span>
+  <br>
+
+
+  
+
+      <table class="winners-table subscription-table">
+          <caption>Subscriptions</caption>
+          <thead>             
+              <tr>
+                  <th>pp</th>
+                  <th>Status</th>
+                  <th>Period</th>
+                  <th>Created</th>
+              </tr>
+          </thead>
+          <tbody>
+            {% if subscription %}
+            <tr class="highlight">
+              <td>1</td>
+              <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
+              <td>{{ subscription.subscription_period }}</td>
+              <td>{{ subscription.created_at }}</td>
+            </tr>
+            {% endif %}
+            <tr>
+              <td></td>
+              <td colspan="3"><button>Create Subscription</button><button>Manage Subscription</button></td>
+            </tr>
+           
+          </tbody>
+      </table>                
+  
+<br>
+  
+
+    <table class="winners-table wordset-table">
+      <caption>Word Sets</caption>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Words</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if wordsets %}
+        {% for wordset in wordsets %}
+          <tr class="highlight">
+            <td>{{ wordset.name }}</td>
+            <td>{{ wordset.description }}</td>
+            <td>
+              <ul>
+                {% for word in wordset.words.all %}
+                  <span class="filtered-word">{{ word.text }}</span>
+                {% endfor %}
+              </ul>
+            </td>
+            <td>
+              <span><a href="/quizzes/settings?word_set_id={{ wordset.id }}">Edit</a></span>
+            </td>
+          </tr>
+        {% endfor %}
+        {% endif %}
+        <tr>
+          <td></td>
+          <td colspan="3"><button>Create WordSet</button></td>
+        </tr>
+      </tbody>
+    </table>
+  
+  </div> 
+</div>
+{% endblock %}
+

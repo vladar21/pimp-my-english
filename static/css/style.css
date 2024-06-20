@@ -505,6 +505,7 @@ footer nav a:hover {
     padding: 10px 10px;
     border-radius: 5px;
     font-family: 'Caveat', cursive;
+    margin-top:15px;
 }
 
 .fit-content {
@@ -1401,4 +1402,55 @@ body > main > div > div > form > label:nth-child(6) {
         max-width: 50%;
         max-height: 50%;
     } */
+}
+
+.subscription-table .wordset-table {
+    width: fit-content;
+}
+
+.subscription-table td:nth-child(1) {
+    width: 5%;
+}
+
+.subscription-table td:nth-child(2) {
+    width: 15%;
+}
+
+.subscription-table td:nth-child(3) {
+    width: 15%;
+}
+
+.subscription-table td:nth-child(4) {
+    width: 65%;
+}
+
+/* .subscription-table tr {
+    background-color: rgba(0, 188, 212, 0.7);
+} */
+
+.wordset-table td:nth-child(1) {
+    width: 5%;
+}
+
+.wordset-table td:nth-child(2) {
+    width: 20%;
+}
+
+.wordset-table td:nth-child(3) {
+    width: 75%;
+}
+
+.wordset-table td:nth-child(3) {
+    width: 75%;
+}
+
+/* .wordset-table tr {
+    background-color: rgba(0, 188, 212, 0.7);
+} */
+
+body > main > div > div > span {
+    font-size: 1.7em;
+    border-radius: 30%;
+    background-color: rgba(123, 81, 141, 0.9);
+    padding:10px;
 }
