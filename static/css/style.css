@@ -1450,11 +1450,11 @@ body > main > div > div > form > label:nth-child(6) {
 }
 
 .wordset-table td:nth-child(4) {
-    width: 60%;
+    width: 55%;
 }
 
 .wordset-table td:nth-child(5) {
-    width: 5%;
+    width: 10%;
 }
 
 /* .wordset-table tr {
