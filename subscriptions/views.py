@@ -1,6 +1,5 @@
 # subscriptions/views.py
 
-# views.py
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -9,24 +8,24 @@ from .models import Subscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-
 @login_required
 def create_subscription(request):
     if request.method == 'POST':
-        
-        token = request.POST['stripeToken']
+        token = request.POST.get('stripeToken')
+        if not token:
+            return render(request, 'subscription_error.html', {'error': 'Stripe token is missing'})
+
         try:
-            # Create client
             customer = stripe.Customer.create(
                 email=request.user.email,
                 source=token
             )
-            # Create subscription
+            print('stripe price id')
+            print(settings.STRIPE_PRICE_ID)
             subscription = stripe.Subscription.create(
                 customer=customer.id,
-                items=[{'price': 'price_id'}],
+                items=[{'price': settings.STRIPE_PRICE_ID}],
             )
-            # Save subscription
             Subscription.objects.create(
                 user=request.user,
                 stripe_subscription_id=subscription.id,
@@ -37,6 +36,34 @@ def create_subscription(request):
             return render(request, 'subscription_error.html', {'error': str(e)})
     else:
         return render(request, 'create_subscription.html', {'stripe_public_key': settings.STRIPE_PUBLIC_KEY})
+
+# @login_required
+# def create_subscription(request):
+#     if request.method == 'POST':
+        
+#         token = request.POST['stripeToken']
+#         try:
+#             # Create client
+#             customer = stripe.Customer.create(
+#                 email=request.user.email,
+#                 source=token
+#             )
+#             # Create subscription
+#             subscription = stripe.Subscription.create(
+#                 customer=customer.id,
+#                 items=[{'price': 'price_id'}],
+#             )
+#             # Save subscription
+#             Subscription.objects.create(
+#                 user=request.user,
+#                 stripe_subscription_id=subscription.id,
+#                 is_active=True
+#             )
+#             return redirect('subscription_success')
+#         except stripe.error.StripeError as e:
+#             return render(request, 'subscription_error.html', {'error': str(e)})
+#     else:
+#         return render(request, 'create_subscription.html', {'stripe_public_key': settings.STRIPE_PUBLIC_KEY})
 
 
 @login_required

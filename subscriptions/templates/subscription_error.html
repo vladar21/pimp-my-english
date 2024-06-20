@@ -1,0 +1,17 @@
+<!-- subscriptions/templates/subscription_error.html -->
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}
+    {% trans "Subscription Error" %}
+{% endblock head_title %}
+
+{% block content %}
+<div class="login-form-container">
+    <h1>{% trans "Subscription Error" %}</h1>
+    <p>{% trans "There was an error processing your subscription." %}</p>
+    <p>{{ error }}</p>
+    <a href="{% url 'create_subscription' %}">{% trans "Try again" %}</a>
+</div>
+   
+{% endblock content %}
