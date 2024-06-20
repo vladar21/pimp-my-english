@@ -55,7 +55,6 @@ INSTALLED_APPS = [
     'wordsets',
     'quizzes',
     'admin_app',
-    'users',
 ]
 
 MIDDLEWARE = [
