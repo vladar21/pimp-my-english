@@ -1417,12 +1417,21 @@ body > main > div > div > form > label:nth-child(6) {
 }
 
 .subscription-table td:nth-child(3) {
-    width: 15%;
+    width: 10%;
 }
 
 .subscription-table td:nth-child(4) {
-    width: 65%;
+    width: 10%;
 }
+
+.subscription-table td:nth-child(5) {
+    width: 50%;
+}
+
+.subscription-table td:nth-child(6) {
+    width: 10%;
+}
+
 
 /* .subscription-table tr {
     background-color: rgba(0, 188, 212, 0.7);
@@ -1433,15 +1442,19 @@ body > main > div > div > form > label:nth-child(6) {
 }
 
 .wordset-table td:nth-child(2) {
+    width: 10%;
+}
+
+.wordset-table td:nth-child(3) {
     width: 20%;
 }
 
-.wordset-table td:nth-child(3) {
-    width: 75%;
+.wordset-table td:nth-child(4) {
+    width: 60%;
 }
 
-.wordset-table td:nth-child(3) {
-    width: 75%;
+.wordset-table td:nth-child(5) {
+    width: 5%;
 }
 
 /* .wordset-table tr {
@@ -1453,4 +1466,33 @@ body > main > div > div > span {
     border-radius: 30%;
     background-color: rgba(123, 81, 141, 0.9);
     padding:10px;
+}
+
+/* Common styles for btn-link */
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px 0;
+    font-size: 1em;
+    font-family: 'Caveat', cursive;
+    color: white !important;
+    background-color: rgba(76, 175, 80, 0.9);
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button-link:hover {
+    background-color: rgba(69, 160, 73, 0.9);
+}
+
+td.button-container-right {
+    text-align: right !important;
+}
+
+.profile {
+    margin-top:15px;
 }

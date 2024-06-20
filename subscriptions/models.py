@@ -4,6 +4,13 @@ from django.db import models
 
 
 class Subscription(models.Model):
+    PIMP_MY_ENGLISH_MONTHLY = 'PimpMyEnglishMonthly'
+    PIMP_MY_ENGLISH_YEARLY = 'PimpMyEnglishYearly'
+    NAME_CHOICES = [
+        (PIMP_MY_ENGLISH_MONTHLY, 'PimpMyEnglishMonthly'),
+        (PIMP_MY_ENGLISH_YEARLY, 'PimpMyEnglishYearly'),
+    ]
+    
     SUBSCRIPTION_PERIOD_CHOICES = [
         ('Monthly', 'Monthly'),
         ('Yearly', 'Yearly')
@@ -15,6 +22,7 @@ class Subscription(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     subscription_period = models.CharField(max_length=10, choices=SUBSCRIPTION_PERIOD_CHOICES, default='Monthly')
+    name = models.CharField(max_length=50, choices=NAME_CHOICES, default=PIMP_MY_ENGLISH_MONTHLY)
 
     def __str__(self):
         return self.user.username

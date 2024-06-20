@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="winners-results scroll-wrapper">
+<div class="profile scroll-wrapper">
   <div class="login-form-container">
   <h1>Profile</h1>
   <br>
@@ -14,24 +14,32 @@
           <caption>Subscriptions</caption>
           <thead>             
               <tr>
-                  <th>pp</th>
+                  <th>#</th>
+                  <th>Name</th>
                   <th>Status</th>
                   <th>Period</th>
                   <th>Created</th>
+                  <th>Action</th>
               </tr>
           </thead>
           <tbody>
-            {% if subscription %}
+            {% if subscriptions %}
+            {% for subscription in subscriptions %}
             <tr class="highlight">
-              <td>1</td>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ subscription.name }}</td>
               <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
               <td>{{ subscription.subscription_period }}</td>
               <td>{{ subscription.created_at }}</td>
+              <td><span><a href="{% url 'manage_subscription' %}">Manage</a></span></td>
             </tr>
+            {% endfor %}
             {% endif %}
             <tr>
               <td></td>
-              <td colspan="3"><button>Create Subscription</button><button>Manage Subscription</button></td>
+              <td colspan="5" class="button-container-right">
+                <a href="{% url 'create_subscription' %}" class="button-link">Create Subscription</a>
+              </td>
             </tr>
            
           </tbody>
@@ -44,6 +52,7 @@
       <caption>Word Sets</caption>
       <thead>
         <tr>
+          <th>#</th>
           <th>Name</th>
           <th>Description</th>
           <th>Words</th>
@@ -54,6 +63,7 @@
         {% if wordsets %}
         {% for wordset in wordsets %}
           <tr class="highlight">
+            <td>{{ forloop.counter }}</td>
             <td>{{ wordset.name }}</td>
             <td>{{ wordset.description }}</td>
             <td>
@@ -71,7 +81,9 @@
         {% endif %}
         <tr>
           <td></td>
-          <td colspan="3"><button>Create WordSet</button></td>
+          <td colspan="4" class="button-container-right">
+            <a href="/quizzes/settings" class="button-link">Create WordSet</a>
+          </td>
         </tr>
       </tbody>
     </table>

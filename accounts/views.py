@@ -2,18 +2,19 @@
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from subscriptions.models import Subscription, Payment
+from subscriptions.models import Subscription
 from wordsets.models import WordSet
+
 
 @login_required
 def profile(request):
     user = request.user
-    subscription = Subscription.objects.filter(user=user).first()
+    subscriptions = Subscription.objects.filter(user=user)
     wordsets = WordSet.objects.filter(created_by=user)
 
     context = {
         'user': user,
-        'subscription': subscription,
+        'subscriptions': subscriptions,
         'wordsets': wordsets,
     }
 
