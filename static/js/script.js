@@ -25,6 +25,8 @@ class Quiz {
 
       this.totalCountElementValue = 0;
 
+      this.toastContainer = document.getElementById("toast-container");
+
       this.initialize();
   }
 
@@ -489,6 +491,18 @@ class Quiz {
     return attempts[attempt - 1] || attempt;
 }
 
+showToast(message, type = 'neutral') {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<div id="desc">${message}</div>`;
+    this.toastContainer.appendChild(toast);
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+        this.toastContainer.removeChild(toast);
+    }, 6000);
+}
+
   destroy() {
     this.isQuizStart = false;
     this.filteredWords = [];
@@ -500,3 +514,38 @@ class Quiz {
     console.log("Quiz destroyed, necessary parameters reset.");
   }
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    function createToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        document.getElementById('toast-container').appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 5000);
+    }
+
+    // Function to display messages from Django messages framework
+    function displayDjangoMessages() {
+        const messages = JSON.parse(document.getElementById('django-messages').textContent);
+        messages.forEach(message => {
+            createToast(message.message, message.tags);
+        });
+    }
+
+    if (document.getElementById('django-messages')) {
+        displayDjangoMessages();
+    }
+    
+});

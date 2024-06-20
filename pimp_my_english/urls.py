@@ -10,5 +10,6 @@ urlpatterns = [
     path('quizzes/', include('quizzes.urls')),
     path('wordsets/', include('wordsets.urls')),
     path('users/', include('users.urls')),
+    path('accounts/', include('allauth.urls')),
     # path('subscriptions/', include('subscriptions.urls')),
 ]

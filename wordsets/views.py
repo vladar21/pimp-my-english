@@ -11,6 +11,7 @@ import json
 
 
 @csrf_exempt
+@login_required
 def create_or_update_word_set(request, word_set_id=None):
     if request.method == 'POST':
         try:
@@ -63,7 +64,6 @@ def create_or_update_word_set(request, word_set_id=None):
 
             return JsonResponse(response_data)
 
-            return JsonResponse({'success': True, 'message': 'WordSet created successfully.' if not word_set_id else 'WordSet updated successfully.'})
         except Exception as e:
             return JsonResponse({'success': False, 'message': str(e)})
 

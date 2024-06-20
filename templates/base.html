@@ -56,8 +56,26 @@
             </a>
         </div>
     </footer>
+  
+    <div id="toast-container" class="toast-container"></div>
+    
     <div id="autostart" data-autostart="{{ autostart }}" style="display: none;"></div>
-    <!-- <script src="{% static 'js/english-words-data.js' %}"></script> -->
+    
+    
     <script src="{% static 'js/script.js' %}"></script>
+    
+    {% if messages %}
+        <script id="django-messages" type="application/json">
+            [{% for message in messages %}
+                
+                {
+                    "message": "{{ message.message|escapejs }}",
+                    "tags": "{{ message.tags }}"
+                }{% if not forloop.last %},{% endif %}
+            {% endfor %}]
+        </script>
+    {% endif %}
+
+    
 </body>
 </html>

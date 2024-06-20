@@ -15,7 +15,7 @@ import json
 import base64
 
 
-@login_required
+# @login_required
 def quiz_settings(request):
     word_set_id = request.GET.get('word_set_id')
 
@@ -203,12 +203,6 @@ def start_quiz_with_word_set(request):
         return JsonResponse({'redirect_url': reverse('landing')})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
-
-
-@api_view(['POST'])
-def submit_quiz_result(request):
-    # Логика обработки результатов викторины
-    return Response({"message": "Quiz result submitted successfully."}, status=status.HTTP_201_CREATED)
 
 
 def check_media_data(request):

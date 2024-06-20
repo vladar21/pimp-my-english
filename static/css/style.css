@@ -1037,7 +1037,49 @@ input[type="checkbox"]::before {
 
 
 /* CSS for toast notifications */
-#toast-container {
+.toast-container {
+    position: fixed;
+    bottom: 10%;
+    right: 20px;
+    z-index: 1050;  /* Make sure this is higher than any other z-index on the page */
+}
+
+.toast {
+    display: none;
+    min-width: 200px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2em;
+    color: #fff;
+    background-color: #333;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.toast.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success, .alert-success {
+    background-color: #4CAF50;
+}
+
+.toast.error, .alert-error {
+    background-color: #f44336;
+}
+
+.toast.info .alert-info {
+    background-color: #2196F3;
+}
+
+.toast.warning .alert-warning {
+    background-color: #ff9800;
+}
+/* #toast-container {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -1069,7 +1111,7 @@ input[type="checkbox"]::before {
 .toast.neutral {
     background-color: #2196F3;
     color: #fff;
-}
+} */
 
 /* Spinner's styles */
 .spinner {
@@ -1107,6 +1149,7 @@ input[type="checkbox"]::before {
 
 .login-form-container > p {
     font-size: 1.5em;
+    margin-bottom: 0px;
 }
 
 .login-form-container form {
@@ -1191,8 +1234,10 @@ body > main > div > div > form > label:nth-child(6) {
     border: 1px solid white;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    /* margin-top: 10px; */
+    max-width: fit-content;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: fit-content;
     /* font-size: 1.3em; */
     font-family: 'Caveat', cursive;
     align-items: center;
@@ -1210,10 +1255,10 @@ body > main > div > div > form > label:nth-child(6) {
     flex-direction: column;
     align-items: center;
     justify-content: first baseline;
-    padding: 30px;
-    padding-top: 20px;
+    padding: 20px;
+    padding-top: 15px;
     border-radius: 5px;
-    min-width: 60%;
+    min-width: 40%;
 }
 
 
