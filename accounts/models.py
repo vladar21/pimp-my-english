@@ -1,5 +1,4 @@
 # accounts/models.py
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -11,7 +10,6 @@ class UserRoles(models.TextChoices):
 
 class User(AbstractUser):
     is_subscriber = models.BooleanField(default=False)
-    subscription = models.ForeignKey('subscriptions.Subscription', on_delete=models.SET_NULL, null=True, blank=True)
     email_verified = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=UserRoles.choices, default=UserRoles.GUEST)
     created_at = models.DateTimeField(auto_now_add=True)

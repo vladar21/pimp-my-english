@@ -1,0 +1,20 @@
+<!-- subscriptions/templates/subscriptions/subscription_success.html -->
+
+{% extends "base.html" %}
+
+{% block head_title %}
+    Subscription Success
+{% endblock head_title %}
+
+{% block content %}
+
+
+    <div class="login-form-container">
+       
+        <h1>Subscription Successful!</h1>
+        <p>Thank you for subscribing. Your subscription is now active.</p>
+        <a href="{% url 'profile' %}">Go to your profile</a>
+      
+    </div>
+
+{% endblock content %}

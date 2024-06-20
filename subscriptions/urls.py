@@ -1,10 +1,10 @@
+# subscriptions/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('subscribe/', views.subscribe, name='subscribe'),
-    path('manage/', views.manage, name='manage'),
-    path('cancel/', views.cancel, name='cancel'),
-    path('payments/', views.payments, name='payments'),
+    path('create/', views.create_subscription, name='create_subscription'),
+    path('manage/', views.manage_subscription, name='manage_subscription'),
+    path('success/', views.subscription_success, name='subscription_success'),
+    path('canceled/', views.subscription_canceled, name='subscription_canceled'),
 ]

@@ -1,0 +1,20 @@
+<!-- subscriptions/templates/subscriptions/subscription_canceled.html -->
+
+{% extends "base.html" %}
+
+{% block head_title %}
+    Subscription Canceled
+{% endblock head_title %}
+
+{% block content %}
+
+
+    <div class="login-form-container">
+       
+        <h1>Subscription Canceled</h1>
+        <p>Your subscription has been canceled. We're sorry to see you go.</p>
+        <a href="{% url 'create_subscription' %}">Subscribe again</a>
+      
+    </div>
+
+{% endblock content %}

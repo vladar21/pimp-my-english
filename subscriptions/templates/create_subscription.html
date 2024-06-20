@@ -1,0 +1,28 @@
+<!-- subscriptions/templates/subscriptions/create_subscription.html -->
+
+{% extends "base.html" %}
+
+{% block head_title %}
+    Create Subscription
+{% endblock head_title %}
+
+{% block content %}
+
+
+    <div class="login-form-container">
+       
+        <h1>Create Subscription</h1>
+        <form action="{% url 'create_subscription' %}" method="post">
+            {% csrf_token %}
+            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{ stripe_public_key }}"
+                    data-description="Subscription payment"
+                    data-amount="999"
+                    data-locale="auto">
+            </script>
+        </form>
+      
+       
+    </div>
+
+{% endblock content %}

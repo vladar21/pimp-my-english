@@ -9,11 +9,21 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from decouple import config
 from django.contrib.messages import constants as messages
 import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+# Stripe settings
+STRIPE_CURRENCY = 'usd'
+STRIPE_WH_SECRET = os.getenv('STRIPE_WH_SECRET', '')
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -66,6 +76,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'subscriptions.middleware.SubscriptionMiddleware',
 ]
 
 AUTHENTICATION_BACKENDS = (

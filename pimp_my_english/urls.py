@@ -11,5 +11,5 @@ urlpatterns = [
     path('wordsets/', include('wordsets.urls')),
     path('accounts/', include('allauth.urls')),
     path('user/', include('accounts.urls', namespace='accounts')),
-    # path('subscriptions/', include('subscriptions.urls')),
+    path('subscriptions/', include('subscriptions.urls')),
 ]
