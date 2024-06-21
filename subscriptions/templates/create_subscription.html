@@ -12,9 +12,20 @@
         <h1>Create Subscription</h1>
         <form id="subscription-form" action="{% url 'create_subscription' %}" method="post">
             {% csrf_token %}
+            
             <div class="form-row">
+                <label for="subscription-period">
+                    Choose your subscription:
+                </label><br>
+                {% for option in subscription_options %}
+                    <input type="radio" id="{{ option.id }}" name="subscription_period" value="{{ option.id }}" {% if forloop.first %}checked{% endif %}>
+                    <label for="{{ option.id }}" class="highlight">{{ option.name }} - €{{ option.price }} / {{ option.interval }}</label><br>
+                {% endfor %}
+            </div>
+           
+            <div class="form-row margin-top-15">
                 <label for="card-element">
-                    Credit or debit card
+                    <span>Credit or debit card:</span>
                 </label>
                 <div id="card-element">
                     <!-- A Stripe Element will be inserted here. -->

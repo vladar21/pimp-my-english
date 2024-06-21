@@ -500,7 +500,7 @@ showToast(message, type = 'neutral') {
     setTimeout(() => {
         toast.classList.remove("show");
         this.toastContainer.removeChild(toast);
-    }, 6000);
+    }, 15000);
 }
 
   destroy() {
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(() => {
                 toast.remove();
             }, 300);
-        }, 5000);
+        }, 15000);
     }
 
     // Function to display messages from Django messages framework

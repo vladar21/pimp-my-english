@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load subscription_filters %}
 {% block content %}
 <div class="profile scroll-wrapper">
   <div class="login-form-container">
@@ -19,29 +20,30 @@
                   <th>Status</th>
                   <th>Period</th>
                   <th>Created</th>
-                  <th>Action</th>
               </tr>
           </thead>
           <tbody>
             {% if subscriptions %}
-            {% for subscription in subscriptions %}
-            <tr class="highlight">
-              <td>{{ forloop.counter }}</td>
-              <td>{{ subscription.name }}</td>
-              <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
-              <td>{{ subscription.subscription_period }}</td>
-              <td>{{ subscription.created_at }}</td>
-              <td><span><a href="{% url 'manage_subscription' %}">Manage</a></span></td>
-            </tr>
-            {% endfor %}
+              {% for subscription in subscriptions %}
+                <tr class="highlight">
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ subscription.name }}</td>
+                  <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
+                  <td>{{ subscription.subscription_period }}</td>
+                  <td>{{ subscription.created_at }}</td>
+                </tr>
+              {% endfor %}
             {% endif %}
             <tr>
               <td></td>
-              <td colspan="5" class="button-container-right">
-                <a href="{% url 'create_subscription' %}" class="button-link">Create Subscription</a>
+              <td colspan="4" class="button-container-right">
+                {% if subscriptions|any_active %}
+                  <a href="{% url 'manage_subscription' %}" class="button-link">Manage Active Subscription</a>
+                {% else %}
+                  <a href="{% url 'create_subscription' %}" class="button-link">Create Subscription</a>
+                {% endif %}
               </td>
             </tr>
-           
           </tbody>
       </table>                
   
