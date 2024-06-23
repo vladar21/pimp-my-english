@@ -44,111 +44,12 @@ body {
     background-attachment: fixed;
 }
 
-/* header {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    text-align: center;
-} */
-
-/* header nav {
-    display: flex;
-    justify-content: center;
-} */
-
-/* header nav ul {
-    display: flex;
-    list-style: none;
-} */
-
-/* header nav ul li {
-    margin: 0 15px;
-} */
-
-/* header nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-} */
-
-/* header nav a:hover {
-    text-decoration: underline;
-} */
-
 main {
     flex: 1;
     display: flex;
-    align-items: top;
+    align-items: self-start;
     justify-content: center;
     /* padding: 20px; */
-}
-
-/* Footer styles */
-footer {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-footer p {
-    margin-bottom: 10px;
-}
-
-footer nav {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-footer nav a {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-footer nav a:hover {
-    text-decoration: underline;
-}
-
-.social-icons {
-    display: flex;
-    gap: 30px; /* Увеличиваем промежуток между иконками */
-    position: relative;
-}
-
-.social-icon {
-    color: white;
-    font-size: 1.5rem;
-    transition: color 0.3s;
-    position: relative;
-}
-
-.social-icon::after {
-    content: attr(title);
-    display: block;
-    position: absolute;
-    bottom: 35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-}
-
-.social-icon:hover {
-    color: #888;
-}
-
-.social-icon:hover::after {
-    opacity: 1;
 }
 
 /* Quiz styles */
@@ -163,7 +64,7 @@ footer nav a:hover {
     padding: 10px;
     padding-top: 5px;
     border-radius: 5px;
-    margin-top:100px;
+    margin-top:10px;
 }
 
 /* Quiz Title */
@@ -1204,8 +1105,8 @@ body > main > div > div > form > label:nth-child(6) {
     display: flex;
     flex-direction: column;
     max-width: fit-content;
-    margin-top: 100px;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    /* margin-bottom: 10px; */
     height: fit-content;
     /* font-size: 1.3em; */
     font-family: 'Caveat', cursive;
@@ -1515,15 +1416,18 @@ td.button-container-right {
     align-items: center;
     background-color: rgba(39, 34, 34, 0.7);
     padding: 1rem 0;
-    width: 98%;
+    width: 100%;
+    max-width: 1550px;
     z-index: 100;
     box-shadow: 0 2px 2px #3a3a3a;
-    position: fixed;
+    /* position: fixed; */
+    margin: 0 auto;
 }
 
 .logo-container {
     display: flex;
     align-items: center;
+    margin-left: 10px;
 }
 
 .logo {
@@ -1536,6 +1440,7 @@ td.button-container-right {
     display: flex;
     align-items: center;
     transition: height 0.3s ease;
+    margin-right: 10px;
 }
 
 .menu {
@@ -1574,7 +1479,7 @@ td.button-container-right {
     .nav-css {
         flex-direction: column;
         position: absolute;
-        top: 100%;
+        top: 70px;
         right: 0;
         width: fit-content;
         height: 0;
@@ -1606,5 +1511,186 @@ td.button-container-right {
 }
 
 .rules {
-    margin-top:100px !important;
+    margin-top:10px !important;
 }
+
+/* Footer styles */
+.footer-css {
+    background-color: rgba(39, 34, 34, 0.7);
+    /* padding: 1rem 0; */
+    width: 100%;
+    max-width: 1550px;
+    box-shadow: 0 -2px 2px #3a3a3a;
+    color: white;
+    margin: 0 auto;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.footer-item {
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+.footer-item p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.footer-nav a span {
+    margin-left: 0.5rem;
+}
+
+.footer-nav a:hover {
+    color: #00bcd4;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.social-icon {
+    color: white;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #00bcd4;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        /* flex-direction: column; */
+        justify-content: space-between;
+        text-align: center;
+        padding:0px;
+        padding-bottom:10px;
+    }
+
+    .footer-item p {
+        justify-content: center;
+        text-align: center;
+        margin-left:10px;
+    }
+
+    .footer-nav a span,
+    .footer-item span {
+        display: none;
+    }
+
+    .footer-nav a,
+    .social-icon {
+        font-size: 1.5rem;
+        justify-content: center;
+    }
+
+    .footer-nav a {
+        width: auto;
+    }
+
+    .footer-item p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    body > footer > div > div.footer-item.social-icons > a:nth-child(3) {
+        margin-right:10px;
+    }
+}
+
+@media (min-width: 769px) {
+    .social-icons .social-icon {
+        display: inline-flex;
+    }
+}
+
+
+
+/* .footer-css {
+    background-color: rgba(39, 34, 34, 0.7);
+    width: 100%;
+    max-width: 1550px;
+    box-shadow: 0 -2px 2px #3a3a3a;
+    margin: 0 auto;
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.footer-item {
+    margin: 0.5rem 0;
+}
+
+.footer-nav {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+.footer-nav a:hover {
+    color: #00bcd4;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    color: white;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #00bcd4;
+}
+
+@media (min-width: 768px) {
+    .footer-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .footer-item {
+        margin: 0 1rem;
+    }
+} */

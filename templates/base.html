@@ -49,25 +49,38 @@
         {% block content %}
         {% endblock %}
     </main>
-    <footer>
-        <p>&copy; 2024 &copy; 2024 Vladyslav Rastvorov. All rights reserved.</p>
-        <nav>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms and Conditions</a>
-            <a href="#">Newsletters</a>
-        </nav>
-        <div class="social-icons">
-            <a href="#" class="social-icon" title="Facebook">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="social-icon" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-icon" title="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
+    <footer class="footer-css">
+        <div class="footer-container">
+            <div class="footer-item copyright">
+                <p><i class="fas fa-copyright"></i>&nbsp;2024 Vladyslav Rastvorov</p>
+            </div>
+            <nav class="footer-item footer-nav">
+                <a href="#" title="Privacy Policy">
+                    <i class="fas fa-user-secret"></i>
+                    <span>Privacy Policy</span>
+                </a>
+                <a href="#" title="Terms and Conditions">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Terms and Conditions</span>
+                </a>
+                <a href="#" title="Newsletters">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <span>Newsletters</span>
+                </a>
+            </nav>
+            <div class="footer-item social-icons">
+                <a href="#" class="social-icon" title="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon" title="LinkedIn">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </div>
         </div>
-    </footer>
+    </footer>   
   
     <div id="toast-container" class="toast-container"></div>
     
