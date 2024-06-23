@@ -1633,65 +1633,33 @@ td.button-container-right {
 }
 
 
-
-/* .footer-css {
-    background-color: rgba(39, 34, 34, 0.7);
-    width: 100%;
-    max-width: 1550px;
-    box-shadow: 0 -2px 2px #3a3a3a;
-    margin: 0 auto;
-}
-
-.footer-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.footer-item {
-    margin: 0.5rem 0;
-}
-
-.footer-nav {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0;
-}
-
-.footer-nav a {
-    text-decoration: none;
+/* Common styles for content pages like Privacy Policy and Terms and Conditions */
+.content-container {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 2rem auto;
     color: white;
-    transition: color 0.3s;
 }
 
-.footer-nav a:hover {
-    color: #00bcd4;
+.content-header {
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
-.social-icons {
-    display: flex;
-    gap: 1rem;
+.content-title {
+    font-size: 2rem;
+    font-family: 'Lato', sans-serif;
 }
 
-.social-icon {
-    color: white;
-    transition: color 0.3s;
+.content-body h2 {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    font-family: 'Lato', sans-serif;
 }
 
-.social-icon:hover {
-    color: #00bcd4;
+.content-body p {
+    margin-top: 1rem;
+    line-height: 1.6;
 }
-
-@media (min-width: 768px) {
-    .footer-container {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .footer-item {
-        margin: 0 1rem;
-    }
-} */
