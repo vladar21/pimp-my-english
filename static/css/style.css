@@ -1416,7 +1416,7 @@ td.button-container-right {
     justify-content: space-between;
     align-items: center;
     background-color: rgba(39, 34, 34, 0.7);
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     width: 100%;
     max-width: 1550px;
     z-index: 100;
@@ -1432,7 +1432,7 @@ td.button-container-right {
 }
 
 .logo {
-    height: 50px;
+    height: 70px;
     width: auto;
     border-radius: 50%;
 }
