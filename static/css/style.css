@@ -44,35 +44,35 @@ body {
     background-attachment: fixed;
 }
 
-header {
+/* header {
     background-color: rgba(0, 0, 0, 0.7);
     padding: 10px;
     text-align: center;
-}
+} */
 
-header nav {
+/* header nav {
     display: flex;
     justify-content: center;
-}
+} */
 
-header nav ul {
+/* header nav ul {
     display: flex;
     list-style: none;
-}
+} */
 
-header nav ul li {
+/* header nav ul li {
     margin: 0 15px;
-}
+} */
 
-header nav a {
+/* header nav a {
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
-}
+} */
 
-header nav a:hover {
+/* header nav a:hover {
     text-decoration: underline;
-}
+} */
 
 main {
     flex: 1;
@@ -163,6 +163,7 @@ footer nav a:hover {
     padding: 10px;
     padding-top: 5px;
     border-radius: 5px;
+    margin-top:100px;
 }
 
 /* Quiz Title */
@@ -1404,6 +1405,8 @@ body > main > div > div > form > label:nth-child(6) {
     } */
 }
 
+
+/* Profile styles */
 .subscription-table .wordset-table {
     width: fit-content;
 }
@@ -1428,12 +1431,6 @@ body > main > div > div > form > label:nth-child(6) {
     width: 40%;
 }
 
-
-
-/* .subscription-table tr {
-    background-color: rgba(0, 188, 212, 0.7);
-} */
-
 .wordset-table td:nth-child(1) {
     width: 5%;
 }
@@ -1453,10 +1450,6 @@ body > main > div > div > form > label:nth-child(6) {
 .wordset-table td:nth-child(5) {
     width: 10%;
 }
-
-/* .wordset-table tr {
-    background-color: rgba(0, 188, 212, 0.7);
-} */
 
 body > main > div > div > span {
     font-size: 1.7em;
@@ -1513,4 +1506,101 @@ td.button-container-right {
 
 .margin-top-15 {
     margin-top: 15px;
+}
+
+/* Header styles */
+.header-css {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(39, 34, 34, 0.7);
+    padding: 1rem 0;
+    width: 98%;
+    z-index: 100;
+    box-shadow: 0 2px 2px #3a3a3a;
+    position: fixed;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    height: 50px;
+    width: auto;
+    border-radius: 50%;
+}
+
+.nav-css {
+    display: flex;
+    align-items: center;
+    transition: height 0.3s ease;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    margin: 0;
+    padding: 15px;
+    background-color: rgba(123, 81, 141, 0.9);
+}
+
+.menu li a {
+    text-decoration: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s;
+}
+
+.menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+.nav-toggle-checkbox {
+    display: none;
+}
+
+.nav-toggle-label > i {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .nav-css {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: fit-content;
+        height: 0;
+        overflow: hidden;
+    }
+
+    .nav-open {
+        height: auto;
+    }
+
+    .menu {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .menu li a {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .nav-toggle-label {
+        display: block;
+        margin-right: 0.5em;
+    }
+
+    .nav-toggle-label > i {
+        display: block;
+    }
 }

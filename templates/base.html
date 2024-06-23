@@ -13,12 +13,24 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 </head>
 <body class="body-css">
     <header class="header-css">
-        <nav>
-            <ul  class="menu">
+        <div class="logo-container">
+            <a href="{% url 'landing' %}">
+                <img class="logo" src="{% static 'images/pme_logo.webp' %}" alt="Logo image">
+            </a>
+        </div>
+    
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+        <label for="nav-toggle" class="nav-toggle-label">
+            <i class="fa fa-bars"></i>
+        </label>
+    
+        <nav class="nav-css" id="nav-menu">
+            <ul id="menu" class="menu">
                 <li><a href="{% url 'landing' %}">Home</a></li>
                 <li><a href="/about">About</a></li>
                 <li><a href="/contact">Contact</a></li>
@@ -38,7 +50,7 @@
         {% endblock %}
     </main>
     <footer>
-        <p>&copy; 2024 Pimp My English. All rights reserved.</p>
+        <p>&copy; 2024 &copy; 2024 Vladyslav Rastvorov. All rights reserved.</p>
         <nav>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms and Conditions</a>
@@ -76,6 +88,22 @@
         </script>
     {% endif %}
 
-    
+ <!-- Font Awesome kit -->
+ <script src="https://kit.fontawesome.com/8617a92655.js" crossorigin="anonymous"></script>
+ <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        navToggle.addEventListener('change', function () {
+            if (navToggle.checked) {
+                navMenu.classList.add('nav-open');
+            } else {
+                navMenu.classList.remove('nav-open');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
