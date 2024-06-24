@@ -38,7 +38,8 @@
                 <li><a href="/contact">Contact</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
-                    <li><a href="{% url 'quiz_settings' %}">Quiz Settings</a></li>
+                    <li><a href="{% url 'landing' %}">Quiz</a></li>
+                    <li><a href="{% url 'quiz_settings' %}">Quiz Maker</a></li>
                     <li><a href="{% url 'account_logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'account_login' %}">Login</a></li>
