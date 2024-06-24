@@ -13,5 +13,5 @@ urlpatterns = [
     path('update_quiz_settings/', update_quiz_settings, name='update_quiz_settings'),
 
     path('check-media-data/', views.check_media_data, name='check_media_data'),
-    path('landing/', landing, name='landing'),
+    path('game/', landing, name='landing'),
 ]

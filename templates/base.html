@@ -14,12 +14,15 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
 
-
+    <script type="text/javascript">
+        const subscribeUrl = "{% url 'subscribe_newsletter' %}";
+    </script>
+    
 </head>
 <body class="body-css">
     <header class="header-css">
         <div class="logo-container">
-            <a href="{% url 'landing' %}">
+            <a href="/">
                 <img class="logo" src="{% static 'images/pme_logo.webp' %}" alt="Logo image">
             </a>
         </div>
@@ -31,8 +34,7 @@
     
         <nav class="nav-css" id="nav-menu">
             <ul id="menu" class="menu">
-                <li><a href="{% url 'landing' %}">Home</a></li>
-                <li><a href="/about">About</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/contact">Contact</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
@@ -63,7 +65,7 @@
                     <i class="fas fa-file-contract"></i>
                     <span>Terms and Conditions</span>
                 </a>
-                <a href="#" title="Newsletters">
+                <a href="#" title="Newsletters" id="newsletter-link">
                     <i class="fas fa-envelope-open-text"></i>
                     <span>Newsletters</span>
                 </a>
@@ -85,6 +87,18 @@
     <div id="toast-container" class="toast-container"></div>
     
     <div id="autostart" data-autostart="{{ autostart }}" style="display: none;"></div>
+
+    <div id="newsletter-modal" class="modal-nl">
+        <div class="modal-nl-content">
+            <span class="close-nl">&times;</span>
+            <form id="subscribe-form">
+                {% csrf_token %}
+                <h2>Subscribe to our Newsletter</h2>
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </div>
     
     
     <script src="{% static 'js/script.js' %}"></script>
@@ -103,20 +117,6 @@
 
  <!-- Font Awesome kit -->
  <script src="https://kit.fontawesome.com/8617a92655.js" crossorigin="anonymous"></script>
- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const navToggle = document.getElementById('nav-toggle');
-        const navMenu = document.getElementById('nav-menu');
-
-        navToggle.addEventListener('change', function () {
-            if (navToggle.checked) {
-                navMenu.classList.add('nav-open');
-            } else {
-                navMenu.classList.remove('nav-open');
-            }
-        });
-    });
-</script>
-
+ 
 </body>
 </html>

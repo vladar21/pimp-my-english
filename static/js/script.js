@@ -547,5 +547,61 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('django-messages')) {
         displayDjangoMessages();
     }
+
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const newsletterLink = document.getElementById('newsletter-link');
+    const modal = document.getElementById('newsletter-modal');
+    const closeModal = document.getElementsByClassName('close-nl')[0];
+
+    navToggle.addEventListener('change', function () {
+        if (navToggle.checked) {
+            navMenu.classList.add('nav-open');
+        } else {
+            navMenu.classList.remove('nav-open');
+        }
+    });
+
+    newsletterLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        modal.style.display = 'block';
+    });
+
+    closeModal.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.getElementById('subscribe-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(this);
+
+        fetch(subscribeUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                createToast(data.error, 'error');
+            } else {
+                createToast(data.message, 'success');
+            }
+            modal.style.display = 'none';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            createToast('An unexpected error occurred. Please try again later.', 'error');
+            modal.style.display = 'none';
+        });
+    });
     
 });

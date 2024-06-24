@@ -1663,3 +1663,67 @@ td.button-container-right {
     margin-top: 1rem;
     line-height: 1.6;
 }
+
+/* Newsletters styles */
+.modal-nl {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    bottom: 20px;
+    width: 100%;
+    height: auto;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-nl-content {
+    /* background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    border-radius: 10px; */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 300px;
+    margin: 1rem auto;
+    color: white;
+}
+
+.close-nl {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.close-nl:hover,
+.close-nl:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-nl-content h2 {
+    margin-bottom: 20px;
+}
+
+.modal-nl-content input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-nl-content button {
+    padding: 10px 20px;
+}
