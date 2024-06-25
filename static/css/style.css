@@ -1113,6 +1113,7 @@ body > main > div > div > form > label:nth-child(6) {
     display: flex;
     flex-direction: column;
     margin: 0 auto;
+    max-width:600px;
     /* margin-bottom: 10px; */
     height: fit-content;
     /* font-size: 1.3em; */
