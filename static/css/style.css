@@ -1386,9 +1386,9 @@ td.button-container-right {
     text-align: right !important;
 }
 
-/* .profile {
-    margin-top:5px;
-} */
+.profile {
+    margin-bottom:0.5rem;
+}
 
 #subscription-form {
     margin-top: 15px;
@@ -1525,6 +1525,7 @@ td.button-container-right {
     box-shadow: 0 -2px 2px #3a3a3a;
     color: white;
     margin: 0 auto;
+    margin-bottom: 0.5rem;
 }
 
 .footer-container {
@@ -1743,6 +1744,7 @@ td.button-container-right {
     border-radius: 5px;
     font-family: 'Caveat', cursive;
     margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .home-fit-content {
