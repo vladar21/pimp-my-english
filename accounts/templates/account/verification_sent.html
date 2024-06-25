@@ -1,14 +1,15 @@
-{% extends "account/base_entrance.html" %}
-{% load i18n %}
-{% load allauth %}
+<!-- accounts/templates/account/verification_sent.html -->
+
+{% extends "base.html" %}
+{% load allauth account %}
 {% block head_title %}
-    {% trans "Verify Your Email Address" %}
+    Verify Your Email Address
 {% endblock head_title %}
 {% block content %}
-    {% element h1 %}
-        {% trans "Verify Your Email Address" %}
-    {% endelement %}
-    {% element p %}
-        {% blocktrans %}We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.{% endblocktrans %}
-    {% endelement %}
-{% endblock content %}
+
+<div class="login-form-container">
+    <h1>Verify Your Email Address</h1>
+</div>
+<p>
+    We have sent an email to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification email in your main inbox, check your spam folder. Please contact us if you do not receive the verification email within a few minutes.
+</p>
