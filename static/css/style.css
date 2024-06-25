@@ -24,10 +24,12 @@ html, body {
 
 .scroll-wrapper {
     /* height: 70vh; */
-    height: 90%;
+    height:92vh;
     overflow-y: scroll; /* Enable vertical scrolling */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
+    margin:0 auto;
+    padding:0;
 }
 
 .scroll-wrapper::-webkit-scrollbar {
