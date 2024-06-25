@@ -24,7 +24,7 @@ html, body {
 
 .scroll-wrapper {
     /* height: 70vh; */
-    height:92vh;
+    height:90vh;
     overflow-y: scroll; /* Enable vertical scrolling */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
