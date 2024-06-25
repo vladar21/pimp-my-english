@@ -548,6 +548,18 @@ document.addEventListener('DOMContentLoaded', function () {
         displayDjangoMessages();
     }
 
+    // Function to display form errors
+    function displayFormErrors() {
+        const errorLists = document.querySelectorAll('.errorlist.nonfield li');
+        errorLists.forEach(error => {
+            createToast(error.textContent, 'error');
+        });
+    }
+
+    if (document.querySelectorAll('.errorlist.nonfield li')) {
+        displayFormErrors();
+    }
+
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     const newsletterLink = document.getElementById('newsletter-link');

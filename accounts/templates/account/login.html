@@ -1,0 +1,33 @@
+<!-- accounts/templates/account/login.html -->
+
+{% extends "base.html" %}
+{% load allauth account %}
+{% block head_title %}
+    Sign In
+{% endblock head_title %}
+{% block content %}
+
+
+    <div class="login-form-container">
+        <h1>Sign In</h1>
+       
+        <p>
+            If you have not created an account yet, then please <span><a href="{% url 'account_signup' %}">sign up</a></span> first.
+        </p>
+        {% url 'account_login' as login_url %}
+        <form method="post" action="{% url 'account_login' %}">
+            {% csrf_token %}
+            {{ redirect_field }}
+            {{ form.non_field_errors }}
+            <label for="id_login">Email:</label>
+            {{ form.login }}
+            <label for="id_password">Password:</label>
+            {{ form.password }}
+            <label for="id_remember">Remember Me &nbsp; {{ form.remember }}</label>
+            <button type="submit">Sign In</button>
+        </form>
+      
+       
+    </div>
+
+{% endblock content %}

@@ -1,21 +1,21 @@
-<!-- templates/accounts/logout.html -->
+<!-- accounts/templates/account/logout.html -->
 
 {% extends "base.html" %}
-{% load i18n %}
+
 {% load allauth account %}
 {% block head_title %}
-    {% trans "Sign Out" %}
+    Sign Out
 {% endblock head_title %}
 {% block content %}
 
 
     <div class="login-form-container">
-        <h1>{% trans "Sign Out" %}</h1>
-        <p>{% trans "Are you sure you want to sign out?" %}</p>
+        <h1>Sign Out</h1>
+        <p>Are you sure you want to sign out?</p>
         {% url 'account_logout' as logout_url %}
         <form method="post" action="{{ logout_url }}">
             {% csrf_token %}
-            <button type="submit">{% trans "Sign Out" %}</button>
+            <button type="submit">Sign Out</button>
         </form>
     </div>
 

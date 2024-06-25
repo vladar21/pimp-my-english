@@ -1,0 +1,33 @@
+<!-- accounts/templates/account/signup.html -->
+
+{% extends "base.html" %}
+{% load allauth account %}
+{% block head_title %}
+    Sign Up
+{% endblock head_title %}
+{% block content %}
+
+    <div class="login-form-container">
+        <h1>Sign Up</h1>        
+        <p>
+            Already have an account? Then please <span><a href="{% url 'account_login' %}">sign in</a></span> first.
+        </p>
+        {% url 'account_signup' as signup_url %}
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            {{ redirect_field }}
+            <label for="id_username">Username:</label>
+            {{ form.username }}
+            <label for="id_email">"Email":</label>
+            {{ form.email }}
+            <label for="id_password1">Password:</label>
+            {{ form.password1 }}
+            <label for="id_password2">Confirm Password:</label>
+            {{ form.password2 }}
+            <button type="submit">Sign Up</button>
+        </form>
+       
+    </div>
+
+{% endblock content %}
+
