@@ -1535,7 +1535,7 @@ td.button-container-right {
     align-items: center;
     justify-content: space-around;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 2rem 0;
 }
 
 .footer-item {
