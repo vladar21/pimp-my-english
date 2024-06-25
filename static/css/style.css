@@ -24,7 +24,7 @@ html, body {
 
 .scroll-wrapper {
     /* height: 70vh; */
-    height: fit-content;
+    height: 90%;
     overflow-y: scroll; /* Enable vertical scrolling */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -1525,7 +1525,7 @@ td.button-container-right {
     box-shadow: 0 -2px 2px #3a3a3a;
     color: white;
     margin: 0 auto;
-    /* margin-bottom: 0.5rem; */
+    margin-bottom: 0.5rem;
 }
 
 .footer-container {
@@ -1534,8 +1534,7 @@ td.button-container-right {
     align-items: center;
     justify-content: space-around;
     margin: 0 auto;
-    margin-bottom: 0.5rem;
-    /* padding: 1rem; */
+    padding: 1rem;
 }
 
 .footer-item {
@@ -1594,7 +1593,9 @@ td.button-container-right {
         justify-content: space-between;
         text-align: center;
         padding:0px;
-        padding-bottom:10px;
+        /* padding-bottom:10px; */
+        margin:0;
+        margin-bottom:10px;
     }
 
     .footer-item p {
@@ -1610,7 +1611,7 @@ td.button-container-right {
 
     .footer-nav a,
     .social-icon {
-        font-size: 1rem;
+        font-size: 1.1rem;
         justify-content: center;
     }
 
