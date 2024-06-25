@@ -1610,7 +1610,7 @@ td.button-container-right {
 
     .footer-nav a,
     .social-icon {
-        font-size: 1.3rem;
+        font-size: 1rem;
         justify-content: center;
     }
 
@@ -1631,7 +1631,7 @@ td.button-container-right {
 
 @media (min-width: 769px) {
     .social-icons .social-icon {
-        display: flex;
+        display: inline-flex;
     }
 }
 
