@@ -1627,6 +1627,10 @@ td.button-container-right {
         justify-content: center;
     }
 
+    main {
+        padding-bottom: 36px;
+    }
+
 }
 
 /* Common styles for content pages like Privacy Policy and Terms and Conditions */
