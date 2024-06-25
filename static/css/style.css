@@ -19,39 +19,43 @@
 
 html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden; /* Hide scrollbar for body */
-}
-
-.scroll-wrapper {
-    height: 70vh;
-    overflow-y: scroll; /* Enable vertical scrolling */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-    margin:0;
-    padding:0;
-}
-
-.scroll-wrapper::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in WebKit browsers */
 }
 
 /* General styles */
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    color: whitesmoke;
     font-family: 'Lato', sans-serif;
     background: black url('../images/Tower-Bridge.webp') no-repeat center center/cover;
     background-attachment: fixed;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 main {
     flex: 1;
     display: flex;
-    align-items: self-start;
+    align-items: center;
     justify-content: center;
     padding-bottom: 20px;
+}
+
+.scroll-wrapper {
+    width: 100%;
+    overflow-y: auto; /* Enable vertical scrolling */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.scroll-wrapper::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit browsers */
 }
 
 
@@ -1522,7 +1526,6 @@ td.button-container-right {
     background-color: rgba(39, 34, 34, 0.7);
     padding: 1rem 0;
     width: 100%;
-    max-width: 1550px;
     box-shadow: 0 -2px 2px #3a3a3a;
     color: white;
     margin: 0 auto;
@@ -1589,7 +1592,7 @@ td.button-container-right {
 
 @media (max-width: 768px) {
     .footer-container {
-        /* flex-direction: column; */
+        flex-direction: column;
         text-align: center;
     }
 
@@ -1620,7 +1623,6 @@ td.button-container-right {
         justify-content: center;
     }
 }
-
 
 /* Common styles for content pages like Privacy Policy and Terms and Conditions */
 .content-container {

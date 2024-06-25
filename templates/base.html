@@ -19,73 +19,76 @@
     </script>
     
 </head>
-<body class="body-css">
-    <header class="header-css">
-        <div class="logo-container">
-            <a href="/">
-                <img class="logo" src="{% static 'images/pme_logo.webp' %}" alt="Logo image">
-            </a>
-        </div>
-    
-        <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
-        <label for="nav-toggle" class="nav-toggle-label">
-            <i class="fa fa-bars"></i>
-        </label>
-    
-        <nav class="nav-css" id="nav-menu">
-            <ul id="menu" class="menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/contact">Contact</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
-                    <li><a href="{% url 'landing' %}">Quiz</a></li>
-                    <li><a href="{% url 'quiz_settings' %}">Quiz Maker</a></li>
-                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
-                {% else %}
-                    <li><a href="{% url 'account_login' %}">Login</a></li>
-                    <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
-    <main class="scroll-wrapper">
-
-        {% block content %}
-        {% endblock %}
-
-    </main>
-    <footer class="footer-css">
-        <div class="footer-container">
-            <div class="footer-item copyright">
-                <p><i class="fas fa-copyright"></i>&nbsp;2024 PimpMyEnglish</p>
+<body>
+    <div class="wrapper scroll-wrapper">
+        <header class="header-css">
+            <div class="logo-container">
+                <a href="/">
+                    <img class="logo" src="{% static 'images/pme_logo.webp' %}" alt="Logo image">
+                </a>
             </div>
-            <nav class="footer-item footer-nav">
-                <a href="{% url 'privacy_policy' %}" title="Privacy Policy">
-                    <i class="fas fa-user-secret"></i>
-                    <span>Privacy Policy</span>
-                </a>
-                <a href="{% url 'terms_and_conditions' %}" title="Terms and Conditions">
-                    <i class="fas fa-file-contract"></i>
-                    <span>Terms and Conditions</span>
-                </a>
-                <a href="#" title="Newsletters" id="newsletter-link">
-                    <i class="fas fa-envelope-open-text"></i>
-                    <span>Newsletters</span>
-                </a>
+        
+            <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox">
+            <label for="nav-toggle" class="nav-toggle-label">
+                <i class="fa fa-bars"></i>
+            </label>
+        
+            <nav class="nav-css" id="nav-menu">
+                <ul id="menu" class="menu">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+                        <li><a href="{% url 'landing' %}">Quiz</a></li>
+                        <li><a href="{% url 'quiz_settings' %}">Quiz Maker</a></li>
+                        <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'account_login' %}">Login</a></li>
+                        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+                    {% endif %}
+                </ul>
             </nav>
-            <div class="footer-item social-icons">
-                <a href="#" class="social-icon" title="Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-icon" title="Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="#" class="social-icon" title="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
+        </header>
+        <main>
+    
+            {% block content %}
+            {% endblock %}
+    
+        </main>
+        <footer class="footer-css">
+            <div class="footer-container">
+                <div class="footer-item copyright">
+                    <p><i class="fas fa-copyright"></i>&nbsp;2024 PimpMyEnglish</p>
+                </div>
+                <nav class="footer-item footer-nav">
+                    <a href="{% url 'privacy_policy' %}" title="Privacy Policy">
+                        <i class="fas fa-user-secret"></i>
+                        <span>Privacy Policy</span>
+                    </a>
+                    <a href="{% url 'terms_and_conditions' %}" title="Terms and Conditions">
+                        <i class="fas fa-file-contract"></i>
+                        <span>Terms and Conditions</span>
+                    </a>
+                    <a href="#" title="Newsletters" id="newsletter-link">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <span>Newsletters</span>
+                    </a>
+                </nav>
+                <div class="footer-item social-icons">
+                    <a href="#" class="social-icon" title="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-icon" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
             </div>
-        </div>
-    </footer>   
+        </footer>
+    </div>
+       
   
     <div id="toast-container" class="toast-container"></div>
     
