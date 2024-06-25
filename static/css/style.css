@@ -1589,7 +1589,7 @@ td.button-container-right {
 
 @media (max-width: 768px) {
     .footer-container {
-        flex-direction: column;
+        /* flex-direction: column; */
         text-align: center;
     }
 
@@ -1606,7 +1606,7 @@ td.button-container-right {
 
     .footer-nav a,
     .social-icon {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         justify-content: center;
     }
 
