@@ -37,6 +37,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 65vh;
+    color: white;
+    margin:0 auto;
 }
 
 main {
@@ -70,7 +72,7 @@ main {
     padding: 10px;
     padding-top: 5px;
     border-radius: 5px;
-    margin-top:10px;
+    margin:0 auto;
 }
 
 /* Quiz Title */
@@ -413,7 +415,7 @@ main {
     padding: 10px 10px;
     border-radius: 5px;
     font-family: 'Caveat', cursive;
-    margin-top:15px;
+    margin:0 auto;
 }
 
 .fit-content {
@@ -1183,10 +1185,12 @@ body > main > div > div > form > label:nth-child(6) {
 /* Add some styles for the table on large screens */
 @media screen and (min-width: 600px) {
     .quizsquare {
-        padding: 30px;
-        padding-top: 20px;
+        /* padding: 30px;
+        padding-top: 20px; */
         border-radius: 5px;
         width: 90%;
+        margin:0 auto;
+
     }
 
     .word-image {
