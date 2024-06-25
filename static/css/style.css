@@ -1524,11 +1524,12 @@ td.button-container-right {
 /* Footer styles */
 .footer-css {
     background-color: rgba(39, 34, 34, 0.7);
-    padding: 1rem 0;
+    padding: 0;
     width: 100%;
     box-shadow: 0 -2px 2px #3a3a3a;
     color: white;
     margin: 0 auto;
+    margin-bottom: 5px;
 }
 
 .footer-container {
@@ -1537,7 +1538,7 @@ td.button-container-right {
     align-items: center;
     justify-content: space-around;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .footer-item {
@@ -1555,7 +1556,7 @@ td.button-container-right {
 .footer-nav {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
 }
 
@@ -1591,10 +1592,10 @@ td.button-container-right {
 }
 
 @media (max-width: 768px) {
-    .footer-container {
+    /* .footer-container {
         flex-direction: column;
         text-align: center;
-    }
+    } */
 
     .footer-item p {
         justify-content: center;
@@ -1607,6 +1608,9 @@ td.button-container-right {
         display: none;
     }
 
+    .social-icons {
+        margin-left: 1rem;
+    }
     .footer-nav a,
     .social-icon {
         font-size: 1.2rem;
@@ -1622,6 +1626,7 @@ td.button-container-right {
         align-items: center;
         justify-content: center;
     }
+
 }
 
 /* Common styles for content pages like Privacy Policy and Terms and Conditions */
