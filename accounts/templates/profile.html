@@ -1,53 +1,50 @@
 {% extends 'base.html' %}
 {% load subscription_filters %}
 {% block content %}
-<div class="profile scroll-wrapper">
+<div class="profile">
   <div class="login-form-container">
-  <h1>Profile</h1>
-  <br>
-  <span>Welcome, {{ user.email }}!</span>
-  <br>
+    <h1>Profile</h1>
+    <br>
+    <span>Welcome, {{ user.email }}!</span>
+    <br>  
 
-
-  
-
-      <table class="winners-table subscription-table">
-          <caption>Subscriptions</caption>
-          <thead>             
-              <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Period</th>
-                  <th>Created</th>
-              </tr>
-          </thead>
-          <tbody>
-            {% if subscriptions %}
-              {% for subscription in subscriptions %}
-                <tr class="highlight">
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ subscription.name }}</td>
-                  <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
-                  <td>{{ subscription.subscription_period }}</td>
-                  <td>{{ subscription.created_at }}</td>
-                </tr>
-              {% endfor %}
-            {% endif %}
+    <table class="winners-table subscription-table">
+        <caption>Subscriptions</caption>
+        <thead>             
             <tr>
-              <td></td>
-              <td colspan="4" class="button-container-right">
-                {% if subscriptions|any_active %}
-                  <a href="{% url 'manage_subscription' %}" class="button-link">Manage Active Subscription</a>
-                {% else %}
-                  <a href="{% url 'create_subscription' %}" class="button-link">Create Subscription</a>
-                {% endif %}
-              </td>
+                <th>#</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Period</th>
+                <th>Created</th>
             </tr>
-          </tbody>
-      </table>                
-  
-<br>
+        </thead>
+        <tbody>
+          {% if subscriptions %}
+            {% for subscription in subscriptions %}
+              <tr class="highlight">
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subscription.name }}</td>
+                <td>{{ subscription.is_active|yesno:"Active,Inactive" }}</td>
+                <td>{{ subscription.subscription_period }}</td>
+                <td>{{ subscription.created_at }}</td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+          <tr>
+            <td></td>
+            <td colspan="4" class="button-container-right">
+              {% if subscriptions|any_active %}
+                <a href="{% url 'manage_subscription' %}" class="button-link">Manage Active Subscription</a>
+              {% else %}
+                <a href="{% url 'create_subscription' %}" class="button-link">Create Subscription</a>
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+    </table>                
+    
+    <br>
   
 
     <table class="winners-table wordset-table">

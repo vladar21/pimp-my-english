@@ -23,7 +23,8 @@ html, body {
 }
 
 .scroll-wrapper {
-    height: 70vh; /* Full viewport height */
+    /* height: 70vh; */
+    height: fit-content;
     overflow-y: scroll; /* Enable vertical scrolling */
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
