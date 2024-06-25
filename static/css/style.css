@@ -51,7 +51,7 @@ main {
     display: flex;
     align-items: self-start;
     justify-content: center;
-    /* padding: 20px; */
+    padding-bottom: 20px;
 }
 
 
