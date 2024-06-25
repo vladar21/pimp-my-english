@@ -1596,6 +1596,10 @@ td.button-container-right {
         text-align: center;
     } */
 
+    .footer-container {
+        padding-bottom: 60px;
+    }
+
     .footer-item p {
         justify-content: center;
         text-align: center;
@@ -1624,10 +1628,6 @@ td.button-container-right {
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    main {
-        padding-bottom: 36px;
     }
 
 }
