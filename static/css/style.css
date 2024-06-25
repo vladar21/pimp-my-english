@@ -1520,13 +1520,13 @@ td.button-container-right {
 /* Footer styles */
 .footer-css {
     background-color: rgba(39, 34, 34, 0.7);
-    padding: 2rem 0;
+    /* padding: 2rem 0; */
     width: 100%;
     max-width: 1550px;
     box-shadow: 0 -2px 2px #3a3a3a;
     color: white;
     margin: 0 auto;
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
 }
 
 .footer-container {
