@@ -24,7 +24,7 @@ class TermsAndConditionsView(TemplateView):
     template_name = "terms_and_conditions.html"
 
 
-def subscribe_newsletter(email=None):
+def subscribe_newsletter(request=None, email=None):
     if email is None:
         if request.method == 'POST':
             email = request.POST.get('email')
@@ -66,7 +66,7 @@ def contact_view(request):
                 f'Contact form submission from {name}',
                 message,
                 email,
-                ['your_email@example.com'],
+                ['gedurvo@gmail.com'],
                 fail_silently=False,
             )
 
