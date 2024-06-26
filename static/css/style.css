@@ -1787,6 +1787,7 @@ td.button-container-right {
 }
 
 .home-content {
+    max-width: 1200px;
     width: 100%;
 
 }
@@ -1898,7 +1899,7 @@ td.button-container-right {
 }
 
 .home-quick-start-item {
-    flex-basis: 400px;
+    flex-basis: 525px;
     flex-grow: 0;
     flex-shrink: 1;
     /* flex: 1 1 20%; */
