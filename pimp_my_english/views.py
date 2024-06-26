@@ -24,34 +24,24 @@ class TermsAndConditionsView(TemplateView):
     template_name = "terms_and_conditions.html"
 
 
-def subscribe_newsletter(request=None, email=None):
-    if request is not None and request.method == 'POST':
+def subscribe_newsletter(request):
+    if request.method == 'POST':
         email = request.POST.get('email')
         if not email:
             return JsonResponse({'error': 'Email is required'}, status=400)
-    elif email is None:
-        raise ValueError("Email is required")
-
-    client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
-    try:
-        client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
-            'email_address': email,
-            'status': 'subscribed',
-        })
-        if request is not None:
+        client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
+        try:
+            client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
+                'email_address': email,
+                'status': 'subscribed',
+            })
             return JsonResponse({'message': 'Subscription successful'})
-    except MailChimpError as e:
-        error_response = e.args[0]
-        error_detail = error_response.get('detail', 'An error occurred')
-        if request is not None:
+        except MailChimpError as e:
+            error_response = e.args[0]
+            error_detail = error_response.get('detail', 'An error occurred')
             return JsonResponse({'error': error_detail}, status=error_response.get('status', 400))
-        else:
-            raise Exception(error_detail)
-    except Exception as e:
-        if request is not None:
+        except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
-        else:
-            raise Exception(str(e))
 
 
 def contact_view(request):
@@ -65,7 +55,7 @@ def contact_view(request):
 
             # Send email
             send_mail(
-                f'PimpMyEnglish feedback from: {name}',
+                f'Contact form submission from {name}',
                 message,
                 email,
                 ['gedurvo@gmail.com'],
@@ -74,8 +64,17 @@ def contact_view(request):
 
             if subscribe:
                 try:
-                    subscribe_newsletter(email)
+                    # Call the subscribe_newsletter function directly
+                    client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
+                    client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
+                        'email_address': email,
+                        'status': 'subscribed',
+                    })
                     messages.success(request, 'Your message has been sent successfully and you have been subscribed to the newsletter!')
+                except MailChimpError as e:
+                    error_response = e.args[0]
+                    error_detail = error_response.get('detail', 'An error occurred')
+                    messages.error(request, f'Your message was sent but there was an error subscribing to the newsletter: {error_detail}')
                 except Exception as e:
                     messages.error(request, f'Your message was sent but there was an error subscribing to the newsletter: {str(e)}')
             else:
