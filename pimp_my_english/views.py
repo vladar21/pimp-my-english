@@ -55,7 +55,7 @@ def contact_view(request):
 
             # Send email
             send_mail(
-                f'Contact form submission from {name}',
+                f'PimpMyEnglish feedback from {name}: {email}',
                 message,
                 email,
                 ['gedurvo@gmail.com'],
