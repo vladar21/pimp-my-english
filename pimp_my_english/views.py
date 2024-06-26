@@ -1,16 +1,15 @@
 # pimp_my_english/views.py
 
 import json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.contrib import messages
 from mailchimp3 import MailChimp
 from mailchimp3.mailchimpclient import MailChimpError
-
-
-# def landing(request):
-#     return render(request, 'landing.html')
+from .forms import ContactForm
 
 
 class HomeView(TemplateView):
@@ -25,23 +24,63 @@ class TermsAndConditionsView(TemplateView):
     template_name = "terms_and_conditions.html"
 
 
-def subscribe_newsletter(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        if not email:
-            return JsonResponse({'error': 'Email is required'}, status=400)
-
-        client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
-        try:
-            client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
-                'email_address': email,
-                'status': 'subscribed',
-            })
+def subscribe_newsletter(email=None):
+    if email is None:
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            if not email:
+                return JsonResponse({'error': 'Email is required'}, status=400)
+    client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
+    try:
+        client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
+            'email_address': email,
+            'status': 'subscribed',
+        })
+        if email is None:
             return JsonResponse({'message': 'Subscription successful'})
-        except MailChimpError as e:
-            error_response = e.args[0]
-            error_detail = error_response.get('detail', 'An error occurred')
+    except MailChimpError as e:
+        error_response = e.args[0]
+        error_detail = error_response.get('detail', 'An error occurred')
+        if email is None:
             return JsonResponse({'error': error_detail}, status=error_response.get('status', 400))
-        except Exception as e:
+        else:
+            raise Exception(error_detail)
+    except Exception as e:
+        if email is None:
             return JsonResponse({'error': str(e)}, status=400)
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+        else:
+            raise Exception(str(e))
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            name = contact_form.cleaned_data['name']
+            email = contact_form.cleaned_data['email']
+            message = contact_form.cleaned_data['message']
+            subscribe = contact_form.cleaned_data['subscribe_to_newsletter']
+
+            # Send email
+            send_mail(
+                f'Contact form submission from {name}',
+                message,
+                email,
+                ['your_email@example.com'],
+                fail_silently=False,
+            )
+
+            if subscribe:
+                try:
+                    subscribe_newsletter(email)
+                    messages.success(request, 'Your message has been sent successfully and you have been subscribed to the newsletter!')
+                except Exception as e:
+                    messages.error(request, f'Your message was sent but there was an error subscribing to the newsletter: {str(e)}')
+            else:
+                messages.success(request, 'Your message has been sent successfully!')
+
+            return redirect('contact')
+    else:
+        contact_form = ContactForm()
+
+    return render(request, 'contact.html', {'contact_form': contact_form})

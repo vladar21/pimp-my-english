@@ -1,0 +1,28 @@
+<!-- accounts/templates/contact.html -->
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+    <div class="login-form-container feedback-form-container">
+        <h1>Contact Us</h1>
+        <form method="post" action="{% url 'contact' %}">
+            {% csrf_token %}
+            <div class="feedback-form-group">
+                {{ contact_form.name.label_tag }}{{ contact_form.name }}
+            </div>
+            <div class="feedback-form-group">
+                {{ contact_form.email.label_tag }}{{ contact_form.email }}
+            </div>
+            <div class="feedback-form-group">
+                {{ contact_form.message.label_tag }}{{ contact_form.message }}
+            </div>
+            <div class="feedback-form-group feedback-check inline-group">
+                {{ contact_form.subscribe_to_newsletter.label_tag }} {{ contact_form.subscribe_to_newsletter }}
+            </div>
+            <button type="submit" name="contact_submit">Send</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1946,3 +1946,96 @@ td.button-container-right {
 .home-quick-start-item img:active {
     transform: scale(1.7);
 }
+
+
+/* Feedback form styles */
+.feedback-form-container {
+    width: 90%;
+    max-width: 600px;
+    height: fit-content;
+}
+
+.feedback-form-group {
+    margin-bottom: 15px;
+}
+
+.feedback-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+.feedback-form-group input,
+.feedback-form-group textarea {
+    width: 96%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 24px;
+    font-family: 'Caveat', cursive;
+}
+
+.feedback-form-check {
+    display: flex;
+    align-items: center;
+}
+
+.feedback-form-check input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.feedback-form-check label {
+    font-size: 18px;
+}
+
+button[name="contact_submit"] {
+    background-color: rgba(76, 175, 80, 0.9);
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-family: 'Caveat', cursive;
+}
+
+button[name="contact_submit"]:hover {
+    background-color: rgba(69, 160, 73, 0.9);
+}
+
+.inline-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inline-group label {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-check {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.feedback-form-group {
+    margin-bottom: 15px;
+}
+
+#id_subscribe_to_newsletter {
+    margin-top:15px;
+}
+
+.feedback-form-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#id_subscribe_to_newsletter {
+    width: fit-content;
+}
