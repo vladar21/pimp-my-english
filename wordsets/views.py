@@ -70,7 +70,7 @@ def create_or_update_word_set(request, word_set_id=None):
                 'word_set_id': word_set.id,
                 'description': word_set.description,
             }
-            
+
             logger.info(f'Success response data: {response_data}')
             return JsonResponse(response_data)
 

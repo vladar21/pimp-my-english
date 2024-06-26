@@ -11,9 +11,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from wordsets.models import Word,  WordSet, Definition, CefrLevel, WordType
+from wordsets.utils import calculate_ratings, find_word_set_by_words
 import json
 import base64
 from subscriptions.decorators import subscription_required
+
 
 
 @subscription_required
@@ -179,12 +181,15 @@ def start_quiz_with_word_set(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         word_set_id = data.get('word_set_id')
+        if not word_set_id:
+            return JsonResponse({'success': False, 'message': 'Word set ID is required.'}, status=400)
+
         word_set = get_object_or_404(WordSet, id=word_set_id)
         words = word_set.words.values_list('text', flat=True)
-        
+
         # Save filtered words to session
         request.session['filtered_words'] = list(words)
-        
+
         return JsonResponse({'redirect_url': reverse('landing')})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
@@ -216,6 +221,12 @@ class QuizDataView(APIView):
             words = Word.objects.all()
         else:
             words = Word.objects.filter(text__in=filtered_word_texts)
+        
+        word_set = find_word_set_by_words(filtered_word_texts)
+        if word_set:
+            word_set.start_count += 1
+            word_set.save()
+            calculate_ratings()
 
         return self.process_words(words)
     
