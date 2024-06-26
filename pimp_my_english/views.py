@@ -25,28 +25,30 @@ class TermsAndConditionsView(TemplateView):
 
 
 def subscribe_newsletter(request=None, email=None):
-    if email is None:
-        if request.method == 'POST':
-            email = request.POST.get('email')
-            if not email:
-                return JsonResponse({'error': 'Email is required'}, status=400)
+    if request is not None and request.method == 'POST':
+        email = request.POST.get('email')
+        if not email:
+            return JsonResponse({'error': 'Email is required'}, status=400)
+    elif email is None:
+        raise ValueError("Email is required")
+
     client = MailChimp(mc_api=settings.MAILCHIMP_API_KEY, mc_user='gedurvo@gmail.com')
     try:
         client.lists.members.create(settings.MAILCHIMP_EMAIL_LIST_ID, {
             'email_address': email,
             'status': 'subscribed',
         })
-        if email is None:
+        if request is not None:
             return JsonResponse({'message': 'Subscription successful'})
     except MailChimpError as e:
         error_response = e.args[0]
         error_detail = error_response.get('detail', 'An error occurred')
-        if email is None:
+        if request is not None:
             return JsonResponse({'error': error_detail}, status=error_response.get('status', 400))
         else:
             raise Exception(error_detail)
     except Exception as e:
-        if email is None:
+        if request is not None:
             return JsonResponse({'error': str(e)}, status=400)
         else:
             raise Exception(str(e))
@@ -63,7 +65,7 @@ def contact_view(request):
 
             # Send email
             send_mail(
-                f'Contact form submission from {name}',
+                f'PimpMyEnglish feedback from: {name}',
                 message,
                 email,
                 ['gedurvo@gmail.com'],
