@@ -159,20 +159,20 @@ def rules(request):
     return render(request, 'quizzes/rules.html')
 
 
-@csrf_exempt
-def submit_quiz_settings(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        filtered_words = data.get('filtered_words', [])
+# @csrf_exempt
+# def submit_quiz_settings(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         filtered_words = data.get('filtered_words', [])
 
-        # Save filtered words to session
-        request.session['filtered_words'] = filtered_words
+#         # Save filtered words to session
+#         request.session['filtered_words'] = filtered_words
 
-        # Redirect to landing page
-        redirect_url = f"{reverse('landing')}"
-        return JsonResponse({'redirect_url': redirect_url})
-    else:
-        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
+#         # Redirect to landing page
+#         redirect_url = f"{reverse('landing')}"
+#         return JsonResponse({'redirect_url': redirect_url})
+#     else:
+#         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
 
 
 def landing(request):

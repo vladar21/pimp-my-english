@@ -10,7 +10,7 @@
         <div class="close-button-div">
             <button id="closeButtonSettings" class="close-button">x</button>
         </div>
-        <form id="settings-form" method="post" action="{% url 'submit_quiz_settings' %}">
+        <div id="settings-form">
             {% csrf_token %}
             <table id="settings-table" class="winners-table">
                 <caption>Quiz Maker</caption>
@@ -116,7 +116,7 @@
                 </tbody>
                 
             </table>
-        </form>
+        </div>
     </div>
     <div id="hidden-filtered-words" data-words="{{ filtered_words|safe }}" style="display: none;"></div>
     <div id="hidden-unused-words" data-words="{{ unused_words|safe }}" style="display: none;"></div>
@@ -335,20 +335,8 @@ class QuizSettings {
 
     startQuiz(event) {
         event.preventDefault();
-        const filteredWords = this.getFilteredWordsFromDiv();
+        window.location.href = "{% url 'landing' %}";
 
-        fetch("{% url 'submit_quiz_settings' %}", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({ filtered_words: filteredWords })
-        })
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = "{% url 'landing' %}";
-        });
     }
 
     getFilteredWordsFromDiv() {
