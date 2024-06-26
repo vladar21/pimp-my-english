@@ -210,9 +210,20 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         },
     },
     'root': {
@@ -230,8 +241,14 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'wordsets': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
+
 
 MAILCHIMP_API_KEY = os.getenv('MAILCHIMP_API_KEY')
 MAILCHIMP_DATA_CENTER = os.getenv('MAILCHIMP_DATA_CENTER')

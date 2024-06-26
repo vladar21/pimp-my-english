@@ -468,8 +468,12 @@ class QuizSettings {
         this.showSpinner();
         const selectedWordSetId = this.wordSetSelect.value;
         const selectedOption = event.target.selectedOptions[0];
-        const description = selectedOption.getAttribute('data-description');
-
+        let description = '';
+        if (selectedOption && selectedOption.value !== ''){
+            description = selectedOption.getAttribute('data-description');
+            selectedOption.textContent = selectedOption.getAttribute('data-name');
+        }
+        
         // Restore the full text for all options
         Array.from(this.wordSetSelect.options).forEach(option => {
             if (option.value !== '') {
@@ -479,9 +483,9 @@ class QuizSettings {
             }
         });
 
-        if (selectedOption.value !== '') {
-            selectedOption.textContent = selectedOption.getAttribute('data-name');
-        }
+        // if (selectedOption.value !== '') {
+        //     selectedOption.textContent = selectedOption.getAttribute('data-name');
+        // }
 
         const wordSetDescriptionDiv = document.getElementById('word-set-description');
         wordSetDescriptionDiv.textContent = description || '';

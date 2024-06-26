@@ -8,6 +8,10 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .models import WordSet, Word
 import json
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 @csrf_exempt
@@ -19,8 +23,9 @@ def create_or_update_word_set(request, word_set_id=None):
             title = data.get('title')
             description = data.get('description')
             words = data.get('words', [])
-            print('words')
-            print(words)
+            
+            logger.info(f'POST data: {data}')
+            logger.info(f'words: {words}')
 
             if word_set_id:
                 word_set = get_object_or_404(WordSet, id=word_set_id)
@@ -33,15 +38,19 @@ def create_or_update_word_set(request, word_set_id=None):
                 if existing_word_set != word_set:
                     existing_words = set(existing_word_set.words.values_list('text', flat=True))
                     if existing_words == set(words):
+                        logger.warning('WordSet with this set of words already exists.')
                         return JsonResponse({'success': False, 'message': 'WordSet with this set of words already exists.'}, status=400)
 
             if not title:
+                logger.warning('Title is required.')
                 return JsonResponse({'success': False, 'message': 'Title is required.'}, status=400)
 
             if not description:
+                logger.warning('Description is required.')
                 return JsonResponse({'success': False, 'message': 'Description is required.'}, status=400)
 
             if not word_set_id and WordSet.objects.filter(name=title).exists():
+                logger.warning('WordSet with this title already exists.')
                 return JsonResponse({'success': False, 'message': 'WordSet with this title already exists.'}, status=400)
 
             word_set.name = title
@@ -61,10 +70,12 @@ def create_or_update_word_set(request, word_set_id=None):
                 'word_set_id': word_set.id,
                 'description': word_set.description,
             }
-
+            
+            logger.info(f'Success response data: {response_data}')
             return JsonResponse(response_data)
 
         except Exception as e:
+            logger.error(f'Exception: {e}', exc_info=True)
             return JsonResponse({'success': False, 'message': str(e)})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
@@ -87,7 +98,7 @@ def get_word_set_words(request, word_set_id):
 def list_word_sets(request):
     word_sets = WordSet.objects.all()
     data = [{"id": ws.id, "name": ws.name, "description": ws.description} for ws in word_sets]
-    return JsonResponse({"word_sets": data})
+    return JsonResponse({"success": True, "word_sets": data})
 
 
 @csrf_exempt
