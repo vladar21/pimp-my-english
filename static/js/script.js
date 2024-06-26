@@ -617,3 +617,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fbIcon = document.getElementById('facebook-icon');
+    const fbModal = document.getElementById('facebook-modal');
+    const closeFb = document.getElementsByClassName('close-fb')[0];
+
+    fbIcon.onclick = function() {
+        fbModal.style.display = "block";
+    }
+
+    closeFb.onclick = function() {
+        fbModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == fbModal) {
+            fbModal.style.display = "none";
+        }
+    }
+});
