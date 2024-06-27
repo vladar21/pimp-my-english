@@ -78,7 +78,7 @@
             </option>
             {% endfor %}
         </select>
-        <button id="start-quiz-button">Start</button>
+        <button id="start-quiz-button" disabled>Start</button>
         <a href="{% url 'quiz_settings' %}" id="settings-link" class="settings-link">Settings</a>
     </div>
 </div>
@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function fetchFilteredWords(wordSetId) {
         hiddenFilteredWordsDiv.dataset.words = '';
         quiz.showSpinner();
+        startQuizButton.disabled = true; // Disable the start button
 
         let url = wordSetId ? `/wordsets/${wordSetId}/words/` : `/wordsets/0/words/`;
 
@@ -128,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 hiddenFilteredWordsDiv.dataset.words = data.words.join(', ');
                 quiz.update(data.words).then(() => {
                     quiz.hideSpinner();
+                    startQuizButton.disabled = false; // Enable the start button
                 });
             })
             .catch(error => {

@@ -368,6 +368,12 @@ main {
     cursor: pointer;
 }
 
+#start-quiz-button:disabled {
+    background-color: #ddd; /* Light grey */
+    color: #aaa; /* Grey text */
+    cursor: not-allowed;
+}
+
 /* Statistic Window */
 #statistic-window {
     display: block;
