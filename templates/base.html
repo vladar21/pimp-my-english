@@ -37,9 +37,9 @@
                 <ul id="menu" class="menu">
                     <li><a href="/">Home</a></li>
                     <li><a href="/contact">Contact</a></li>
+                    <li><a href="{% url 'landing' %}">Quiz</a></li>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
-                        <li><a href="{% url 'landing' %}">Quiz</a></li>
                         <li><a href="{% url 'quiz_settings' %}">Quiz Maker</a></li>
                         <li><a href="{% url 'account_logout' %}">Logout</a></li>
                     {% else %}
