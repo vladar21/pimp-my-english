@@ -17,7 +17,6 @@ import base64
 from subscriptions.decorators import subscription_required
 
 
-
 @subscription_required
 def quiz_settings(request):
     word_set_id = request.GET.get('word_set_id')

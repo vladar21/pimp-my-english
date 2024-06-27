@@ -72,8 +72,10 @@
         <a href="{% url 'rules' %}" id="rules-link" class="rules-link">Rules</a>
         <select id="wordSetSelectLanding" class="word-set-select landing-select">
             <option value="0">Select Word Set</option>
-            {% for word_set in word_sets %}
-                <option value="{{ word_set.id }}">{{ word_set.name }}</option>
+            {% for ws in word_sets %}
+            <option value="{{ ws.id }}" data-description="{{ ws.description }}" data-name="{{ ws.name }}" data-rating="{{ ws.rating }}" {% if ws.id|stringformat:"i" == selected_word_set|stringformat:"i" %}selected{% endif %}>
+                {{ ws.name }}
+            </option>
             {% endfor %}
         </select>
         <button id="start-quiz-button">Start</button>
@@ -90,6 +92,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const settingsLink = document.getElementById('settings-link');
     const startQuizButton = document.getElementById('start-quiz-button');
     let quiz = new Quiz();
+
+    function generateStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                stars += '&#9733;'; // filled star
+            } else {
+                stars += '&#9734;'; // empty star
+            }
+        }
+        return stars;
+    }
+
+    function updateOptionsWithStars() {
+        const options = wordSetSelectLanding.options;
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            const rating = option.getAttribute('data-rating');
+            if (rating) {
+                option.innerHTML = `${option.getAttribute('data-name')} &nbsp; &nbsp; ${generateStars(rating)}`;
+            }
+        }
+    }
 
     function fetchFilteredWords(wordSetId) {
         hiddenFilteredWordsDiv.dataset.words = '';
@@ -140,6 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = settingsUrl;
         }
     });
+
+    updateOptionsWithStars();
 });
 
 </script>

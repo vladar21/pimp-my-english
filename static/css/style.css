@@ -2077,3 +2077,26 @@ button[name="contact_submit"]:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* Rating */
+.star-rating {
+    display: inline-block;
+    font-size: 1.5rem;
+    position: relative;
+    unicode-bidi: bidi-override;
+    color: #c5c5c5;
+}
+.star-rating .star-filled {
+    color: gold;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    display: inline-block;
+    width: 0;
+}
+
+.star {
+    color: gold;
+}
