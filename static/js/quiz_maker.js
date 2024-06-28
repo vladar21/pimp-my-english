@@ -42,6 +42,7 @@ class QuizSettings {
         this.deleteWordSetButton = document.getElementById("deleteWordSetButton");
         this.filteredWords = document.getElementById("filtered-words");
         this.unusedWords = document.getElementById("unused-words");
+        this.buttons = document.querySelectorAll('button'); // Select all buttons
 
         this.hiddenFilteredWords = document.getElementById("hidden-filtered-words");
         this.hiddenUnusedWords = document.getElementById("hidden-unused-words");
@@ -392,12 +393,10 @@ class QuizSettings {
 
     deleteWord(wordElement) {
         // Logic to delete word
-        this.showSpinner();
         const word = wordElement.dataset.word;
         this.removeWordFromFiltered(word);
         this.settings.use_filtered_words = true;
         this.updateFilteredWords();
-        this.hideSpinner();
     }
 
     removeWordFromFiltered(word) {
@@ -407,19 +406,16 @@ class QuizSettings {
     }
 
     updateFilteredWords() {
-        this.showSpinner();
         this.populateFilteredWords();
         this.populateUnusedWords();
         this.sendSettingsToServer();
     }
 
     addWord(wordElement) {
-        this.showSpinner();
         const word = wordElement.dataset.word;
         this.addWordToFiltered(word);
         this.removeWordFromUnused(word);
         this.updateFilteredWords();
-        this.hideSpinner();
     }
 
     removeWordFromUnused(word) {
@@ -691,6 +687,7 @@ class QuizSettings {
         if (spinner) {
             spinner.style.display = 'block';
         }
+        this.toggleFormElements(true);
     }
 
     hideSpinner() {
@@ -698,6 +695,25 @@ class QuizSettings {
         if (spinner) {
             spinner.style.display = 'none';
         }
+        this.toggleFormElements(false);
     }
+
+    toggleFormElements(disable) {
+        const form = document.getElementById('settings-form');
+        if (form) {
+            const elements = form.querySelectorAll('input, button, select, textarea');
+            elements.forEach(element => {
+                element.disabled = disable;
+                if (element.tagName === 'BUTTON') {
+                    if (disable) {
+                        element.classList.add('disabled');
+                    } else {
+                        element.classList.remove('disabled');
+                    }
+                }
+            });
+        }
+    }
+   
 }
 

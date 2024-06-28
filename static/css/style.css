@@ -2108,7 +2108,11 @@ button[name="contact_submit"]:hover {
 }
 
 .profile-login-form-container {
-
     max-width:1250px;
+}
 
+.settings-button.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
 }
