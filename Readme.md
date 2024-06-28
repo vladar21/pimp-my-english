@@ -1,4 +1,4 @@
-# Pimp My English && Learn by gaming!
+# Pimp My English && Learn By Gaming!
 
 **Pimp My English** is an interactive educational platform designed to enhance your English vocabulary through engaging quizzes. The platform allows users to test their knowledge of words, create personalized word sets, and access a variety of quizzes tailored to different levels of language proficiency.
 
@@ -13,12 +13,13 @@ This README file provides an overview of the project, detailing its purpose, fea
 4. [Project Architecture](#project-architecture)
 5. [Database Structure](#database-structure)
 6. [User Stories](#user-stories)
-7. [UX/UI Design](#uxui-design)
-8. [Testing](#testing)
-9. [Deployment](#deployment)
-10. [Future Features](#future-features)
-11. [Acknowledgements](#acknowledgements)
-12. [License](#license)
+7. [Agile Development Plan](#agile-development-plan)
+8. [UX/UI Design](#uxui-design)
+9. [Testing](#testing)
+10. [Deployment](#deployment)
+11. [Future Features](#future-features)
+12. [Acknowledgements](#acknowledgements)
+13. [License](#license)
 
 ---
 
@@ -56,6 +57,18 @@ The platform aims to provide a comprehensive learning tool that is both educatio
 - **Subscription Plans**: Users can purchase subscriptions to create and customize word sets.
 - **Secure Payments**: Integration with Stripe ensures secure payment processing for subscriptions.
 - **Subscription Management**: Users can manage their subscription plans, including renewals and cancellations with just a few clicks, thanks to Stripe integration and a well-thought-out commercial component.
+
+### Facebook Page Mockup
+- **Project Presentation**: Specific mockup showcasing the "Pimp My English" project.
+- **Header and Profile**: Features the project logo and navigation links for easy access to various sections.
+- **Posts Section**: Engaging posts with images displaying the app's interface on multiple devices, along with project updates.
+- **About Section**: Provides a brief description of the project and contact details.
+- **Photos and Media**: Includes a gallery with app screenshots and user testimonials.
+- **Community Engagement**: Contains links to liked pages and options for user interaction through comments, likes, and shares.
+
+
+    <img src="static/images/PME_Facebook_Mockup.png" width="600" alt="Facebook Page Mockup"/>
+
 
 ---
 
@@ -316,6 +329,293 @@ Quiz "1" -- "1" WordSet
 
 ---
 
+## Agile Development Plan
+
+The development of PimpMyEnglish is structured into sprints, with each sprint targeting specific tasks for a focused and incremental development approach. Below is the sprint schedule along with their respective tasks.
+
+``Current version of Agile plane`` by [link](https://github.com/users/vladar21/projects/12)
+
+### Sprint Schedule
+
+#### Sprint 1: Initial Setup and User Management
+**Duration:** 4 days (May 21, 2024 - May 24, 2024)
+
+**Goals:**
+- Set up the initial project structure.
+- Implement user authentication and authorization.
+
+**User Stories:**
+- As a Subscriber, I want to log into the site to access my subscriptions settings and word sets.
+- As an Admin, I want to manage the entire platform to ensure smooth operations and content quality.
+
+**Tasks and Dates:**
+- [ ] Create Django Project (May 21, 2024)
+  - **Commit:** 8e1dbd27c03d1191f53efa1a7c2d85d5e6930d08
+  - **Description:** Create Django project pimp_my_english.
+- [ ] Set Up Database and Static Files (May 21, 2024)
+  - **Commit:** 58a9ddb3617504a518c25a4c7452ea62895fd37f
+  - **Description:** Add to settings databases, static and media config.
+- [ ] Create Initial Apps (May 21, 2024)
+  - **Commit:** f831961297880aa9be75791edacfeb2febe3a004
+  - **Description:** Create apps accounts, subscriptions, wordsets, quizzes, admin.
+- [ ] Set Up URLs and Models (May 21, 2024)
+  - **Commit:** 7569677871a513c08e50efb2bf1add405c1fb677
+  - **Description:** Add URLs to all apps.
+  - **Commit:** c913d511160abe05826bcc1db2b5258227bde63d
+  - **Description:** Add models.
+- [ ] Add Static Assets (May 24, 2024)
+  - **Commit:** 7e3d3f311a8eaa4c89ea1b3896d71c4092bf1283
+  - **Description:** Add CSS, fonts, images, JS, and sound folders to static folder.
+
+
+#### Sprint 2: Frontend Base and Authentication
+**Duration:** 4 days (May 25, 2024 - May 28, 2024)
+
+**Goals:**
+- Develop the basic frontend structure.
+- Implement user authentication and authorization.
+
+**User Stories:**
+- As a Subscriber, I want to log into the site to access my subscriptions settings and word sets.
+- As an Admin, I want to manage the entire platform to ensure smooth operations and content quality.
+
+**Tasks:**
+- Create Base Templates (May 25, 2024)
+  - **Commit:** 25ed94eb06bf9dad0b7762d6fef55d5edb5618df
+  - **Description:** Add templates base, landing, register.
+- Set Up Frontend Base (May 25, 2024)
+  - **Commit:** d217c1b32b26403c95761c4dff1bc838cb7a13d0
+  - **Description:** Add frontend base and landing pages.
+- User Authentication (May 26, 2024)
+  - **Commit:** f3f4749633e310b4050bb82ec206bf5450a0d36c
+  - **Description:** Make migrations.
+  - **Commit:** c588bc6509f806257be0e4cf860e0e59fe6fa8ce
+  - **Description:** Add auth backend.
+- User Authorization (May 27, 2024)
+  - **Commit:** baa16c076ac898fddbc932317c3bc76656e62764
+  - **Description:** Add users app for user and auth management.
+- Finalize User Management (May 28, 2024)
+  - **Commit:** c30f77bca3d2bf2fba219ea4195cd4f74cc1adb9
+  - **Description:** Remove users app.
+
+
+#### Sprint 3: Wordsets and Quiz Basics
+**Duration:** 4 days (May 29, 2024 - June 2, 2024)
+
+**Goals:**
+- Implement wordset management.
+- Develop basic quiz functionality.
+
+**User Stories:**
+- As a Subscriber, I want to create my own sets of words to personalize my learning experience.
+- As a Subscriber, I want to customize existing sets of words to better fit my vocabulary needs.
+
+**Tasks:**
+- Add Wordset Models and Forms (May 29, 2024)
+  - **Commit:** 4b6599621781cd008c27c0d372ddd60003da3bcd
+  - **Description:** Update update_word_set to create_or_update_word_set.
+- Implement Wordset CRUD (May 30, 2024)
+  - **Commit:** cf00ae8116be73f7d40f19dda4a78ae1b7bf596c
+  - **Description:** Add delete word feature.
+- Develop Quiz Functionality (June 1, 2024)
+  - **Commit:** 6bca279e17926eab2f7c433f3a0fe766ce8cdcf3
+  - **Description:** Create functionality start quiz with different wordsets.
+- Create Wordset Select Feature (June 2, 2024)
+  - **Commit:** d123b6f40284f74b2bb467f21d9088ff6d3591ff
+  - **Description:** Add wordset select to start display.
+- Enhance Wordset Features (June 2, 2024)
+  - **Commit:** 5cb9dbe50945553d82d0c6c3fa4947e2a0a0173
+  - **Description:** Problem with update select in settings form after create new word set.
+
+
+#### Sprint 4: Styling and UI Improvements
+**Duration:** 5 days (June 3, 2024 - June 7, 2024)
+
+**Goals:**
+- Improve the user interface.
+- Add styling to various components.
+
+**User Stories:**
+- As a Subscriber, I want to customize existing sets of words to better fit my vocabulary needs.
+- As a Guest, I want to access preset and shared word sets without registering to start learning immediately.
+
+**Tasks:**
+- Add Common Styles (June 3, 2024)
+  - **Commit:** 8369e5a2450f4e7ea44368c4c40a4890fa80874b
+  - **Description:** Improve some common styles.
+- Style Wordset Modal (June 4, 2024)
+  - **Commit:** 79f23bfe9db83da01184f59368aa8c2ef338b5ae
+  - **Description:** Add create wordsets modal window.
+- Enhance Home Page Styles (June 5, 2024)
+  - **Commit:** 91f70e99f844c5d89607ad747db1312ca253e6e5
+  - **Description:** Improve home page styles.
+- Style Quiz Settings (June 6, 2024)
+  - **Commit:** 3985779e591845ae8ade0992efd97da0ec3f098c
+  - **Description:** Dynamically create data for Settings page.
+- Finalize UI Improvements (June 7, 2024)
+  - **Commit:** 4a93ef77b4be2617b4733f68b544f2a5c174d314
+  - **Description:** Add Gmail config for send emails.
+
+
+#### Issue для Sprint 5: Advanced Features and Feedback
+**Duration:** 4 days (June 8, 2024 - June 11, 2024)
+
+**Goals:**
+- Implement advanced features for wordsets and quiz functionality.
+- Set up feedback and contact functionalities.
+
+**User Stories:**
+- As a Subscriber or Guest, I want to be able to ask questions and provide feedback to improve the platform.
+
+**Tasks:**
+- Implement Advanced Quiz Features (June 8, 2024)
+  - **Commit:** c4c7343093e7166e7eeb2228f41fffa3b29a3f4e
+  - **Description:** Update from get to post fetch quiz data method.
+- Set Up Feedback and Contact Page (June 9, 2024)
+  - **Commit:** 9e641543cbe56853b736e48843d4e4204544316c
+  - **Description:** Add feedback (contact) page.
+- Fix Feedback Issues (June 10, 2024)
+  - **Commit:** b8f9847d185d90e9bc852e77d3163d236a172c3c
+  - **Description:** Fix wrong feedback email and some errors in contact view method.
+- Enhance Feedback Functionality (June 11, 2024)
+  - **Commit:** 8777958a400e483ea3eb64459e8023fb2b65ff7d
+  - **Description:** Continue fix issues with send feedback.
+- Refine User Feedback Experience (June 11, 2024)
+  - **Commit:** 5f85e206baa8716f515217c18061498bbaffe237
+  - **Description:** Change feedback text.
+
+
+#### Sprint 6: Subscription Management and Payment Integration
+**Duration:** 5 days (June 12, 2024 - June 16, 2024)
+
+**Goals:**
+- Implement subscription management.
+- Integrate payment functionalities.
+
+**User Stories:**
+- As a Subscriber, I want to easily purchase a subscription to access additional features and word sets.
+- As a Subscriber, I want to manage my subscription and payment details securely.
+
+**Tasks:**
+- Implement Subscription Creation (June 12, 2024)
+  - **Commit:** 250d9fc50044a960662f671ce47ee6d162dee1b9
+  - **Description:** Add 'create subscription' functionality.
+- Integrate Stripe Payment (June 13, 2024)
+  - **Commit:** c3eb6912fa26beb6c5a1cef7bbdb49b973323985
+  - **Description:** Add subscriptions and Stripe functionality.
+- Improve Subscription Templates (June 14, 2024)
+  - **Commit:** dfa40b7da73e72290a02c2678e5fcbdf13787122
+  - **Description:** Improve subscriptions templates.
+- Fix Subscription Issues (June 15, 2024)
+  - **Commit:** 6e00ed3fc3c8960ee35f3290faf011938ca4b7a0
+  - **Description:** Fix issue with accounts URLs.
+- Enhance Subscription Management (June 16, 2024)
+  - **Commit:** 4279931f98b71dff4dd4f3b38113ee54de6b232b
+  - **Description:** Implement manage subscription features.
+
+
+#### Sprint 7: User Interface Enhancements
+**Duration:** 4 days (June 17, 2024 - June 20, 2024)
+
+**Goals:**
+- Enhance the overall user interface.
+- Improve the user experience across different devices.
+
+**User Stories:**
+- As a Subscriber or Guest, I want to see basic statistics for my current session to monitor my immediate learning outcomes.
+
+**Tasks:**
+- Improve Home Page Styles (June 17, 2024)
+  - **Commit:** 91f70e99f844c5d89607ad747db1312ca253e6e5
+  - **Description:** Improve home page styles.
+- Enhance Profile Page (June 18, 2024)
+  - **Commit:** 685a19d4bb3cf7e6dacaa6eb62abd632394b068c
+  - **Description:** Finished with profile.
+- Optimize for Mobile (June 19, 2024)
+  - **Commit:** 3dd981018f949e150bd5ec7c01f334978932f287
+  - **Description:** Remove duplicate submit new word set functionality.
+- Refine Wordset Modal (June 20, 2024)
+  - **Commit:** 79f23bfe9db83da01184f59368aa8c2ef338b5ae
+  - **Description:** Add create wordsets modal window.
+
+
+#### Sprint 8: Wordset Sharing and Collaboration
+**Duration:** 4 days (June 21, 2024 - June 24, 2024)
+
+**Goals:**
+- Implement features for sharing wordsets.
+- Enable collaboration on wordsets.
+
+**User Stories:**
+- As a Subscriber, I want to share my word sets with others to help them learn.
+- As a Subscriber, I want to participate in the ranking of word sets to see how my contributions compare to those of other learners.
+
+**Tasks:**
+- Add Wordset Sharing (June 21, 2024)
+  - **Commit:** b78eac662f2c308c656f45f938921e0820a810b3
+  - **Description:** Big readme update.
+- Implement Collaboration Features (June 22, 2024)
+  - **Commit:** 1d1bb705af61b630804c6f8fca378c35fd7fd959
+  - **Description:** Disabled start button if no wordset.
+- Improve Collaboration UI (June 23, 2024)
+  - **Commit:** 9b16ef3c749ef69c0d1ad1ccdd7f11223e8b6c30
+  - **Description:** Return Quiz link to header menu.
+- Enhance Collaboration Backend (June 24, 2024)
+  - **Commit:** 44158322364ba007e85ad4ce6e6a4d3fc08b3857
+  - **Description:** Add backend for rating.
+
+
+#### Sprint 9: Security and Performance Improvements
+**Duration:** 3 days (June 25, 2024 - June 27, 2024)
+
+**Goals:**
+- Enhance the security of the platform.
+- Improve the overall performance.
+
+**User Stories:**
+- As an Admin, I want to remove inappropriate content or user accounts to maintain a safe and positive learning environment.
+
+**Tasks:**
+- Improve Security Settings (June 25, 2024)
+  - **Commit:** 6baf2f8da139d87977537458da1f2cb7237708e6
+  - **Description:** Fix content out of div in email_confirm template.
+- Enhance Performance (June 26, 2024)
+  - **Commit:** 4ac44dfd4d1b7b9572a91cee20965af2673d269f
+  - **Description:** Add Facebook modal window.
+- Final Security Tweaks (June 27, 2024)
+  - **Commit:** 4bdeb1e8d7a5689ebc082bf95875da417e2c0858
+  - **Description:** Fix email_backend setting.
+
+
+#### Sprint 10: Final Testing and Deployment
+**Duration:** 1 day (June 28, 2024)
+
+**Goals:**
+- Perform final testing to ensure all features work as expected.
+- Deploy the application to the production environment.
+
+**User Stories:**
+- As an Admin, I want to ensure the platform is fully functional and ready for use by all users.
+
+**Tasks:**
+- Final Testing of All Features (June 28, 2024)
+  - **Commit:** No specific commit; comprehensive testing.
+  - **Description:** Test all features implemented in previous sprints to ensure they work seamlessly.
+- Fix Any Last-Minute Bugs (June 28, 2024)
+  - **Commit:** Any necessary hotfix commits based on testing.
+  - **Description:** Address any bugs or issues found during final testing.
+- Prepare for Deployment (June 28, 2024)
+  - **Commit:** No specific commit; deployment preparation.
+  - **Description:** Prepare the application for deployment, ensuring all configurations are correct.
+- Deploy to Production (June 28, 2024)
+  - **Commit:** Final deployment commit.
+  - **Description:** Deploy the application to the production environment.
+
+
+Each sprint in this schedule is a focused development cycle that addresses specific components of the project, facilitating clear progression towards the project goals.
+
+---
+
 ## UX/UI Design
 
 The platform's design focuses on creating an immersive and enjoyable learning experience. The user interface (UI) is intuitive and easy to navigate, ensuring that users of all ages and technical abilities can use the platform effectively. Here are some key elements of the UX/UI design:
@@ -391,6 +691,154 @@ The platform uses clean and modern fonts that are easy to read on both desktop a
 - **Color Contrast**: High contrast ratios are used to ensure readability for users with visual impairments.
 
 By prioritizing user needs and employing best practices in UX/UI design, we aim to create a platform that is not only effective in facilitating learning but also enjoyable to use.
+
+---
+
+## Testing
+
+### Flake8 validation
+
+- The project code has passed the Flake8 validation outcome.
+
+<img src="assets/images/Flake8_Validation_Result.jpg" width="600" alt="Flake8 validation result">
+
+### Send emails
+
+- For check sending mails feature in project using mailtrap.io service. Please, use credentials below to look ones:
+
+ ```bash
+ mailtrap link: https://mailtrap.io/inboxes/2689731/messages/4092718424
+ mailtrap login: vlad.rastvorov@aol.com
+ mailtrap password: :8xt:XP4fWr.mwe
+ ```
+
+### Unit Tests Suite Overview
+
+- Our test suite ensures the robustness and functionality of user management and scheduling within the application. Tests are categorized by focus areas for clarity.
+
+#### User Management Tests
+- `User Registration Validation`: Tests validate the user registration form with correct and incorrect inputs, ensuring only valid data passes.
+- `Duplicate Registration Handling`: Confirms the system prevents users from registering with a username or email that already exists.
+- `Password Strength Enforcement`: Verifies that user registration rejects common and easily guessable passwords to enhance security.
+- `User Logout Process`: Tests the logout functionality, ensuring users are properly logged out and redirected.
+- `Authenticated Redirection`: Verifies that authenticated users are redirected from the login and registration pages to prevent redundant registrations or logins.
+
+#### Scheduling System Tests
+- `Access Control`: Ensures that only authorized roles (e.g., teachers, students) can access specific scheduling functionalities like viewing schedules, creating classes, or updating lessons.
+- `Class and Lesson Management`: Tests the creation, updating, and deletion of classes and lessons by authorized users, ensuring the application correctly handles these operations.
+- `Lesson Details Accessibility`: Confirms that lesson details are accessible to users with the appropriate permissions, including teachers and enrolled students.
+- `Scheduling Views`: Validates that the scheduling views render correctly for different user roles, providing the necessary information as expected.
+
+#### Running Unit Tests
+
+To run the unit tests in the project, execute the following commands:
+
+```bash
+python manage.py test --settings=heso.settings_test
+```
+
+Our example of Successful Test Execution
+<img src="assets/images/ResultsUnitTests.jpg" width="600" alt="Unit Tests Results">
+
+
+#### The W3C Markup Validator, and W3C CSS Validator, and JSHint Javascript Validator Services
+
+- All of these services were used to validate pages of the project to ensure there were no syntax errors in the project.
+
+-   [W3C Markup Validator](https://validator.w3.org/nu/) - [results link](https://validator.w3.org/nu/?doc=https%3A%2F%2Fheso-cba8b8a64704.herokuapp.com%2Fschedule%2F)
+
+See the W3C Markup validation **Results** in the image below:
+
+<img src="assets/images/w3c_markup_validator_result.jpg" width="600" alt="W3C Markup validation results">
+
+-   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) - [results link](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fheso-cba8b8a64704.herokuapp.com%2Fschedule%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+
+See the W3C CSS validation **Results** in the image below:
+
+<img src="assets/images/w3c_css_validation_result.jpg" width="600" alt="W3C CSS validation results">
+
+-   [JSHint JavaScript Validator](https://jshint.com/)
+
+See the JSHint validation **Results** in the image below:
+
+<img src="assets/images/JSHint_validation_result.jpg" width="600" alt="JSHint validation results">
+
+
+#### Accessibility
+
+1. I confirmed that the colors and fonts chosen are easy to read and accessible by running it through lighthouse in devtools.
+
+- Lighthouse Chrome devtool test results:
+
+<img src="assets/images/Lighthouse_Test_Result.jpg" width="600" alt="Lighthouse Chrome devtool test results">
+
+- The main problem with performance and SEO - it is CDN factor.
+
+<img src="assets/images/Lighthouse_Treemap.jpg" width="600" alt="The source of the not the higher estimates in the lighthouse test">
+
+2. I tested that this page works in different browsers: Chrome, Firefox, Mircrosoft Edge.
+
+3. I confirmed that this project is responsive, looks good and functions on all standard screen sizes using the devtools device toolbar.
+
+4. I have confirmed that the form works: requires entries in every field, will only accept an email in the email field, and the submit button works.
+
+[Back to Table of Contents](#table-of-contents)
+
+## Bugs
+
+### 1. Doubling while saving new material
+
+- **Description:** When we add new material in the upload form, in the list of lesson materials we see double titles of ones.
+
+  <img src="assets/images/doubling_while_saving_new_material.jpg" width="600" alt="doubling while saving new material">
+
+- **Solution:** Using the get_or_create method on the backend, which allows you to get an existing material or create a new one if it doesn't exist.
+
+  ```bash
+  # Update materials if provided
+  if 'materials' in data:
+      material_ids = data['materials']
+      lesson.materials.clear()
+      lesson.materials.set(Material.objects.filter(id__in=material_ids))
+  
+  if request.FILES.getlist('new_materials'):
+      for uploaded_file in request.FILES.getlist('new_materials'):
+          if uploaded_file:
+              material, created = Material.objects.get_or_create(
+                  title=uploaded_file.name,
+                  type="file",
+                  content=uploaded_file.read()
+              )
+              if created:
+                  lesson.materials.add(material)
+  
+  lesson.save()
+  ```
+  ### 2. Don't highlight current menu item
+
+- **Description:** When the user clicks on a menu item that doesn't have an active class (highlighted in bold white).
+
+  <img src="assets/images/not_highlighting_current_menu_item.jpg" width="600" alt="not highlighting current menu item">
+
+- **Solution:** Need accurate writing of the URL to use for comparisons.
+
+ <img src="assets/images/fix_not_highlighting_current_menu_item.jpg" width="600" alt="fix not highlighting current menu item">
+
+  ### 3. Incorrect message for unauthorised user actions
+
+- **Description:** Incorrect message when non-authorised user clicks on website items.
+
+  <img src="assets/images/wron_message_for_unautorized_access.jpg" width="600" alt="wrong message for unautorized access">
+
+- **Solution:** Change JavaScript handler for these situations.
+
+ <img src="assets/images/fix_code_wron_message_for_unautorized_access.jpg" width="600" alt="fix code for fix wrong message for unautorized access">
+
+ - **Result:** Correct message (from server).
+
+ <img src="assets/images/fix_result_wron_message_for_unautorized_access.jpg" width="600" alt="correct message when unautorized user click on website items">
+
+
 
 ---
 
