@@ -4,6 +4,9 @@ from django import forms
 
 
 class ContactForm(forms.Form):
+    """
+    Form for users to contact the site administrators and optionally subscribe to the newsletter.
+    """
     name = forms.CharField(
         label="Name",
         max_length=100,

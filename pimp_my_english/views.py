@@ -13,18 +13,36 @@ from .forms import ContactForm
 
 
 class HomeView(TemplateView):
+    """
+    View for the home page.
+    """
     template_name = "home.html"
 
 
 class PrivacyPolicyView(TemplateView):
+    """
+    View for the privacy policy page.
+    """
     template_name = "privacy_policy.html"
 
 
 class TermsAndConditionsView(TemplateView):
+    """
+    View for the terms and conditions page.
+    """
     template_name = "terms_and_conditions.html"
 
 
 def subscribe_newsletter(request):
+    """
+    Subscribe the user to the newsletter using MailChimp API.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        JsonResponse: A JSON response indicating success or error.
+    """
     if request.method == 'POST':
         email = request.POST.get('email')
         if not email:
@@ -45,6 +63,15 @@ def subscribe_newsletter(request):
 
 
 def contact_view(request):
+    """
+    Handle the contact form submission.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: The HTTP response object with the rendered contact form page or a redirect.
+    """
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)
         if contact_form.is_valid():

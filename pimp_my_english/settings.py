@@ -61,10 +61,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # Example social account provider
-    # 'allauth.socialaccount.providers.google',
-    # Example social account provider
-    # 'allauth.socialaccount.providers.facebook',
     'rest_framework',
     'accounts',
     'subscriptions',
@@ -128,8 +124,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'allauth.account.context_processors.account',
-                # 'allauth.socialaccount.context_processors.socialaccount',
             ],
         },
     },
