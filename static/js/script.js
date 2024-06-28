@@ -591,37 +591,36 @@ class Quiz {
    * Update the winners table in the interface.
    */
   updateWinnersTable() {
-    const winnersTableBody = document.querySelector("#winners-table tbody");
+    const winnersTableBody = document.querySelector('#winners-table tbody');
     const winnerData = {
-      attempt: this.getAttemptString(this.attempt),
-      scores: this.data.filter((quiz) =>
-        quiz.answers.some((answer) => answer.isCorrect && answer.isUserChoice)
-      ).length,
-      time: this.data.reduce(
-        (totalTime, quiz) => totalTime + quiz.spentTime,
-        0
-      ),
+        attempt: this.getAttemptString(this.attempt),
+        scores: this.data.filter(quiz => quiz.answers.some(answer => answer.isCorrect && answer.isUserChoice)).length,
+        time: this.data.reduce((totalTime, quiz) => totalTime + quiz.spentTime, 0)
     };
     this.winnersArray.push(winnerData);
+    
+    // Sort by scores descending and time ascending
+    this.winnersArray.sort((a, b) => {
+        if (b.scores === a.scores) {
+            return a.time - b.time; // Sort by time ascending if scores are equal
+        }
+        return b.scores - a.scores; // Sort by scores descending
+    });
 
-    this.winnersArray.sort((a, b) => b.scores - a.scores);
-
-    winnersTableBody.innerHTML = "";
+    winnersTableBody.innerHTML = '';
     this.winnersArray.forEach((winner, index) => {
-      const tr = document.createElement("tr");
+        const tr = document.createElement('tr');
 
-      if (index === 0) {
-        tr.classList.add("first-place");
-      } else if (index === 1) {
-        tr.classList.add("second-place");
-      } else if (index === 2) {
-        tr.classList.add("third-place");
-      }
+        if (index === 0) {
+            tr.classList.add('first-place');
+        } else if (index === 1) {
+            tr.classList.add('second-place');
+        } else if (index === 2) {
+            tr.classList.add('third-place');
+        }
 
-      tr.innerHTML = `<td>${index + 1}</td><td>${winner.attempt}</td><td>${
-        winner.scores
-      }</td><td>${winner.time}</td>`;
-      winnersTableBody.appendChild(tr);
+        tr.innerHTML = `<td>${index + 1}</td><td>${winner.attempt}</td><td>${winner.scores}</td><td>${winner.time}</td>`;
+        winnersTableBody.appendChild(tr);
     });
   }
 
