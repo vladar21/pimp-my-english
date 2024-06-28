@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const startQuizButton = document.getElementById('start-quiz-button');
     let quiz = new Quiz();
 
+    /**
+     * Generates HTML for star ratings.
+     *
+     * @param {number} rating - The rating value (1-5).
+     * @returns {string} - A string of HTML containing the star rating.
+     */
     function generateStars(rating) {
         let stars = '';
         for (let i = 1; i <= 5; i++) {
@@ -17,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return stars;
     }
 
+    /**
+     * Updates the word set options with star ratings.
+     */
     function updateOptionsWithStars() {
         const options = wordSetSelectLanding.options;
         for (let i = 0; i < options.length; i++) {
@@ -28,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Fetches filtered words based on the selected word set ID and updates the UI.
+     *
+     * @param {number} wordSetId - The ID of the selected word set.
+     */
     function fetchFilteredWords(wordSetId) {
         hiddenFilteredWordsDiv.dataset.words = '';
         quiz.showSpinner();
@@ -50,16 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    // Event listener for changing word sets
     wordSetSelectLanding.addEventListener('change', function () {
         const selectedWordSetId = this.value;
         fetchFilteredWords(selectedWordSetId);
     });
 
+    // Event listener for starting the quiz
     startQuizButton.addEventListener('click', () => {
         const selectedWordSetId = wordSetSelectLanding.value;
         fetchFilteredWords(selectedWordSetId);
     });
 
+    // Auto-start functionality
     const autostart = document.getElementById('autostart');
     if (autostart && autostart.dataset.autostart === '1') {
         const defaultWordSetId = wordSetSelectLanding.value;
@@ -68,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Event listener for settings link
     settingsLink.addEventListener('click', (event) => {
         event.preventDefault();
         const selectedWordSetId = wordSetSelectLanding.value;
@@ -80,5 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Initial update of word set options with stars
     updateOptionsWithStars();
 });
