@@ -19,6 +19,18 @@ from subscriptions.decorators import subscription_required
 
 @subscription_required
 def quiz_settings(request):
+    """
+    Renders the quiz settings page.
+
+    This view handles the logic for retrieving and displaying quiz settings based on the selected word set.
+    It also provides word count and filters for CEFR levels and word types.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered quiz settings page.
+    """
     word_set_id = request.GET.get('word_set_id')
 
     if word_set_id and word_set_id != "0":
@@ -67,6 +79,18 @@ def quiz_settings(request):
 
 @csrf_exempt
 def update_quiz_settings(request):
+    """
+    Updates quiz settings based on the provided filters.
+
+    This view handles the logic for updating quiz settings such as CEFR levels, word types, and filtered words.
+    It also provides the filtered word count and other relevant data.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        JsonResponse: The response containing the updated quiz settings.
+    """
     if request.method == 'POST':
         data = json.loads(request.body)
         cefr_levels = data.get('cefr_levels', [])
@@ -74,8 +98,6 @@ def update_quiz_settings(request):
         is_grow = data.get('is_grow', False)
         total_word_count = data.get('total_word_count', 0)
         isSettingsChange = data.get('isSettingsChange', None)
-        # filtered_words_from_settings = data.get('filtered_words')
-        # use_filtered_words = data.get('use_filtered_words')
         filtered_words_from_settings = data.get('filtered_words', [])
         use_filtered_words = data.get('use_filtered_words', False)
 
@@ -157,10 +179,32 @@ def update_quiz_settings(request):
 
 
 def rules(request):
+    """
+    Renders the rules page.
+
+    This view handles the logic for displaying the quiz rules.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered rules page.
+    """
     return render(request, 'quizzes/rules.html')
 
 
 def landing(request):
+    """
+    Renders the landing page.
+
+    This view handles the logic for displaying the landing page with filtered words and word sets.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: The rendered landing page.
+    """
     filtered_words = request.session.get('filtered_words', [])
     word_sets = WordSet.objects.all()
     print('filtered words ')
@@ -177,6 +221,17 @@ def landing(request):
 
 @csrf_exempt
 def start_quiz_with_word_set(request):
+    """
+    Starts a quiz with a selected word set.
+
+    This view handles the logic for starting a quiz based on the selected word set and saving the filtered words to the session.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        JsonResponse: The response containing the redirect URL for the landing page.
+    """
     if request.method == 'POST':
         data = json.loads(request.body)
         word_set_id = data.get('word_set_id')
@@ -195,6 +250,17 @@ def start_quiz_with_word_set(request):
 
 
 def check_media_data(request):
+    """
+    Checks and returns the media data for words.
+
+    This view handles the logic for retrieving media data (image and audio) for words.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        JsonResponse: The response containing the media data for words.
+    """
     words_data = []
     words = Word.objects.all()
     for word in words:
@@ -207,8 +273,29 @@ def check_media_data(request):
 
 
 class QuizDataView(APIView):
+    """
+    API view for handling quiz data.
+
+    This view handles the logic for processing and returning quiz data based on```python
     @method_decorator(csrf_exempt)
     def post(self, request, format=None):
+    """
+
+    @method_decorator(csrf_exempt)
+    def post(self, request, format=None):
+        """
+        Processes the quiz data based on filtered word texts.
+
+        This method handles the logic for retrieving and processing quiz data based on the provided filtered word texts.
+        It also updates the start count for the word set and calculates the ratings.
+
+        Args:
+            request: The HTTP request object.
+            format: The format for the request (default is None).
+
+        Returns:
+            Response: The response containing the processed quiz data.
+        """
         try:
             data = request.data
         except json.JSONDecodeError:
@@ -230,6 +317,18 @@ class QuizDataView(APIView):
         return self.process_words(words)
     
     def process_words(self, words):
+        """
+        Processes the words and generates the quiz data.
+
+        This method handles the logic for processing the provided words and generating the quiz data,
+        including definitions, images, and sound URLs.
+
+        Args:
+            words: The queryset of Word objects to be processed.
+
+        Returns:
+            Response: The response containing the processed quiz data.
+        """
         quiz_data = {}
         for word in words:
             definitions = Definition.objects.filter(word=word)

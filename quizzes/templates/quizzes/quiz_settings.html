@@ -164,18 +164,23 @@
 
 
 <script>
+    /**
+     * Document ready event listener to initialize the quiz settings.
+     */
     document.addEventListener('DOMContentLoaded', () => {
+        // External settings object containing configuration data for the quiz settings
         const settingsExternal = {
-            cefr_levels: {{ cefr_levels|safe }},
-            word_types: {{ word_types|safe }},
-            total_word_count: {{ word_count }},
-            word_set: {{ selected_word_set|default_if_none:"null" }},
-            selected_word_set_description: "{{ selected_word_set_description|escapejs }}",
-            csrf_token: "{{ csrf_token }}",
-            update_quiz_settings_url: "{% url 'update_quiz_settings' %}",
-            create_word_set : "wordsets/create",
+            cefr_levels: {{ cefr_levels|safe }}, // CEFR levels
+            word_types: {{ word_types|safe }}, // Word types
+            total_word_count: {{ word_count }}, // Total word count
+            word_set: {{ selected_word_set|default_if_none:"null" }}, // Selected word set
+            selected_word_set_description: "{{ selected_word_set_description|escapejs }}", // Description of the selected word set
+            csrf_token: "{{ csrf_token }}", // CSRF token for security
+            update_quiz_settings_url: "{% url 'update_quiz_settings' %}",  // URL to update quiz settings
+            create_word_set : "wordsets/create",  // URL to create a new word set
         };
 
+        // Initialize the QuizSettings with the external settings
         const quizSettings = new QuizSettings(settingsExternal);
     });
 </script>

@@ -720,16 +720,6 @@ By prioritizing user needs and employing best practices in UX/UI design, we aim 
 
 <img src="assets/images/Flake8_Validation_Result.jpg" width="600" alt="Flake8 validation result">
 
-### Send emails
-
-- For check sending mails feature in project using mailtrap.io service. Please, use credentials below to look ones:
-
- ```bash
- mailtrap link: https://mailtrap.io/inboxes/2689731/messages/4092718424
- mailtrap login: vlad.rastvorov@aol.com
- mailtrap password: :8xt:XP4fWr.mwe
- ```
-
 ### The W3C Markup Validator, and W3C CSS Validator, and JSHint Javascript Validator Services
 
 - All of these services were used to validate pages of the project to ensure there were no syntax errors in the project.
