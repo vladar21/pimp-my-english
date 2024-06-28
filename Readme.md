@@ -730,36 +730,7 @@ By prioritizing user needs and employing best practices in UX/UI design, we aim 
  mailtrap password: :8xt:XP4fWr.mwe
  ```
 
-### Unit Tests Suite Overview
-
-- Our test suite ensures the robustness and functionality of user management and scheduling within the application. Tests are categorized by focus areas for clarity.
-
-#### User Management Tests
-- `User Registration Validation`: Tests validate the user registration form with correct and incorrect inputs, ensuring only valid data passes.
-- `Duplicate Registration Handling`: Confirms the system prevents users from registering with a username or email that already exists.
-- `Password Strength Enforcement`: Verifies that user registration rejects common and easily guessable passwords to enhance security.
-- `User Logout Process`: Tests the logout functionality, ensuring users are properly logged out and redirected.
-- `Authenticated Redirection`: Verifies that authenticated users are redirected from the login and registration pages to prevent redundant registrations or logins.
-
-#### Scheduling System Tests
-- `Access Control`: Ensures that only authorized roles (e.g., teachers, students) can access specific scheduling functionalities like viewing schedules, creating classes, or updating lessons.
-- `Class and Lesson Management`: Tests the creation, updating, and deletion of classes and lessons by authorized users, ensuring the application correctly handles these operations.
-- `Lesson Details Accessibility`: Confirms that lesson details are accessible to users with the appropriate permissions, including teachers and enrolled students.
-- `Scheduling Views`: Validates that the scheduling views render correctly for different user roles, providing the necessary information as expected.
-
-#### Running Unit Tests
-
-To run the unit tests in the project, execute the following commands:
-
-```bash
-python manage.py test --settings=heso.settings_test
-```
-
-Our example of Successful Test Execution
-<img src="assets/images/ResultsUnitTests.jpg" width="600" alt="Unit Tests Results">
-
-
-#### The W3C Markup Validator, and W3C CSS Validator, and JSHint Javascript Validator Services
+### The W3C Markup Validator, and W3C CSS Validator, and JSHint Javascript Validator Services
 
 - All of these services were used to validate pages of the project to ensure there were no syntax errors in the project.
 
@@ -782,7 +753,7 @@ See the JSHint validation **Results** in the image below:
 <img src="assets/images/JSHint_validation_result.jpg" width="600" alt="JSHint validation results">
 
 
-#### Accessibility
+### Accessibility
 
 1. I confirmed that the colors and fonts chosen are easy to read and accessible by running it through lighthouse in devtools.
 
@@ -804,59 +775,66 @@ See the JSHint validation **Results** in the image below:
 
 ## Bugs
 
-### 1. Doubling while saving new material
+### 1. Incorrect Feedback Email
 
-- **Description:** When we add new material in the upload form, in the list of lesson materials we see double titles of ones.
+- **Description:** Users receive a confirmation email with an unspecified email address: your_email@example.com 
 
-  <img src="assets/images/doubling_while_saving_new_material.jpg" width="600" alt="doubling while saving new material">
+  <img src="static/readme/images/wrong_feedback_email.png" width="500" alt="Incorrect feedback email">
 
-- **Solution:** Using the get_or_create method on the backend, which allows you to get an existing material or create a new one if it doesn't exist.
+- **Solution:** Specify the project email in the view that generates this email message.
 
-  ```bash
-  # Update materials if provided
-  if 'materials' in data:
-      material_ids = data['materials']
-      lesson.materials.clear()
-      lesson.materials.set(Material.objects.filter(id__in=material_ids))
-  
-  if request.FILES.getlist('new_materials'):
-      for uploaded_file in request.FILES.getlist('new_materials'):
-          if uploaded_file:
-              material, created = Material.objects.get_or_create(
-                  title=uploaded_file.name,
-                  type="file",
-                  content=uploaded_file.read()
-              )
-              if created:
-                  lesson.materials.add(material)
-  
-  lesson.save()
-  ```
-  ### 2. Don't highlight current menu item
+  <img src="static/readme/images/wrong_feedback_email_fix.png" width="500" alt="Corrected feedback email">
 
-- **Description:** When the user clicks on a menu item that doesn't have an active class (highlighted in bold white).
+  ### 2. Unclosed Tag in Email Template
 
-  <img src="assets/images/not_highlighting_current_menu_item.jpg" width="600" alt="not highlighting current menu item">
+- **Description:** Forgot to close the allauth template tag.
 
-- **Solution:** Need accurate writing of the URL to use for comparisons.
+  <img src="static/readme/images/unclosed_tag_in_email_template.png" width="500" alt="Unclosed tag in email template">
 
- <img src="assets/images/fix_not_highlighting_current_menu_item.jpg" width="600" alt="fix not highlighting current menu item">
+- **Solution:** Closed the allauth template tag.
 
-  ### 3. Incorrect message for unauthorised user actions
+ <img src="static/readme/images/unclosed_tag_in_email_template_fix.png" width="500" alt="Fixed unclosed tag in email template">
 
-- **Description:** Incorrect message when non-authorised user clicks on website items.
+  ### 3. Cut Content in Home Page Divs
 
-  <img src="assets/images/wron_message_for_unautorized_access.jpg" width="600" alt="wrong message for unautorized access">
+- **Description:** On small screens, content is cut off in the home page divs.
 
-- **Solution:** Change JavaScript handler for these situations.
+  <img src="static/readme/images/styles_error_crop_div_edge.png" width="500" alt="Cut content in home page divs">
 
- <img src="assets/images/fix_code_wron_message_for_unautorized_access.jpg" width="600" alt="fix code for fix wrong message for unautorized access">
+- **Solution:** Add styles and media queries for the problematic divs.
 
- - **Result:** Correct message (from server).
+ <img src="static/readme/images/styles_error_crop_div_edge_fix1.png" width="500" alt="Added styles and media queries to fix cut content">
 
- <img src="assets/images/fix_result_wron_message_for_unautorized_access.jpg" width="600" alt="correct message when unautorized user click on website items">
+ - **Result:** Correct display of home page divs.
+
+ <img src="static/readme/images/styles_error_crop_div_edge_fix2.png" width="500" alt="Correct display of home page divs">
+
+  ### 4. Absent Mailchimp Environment Variables in Heroku
+
+- **Description:** An internal error occurs when attempting to subscribe.
+
+  <img src="static/readme/images/newsletter_error.png" width="500" alt="Newsletter error">
+
+- **Solution:** Add the correct Mailchimp environment variables in Heroku.
+
+ <img src="static/readme/images/newsletter_error_fix1.png" width="500" alt="Fixed Mailchimp environment variables">
 
 
+ - **Result:** Correct feedback from the Mailchimp server.
+
+ <img src="static/readme/images/newsletter_error_fix2.png" width="500" alt="Correct feedback from Mailchimp server">
+
+### 5. Error During Profile Template Rendering
+
+- **Description:** When attempting to open the profile page, an error occurs: NoReverseMatch at /subscriptions/success/.
+
+  <img src="static/readme/images/error_reverse_for_profile_is_not_a_valid_view_function.png" width="500" alt="Error during profile template rendering">
+
+- **Solution:** Fix the view method and main URLs.
+
+ <img src="static/readme/images/fix1_error_reverse_for_profile_is_not_a_valid_view_function.png" width="500" alt="Fixed view method and URLs">
+
+ <img src="static/readme/images/fix2_error_reverse_for_profile_is_not_a_valid_view_function.png" width="500" alt="Corrected profile page rendering">
 
 ---
 
