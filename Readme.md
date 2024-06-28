@@ -9,15 +9,15 @@ This README file provides an overview of the project, detailing its purpose, fea
 ## Table of Contents
 1. [Introduction](#introduction)
 2. [Features](#features)
-3. [Technologies](#technologies)
-4. [Project Architecture](#project-architecture)
-5. [Database Structure](#database-structure)
-6. [User Stories](#user-stories)
-7. [Agile Development Plan](#agile-development-plan)
-8. [UX/UI Design](#uxui-design)
-9. [Testing](#testing)
-10. [Deployment](#deployment)
-11. [Future Features](#future-features)
+3. [Future Features](#future-features)
+4. [Technologies](#technologies)
+5. [Project Architecture](#project-architecture)
+6. [Database Structure](#database-structure)
+7. [User Stories](#user-stories)
+8. [Agile Development Plan](#agile-development-plan)
+9. [UX/UI Design](#uxui-design)
+10. [Testing](#testing)
+11. [Deployment](#deployment)
 12. [Acknowledgements](#acknowledgements)
 13. [License](#license)
 
@@ -69,6 +69,24 @@ The platform aims to provide a comprehensive learning tool that is both educatio
 
     <img src="static/images/PME_Facebook_Mockup.png" width="600" alt="Facebook Page Mockup"/>
 
+---
+
+## Future Features
+
+We have exciting plans to enhance the learning experience on our platform. Here are the upcoming features we are planning to implement:
+
+### Multi-language Quizzes
+
+To make our platform more inclusive and cater to a wider audience, we plan to introduce multi-language quizzes. This feature will allow users to take quizzes in different languages, starting with the Irish language. This will help users learn and practice new languages, expanding their vocabulary and language skills beyond English.
+
+#### Planned Languages:
+1. **Irish (Gaeilge)**: As our first additional language, users will be able to take quizzes in Irish, covering vocabulary and grammar specific to the Irish language.
+
+### Enhanced Quiz Modes
+
+We are planning to introduce new quiz modes to provide a more diverse and engaging learning experience. These modes will include:
+1. **Reverse Quizzes**: In this mode, users will guess definitions based on the given words. This will enhance their understanding and retention of word meanings.
+2. **Audio Quizzes**: Users will listen to audio pronunciations and guess the corresponding words. This mode aims to improve listening skills and pronunciation accuracy.
 
 ---
 
@@ -973,25 +991,6 @@ Ensure you have the following installed:
     This card number can be used to create successful test payments during development.
 
 By following these steps, you will have your platform up and running with the necessary initial data loaded and ready for users.
-
----
-
-## Future Features
-
-We have exciting plans to enhance the learning experience on our platform. Here are the upcoming features we are planning to implement:
-
-### Multi-language Quizzes
-
-To make our platform more inclusive and cater to a wider audience, we plan to introduce multi-language quizzes. This feature will allow users to take quizzes in different languages, starting with the Irish language. This will help users learn and practice new languages, expanding their vocabulary and language skills beyond English.
-
-#### Planned Languages:
-1. **Irish (Gaeilge)**: As our first additional language, users will be able to take quizzes in Irish, covering vocabulary and grammar specific to the Irish language.
-
-### Enhanced Quiz Modes
-
-We are planning to introduce new quiz modes to provide a more diverse and engaging learning experience. These modes will include:
-1. **Reverse Quizzes**: In this mode, users will guess definitions based on the given words. This will enhance their understanding and retention of word meanings.
-2. **Audio Quizzes**: Users will listen to audio pronunciations and guess the corresponding words. This mode aims to improve listening skills and pronunciation accuracy.
 
 ---
 
