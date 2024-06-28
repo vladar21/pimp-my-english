@@ -16,7 +16,23 @@ logger = logging.getLogger(__name__)
 
 
 class CreateSubscriptionView(View):
+    """
+    View to handle the creation of a new subscription using Stripe.
+    """
+
     def get(self, request):
+        """
+        Handle GET requests to display the subscription creation form.
+
+        Retrieves active products and prices from Stripe, filters for recurring prices, 
+        and constructs a context with subscription options to render the form.
+
+        Args:
+            request (HttpRequest): The incoming HTTP request.
+
+        Returns:
+            HttpResponse: The rendered subscription creation form.
+        """
         products = stripe.Product.list(active=True)
         prices = stripe.Price.list(active=True)
 
@@ -40,6 +56,18 @@ class CreateSubscriptionView(View):
         return render(request, 'create_subscription.html', context)
 
     def post(self, request):
+        """
+        Handle GET requests to display the subscription creation form.
+
+        Retrieves active products and prices from Stripe, filters for recurring prices, 
+        and constructs a context with subscription options to render the form.
+
+        Args:
+            request (HttpRequest): The incoming HTTP request.
+
+        Returns:
+            HttpResponse: The rendered subscription creation form.
+        """
         selected_price_id = request.POST.get('subscription_period')
         stripe_token = request.POST.get('stripeToken')
 
@@ -102,6 +130,19 @@ create_subscription = CreateSubscriptionView.as_view()
 
 @login_required
 def manage_subscription(request):
+    """
+    Handle the management and cancellation of an active subscription.
+
+    Retrieves the user's active subscription, and if a POST request is received,
+    attempts to cancel the subscription on Stripe and deactivate it in the database.
+
+    Args:
+        request (HttpRequest): The incoming HTTP request.
+
+    Returns:
+        HttpResponse: Renders the subscription management page, or redirects to 
+        the subscription creation form if no active subscription is found.
+    """
     subscription = Subscription.objects.filter(user=request.user, is_active=True).first()
     if not subscription:
         return redirect('create_subscription')
@@ -121,9 +162,27 @@ def manage_subscription(request):
 
 @login_required
 def subscription_success(request):
+    """
+    Render the subscription success page.
+
+    Args:
+        request (HttpRequest): The incoming HTTP request.
+
+    Returns:
+        HttpResponse: The rendered subscription success page.
+    """
     return render(request, 'subscription_success.html')
 
 
 @login_required
 def subscription_canceled(request):
+    """
+    Render the subscription canceled page.
+
+    Args:
+        request (HttpRequest): The incoming HTTP request.
+
+    Returns:
+        HttpResponse: The rendered subscription canceled page.
+    """
     return render(request, 'subscription_canceled.html')

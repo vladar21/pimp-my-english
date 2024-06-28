@@ -39,8 +39,17 @@
 
     <script src="https://js.stripe.com/v3/"></script>
     <script>
+        /**
+         * Initialize Stripe and create a card element with custom styling.
+         * @type {object}
+         */
         var stripe = Stripe('{{ stripe_public_key }}');
         var elements = stripe.elements();
+
+        /**
+         * Create a card element with specified styles.
+         * @type {object}
+         */
         var card = elements.create('card', {
             style: {
                 base: {
@@ -58,8 +67,16 @@
                 }
             }
         });
+
+        /**
+         * Mount the card element to the DOM.
+         */
         card.mount('#card-element');
 
+        /**
+         * Listen for changes to the card element and display any errors.
+         * @param {object} event - The change event object from the card element.
+         */
         card.addEventListener('change', function(event) {
             var displayError = document.getElementById('card-errors');
             if (event.error) {
@@ -69,6 +86,11 @@
             }
         });
 
+
+        /**
+         * Handle form submission and create a Stripe token.
+         * @param {object} event - The submit event object from the form.
+         */
         var form = document.getElementById('subscription-form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -83,6 +105,10 @@
             });
         });
 
+        /**
+         * Handle the Stripe token and submit the form.
+         * @param {object} token - The Stripe token object.
+         */
         function stripeTokenHandler(token) {
             var form = document.getElementById('subscription-form');
             var hiddenInput = document.createElement('input');

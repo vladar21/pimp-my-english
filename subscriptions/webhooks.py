@@ -10,7 +10,23 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class StripeWebhookView(View):
+    """
+    View to handle Stripe webhooks for subscription events.
+    """
+
     def post(self, request):
+        """
+        Handle the incoming POST request from Stripe webhook.
+
+        This method verifies the Stripe event signature and processes the event
+        for 'customer.subscription.deleted' to deactivate the corresponding subscription.
+
+        Args:
+            request (HttpRequest): The incoming HTTP request.
+
+        Returns:
+            JsonResponse: A JSON response indicating success or error status.
+        """
         payload = request.body
         sig_header = request.META['HTTP_STRIPE_SIGNATURE']
         endpoint_secret = settings.STRIPE_ENDPOINT_SECRET
