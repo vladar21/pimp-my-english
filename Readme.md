@@ -349,21 +349,21 @@ The development of PimpMyEnglish is structured into sprints, with each sprint ta
 - As an Admin, I want to manage the entire platform to ensure smooth operations and content quality.
 
 **Tasks and Dates:**
-- [ ] Create Django Project (May 21, 2024)
+- Create Django Project (May 21, 2024)
   - **Commit:** 8e1dbd27c03d1191f53efa1a7c2d85d5e6930d08
   - **Description:** Create Django project pimp_my_english.
-- [ ] Set Up Database and Static Files (May 21, 2024)
+- Set Up Database and Static Files (May 21, 2024)
   - **Commit:** 58a9ddb3617504a518c25a4c7452ea62895fd37f
   - **Description:** Add to settings databases, static and media config.
-- [ ] Create Initial Apps (May 21, 2024)
+- Create Initial Apps (May 21, 2024)
   - **Commit:** f831961297880aa9be75791edacfeb2febe3a004
   - **Description:** Create apps accounts, subscriptions, wordsets, quizzes, admin.
-- [ ] Set Up URLs and Models (May 21, 2024)
+- Set Up URLs and Models (May 21, 2024)
   - **Commit:** 7569677871a513c08e50efb2bf1add405c1fb677
   - **Description:** Add URLs to all apps.
   - **Commit:** c913d511160abe05826bcc1db2b5258227bde63d
   - **Description:** Add models.
-- [ ] Add Static Assets (May 24, 2024)
+- Add Static Assets (May 24, 2024)
   - **Commit:** 7e3d3f311a8eaa4c89ea1b3896d71c4092bf1283
   - **Description:** Add CSS, fonts, images, JS, and sound folders to static folder.
 
