@@ -5,6 +5,9 @@ from django.conf import settings
 
 
 class WordType(models.TextChoices):
+    """
+    Enum for different types of words.
+    """
     NOUN = 'noun', 'Noun'
     VERB = 'verb', 'Verb'
     ADJECTIVE = 'adjective', 'Adjective'
@@ -16,6 +19,9 @@ class WordType(models.TextChoices):
 
 
 class CefrLevel(models.TextChoices):
+    """
+    Enum for CEFR language proficiency levels.
+    """
     A1 = 'A1', 'A1'
     A2 = 'A2', 'A2'
     B1 = 'B1', 'B1'
@@ -25,21 +31,30 @@ class CefrLevel(models.TextChoices):
 
 
 class LanguageCode(models.TextChoices):
+    """
+    Enum for language codes according to ISO 639-1.
+    """
     EN = 'en', 'English'
     RU = 'ru', 'Russian'
     UA = 'ua', 'Ukrainian'
-    # добавить другие коды языков по ISO 639-1
+    # add other codes of languages by ISO 639-1
 
 
 class CountryCode(models.TextChoices):
+    """
+    Enum for country codes according to Alpha-2 ISO 3166-1.
+    """
     US = 'US', 'United States'
     UK = 'UK', 'United Kingdom'
     RU = 'RU', 'Russia'
     UA = 'UA', 'Ukraine'
-    # добавить другие коды стран по Alpha-2 ISO 3166-1
+    # add other codes of countries by Alpha-2 ISO 3166-1
 
 
 class WordSet(models.Model):
+    """
+    Model representing a set of words.
+    """
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='created_wordsets')
@@ -56,6 +71,9 @@ class WordSet(models.Model):
 
 
 class Word(models.Model):
+    """
+    Model representing a word.
+    """
     text = models.CharField(max_length=255)
     language_code = models.CharField(max_length=2, choices=LanguageCode.choices)
     country_code = models.CharField(max_length=2, choices=CountryCode.choices)
@@ -72,6 +90,9 @@ class Word(models.Model):
 
 
 class Definition(models.Model):
+    """
+    Model representing a definition of a word.
+    """
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     definition = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
