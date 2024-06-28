@@ -2106,3 +2106,9 @@ button[name="contact_submit"]:hover {
 .star {
     color: gold;
 }
+
+.profile-login-form-container {
+
+    max-width:1250px;
+
+}
