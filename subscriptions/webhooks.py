@@ -4,7 +4,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.conf import settings
 import stripe
-from .models import Subscription 
+from .models import Subscription
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -33,9 +33,9 @@ class StripeWebhookView(View):
 
         try:
             event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
-        except ValueError as e:
+        except ValueError as e:  # noqa: F841
             return JsonResponse({'status': 'error', 'message': 'Invalid payload'}, status=400)
-        except stripe.error.SignatureVerificationError as e:
+        except stripe.error.SignatureVerificationError as e:  # noqa: F841
             return JsonResponse({'status': 'error', 'message': 'Invalid signature'}, status=400)
 
         if event['type'] == 'customer.subscription.deleted':

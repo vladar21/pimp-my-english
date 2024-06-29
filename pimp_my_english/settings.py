@@ -43,10 +43,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', '')
 DEBUG = os.getenv('DEBUG', True)
 
 ALLOWED_HOSTS = [
-    'pme-8f6d8d60e106.herokuapp.com', 
-    'localhost', 
+    'pme-8f6d8d60e106.herokuapp.com',
+    'localhost',
     '127.0.0.1'
-    ]
+]
 
 # Application definition
 

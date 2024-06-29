@@ -33,7 +33,7 @@ class WordSerializer(serializers.ModelSerializer):
         model (Word): The model being serialized.
         fields (list): The fields to include in the serialized output.
     """
-    
+
     definitions = DefinitionSerializer(many=True, read_only=True)
 
     class Meta:
@@ -52,7 +52,7 @@ class WordSetSerializer(serializers.ModelSerializer):
         model (WordSet): The model being serialized.
         fields (list): The fields to include in the serialized output.
     """
-    
+
     words = WordSerializer(many=True, read_only=True)
 
     class Meta:

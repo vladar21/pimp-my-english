@@ -12,7 +12,7 @@ def subscription_required(view_func):
 
     This decorator ensures that the user is logged in and has an active subscription.
     If the user is not logged in, they will be redirected to the login page.
-    If the user does not have an active subscription, they will be redirected to the 
+    If the user does not have an active subscription, they will be redirected to the
     subscription creation page.
 
     Args:

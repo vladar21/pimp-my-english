@@ -12,7 +12,7 @@ class QuizSettingsForm(forms.Form):
         word_types (MultipleChoiceField): Select multiple word types for the quiz. Uses checkbox widgets.
         word_count (IntegerField): Set the number of words in the quiz. Uses a number input widget.
     """
-    
+
     cefr_levels = forms.MultipleChoiceField(
         choices=[
             ('A1', 'A1'), ('A2', 'A2'), ('B1', 'B1'),

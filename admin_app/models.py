@@ -27,7 +27,7 @@ class Admin(models.Model):
     class Meta:
         """
         Meta class for the Admin model.
-        
+
         Attributes:
             verbose_name (str): The singular name for the Admin model.
             verbose_name_plural (str): The plural name for the Admin model.

@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from wordsets.models import Word,  WordSet, Definition, CefrLevel, WordType
+from wordsets.models import Word, WordSet, Definition, CefrLevel, WordType
 from wordsets.utils import calculate_ratings, find_word_set_by_words
 import json
 import base64
@@ -307,7 +307,7 @@ class QuizDataView(APIView):
             words = Word.objects.all()
         else:
             words = Word.objects.filter(text__in=filtered_word_texts)
-        
+
         word_set = find_word_set_by_words(filtered_word_texts)
         if word_set:
             word_set.start_count += 1
@@ -315,7 +315,7 @@ class QuizDataView(APIView):
             calculate_ratings()
 
         return self.process_words(words)
-    
+
     def process_words(self, words):
         """
         Processes the words and generates the quiz data.

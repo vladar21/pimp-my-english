@@ -23,12 +23,12 @@ class Subscription(models.Model):
         (PIMP_MY_ENGLISH_MONTHLY, 'PimpMyEnglishMonthly'),
         (PIMP_MY_ENGLISH_YEARLY, 'PimpMyEnglishYearly'),
     ]
-    
+
     SUBSCRIPTION_PERIOD_CHOICES = [
         ('Monthly', 'Monthly'),
         ('Yearly', 'Yearly')
     ]
-    
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions')
     stripe_subscription_id = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)

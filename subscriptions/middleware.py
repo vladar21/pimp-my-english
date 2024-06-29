@@ -8,8 +8,8 @@ class SubscriptionMiddleware:
     """
     Middleware to check if the user has an active subscription when accessing certain URLs.
 
-    If the user is authenticated and does not have an active subscription, 
-    they will be redirected to the subscription creation page when trying 
+    If the user is authenticated and does not have an active subscription,
+    they will be redirected to the subscription creation page when trying
     to access the '/settings/' URL.
 
     Attributes:
@@ -29,7 +29,7 @@ class SubscriptionMiddleware:
         Process the request and check for an active subscription.
 
         If the user is authenticated and does not have an active subscription,
-        they will be redirected to the subscription creation page when trying 
+        they will be redirected to the subscription creation page when trying
         to access the '/settings/' URL.
 
         Args:

@@ -24,7 +24,7 @@ class CreateSubscriptionView(View):
         """
         Handle GET requests to display the subscription creation form.
 
-        Retrieves active products and prices from Stripe, filters for recurring prices, 
+        Retrieves active products and prices from Stripe, filters for recurring prices,
         and constructs a context with subscription options to render the form.
 
         Args:
@@ -59,7 +59,7 @@ class CreateSubscriptionView(View):
         """
         Handle GET requests to display the subscription creation form.
 
-        Retrieves active products and prices from Stripe, filters for recurring prices, 
+        Retrieves active products and prices from Stripe, filters for recurring prices,
         and constructs a context with subscription options to render the form.
 
         Args:
@@ -140,7 +140,7 @@ def manage_subscription(request):
         request (HttpRequest): The incoming HTTP request.
 
     Returns:
-        HttpResponse: Renders the subscription management page, or redirects to 
+        HttpResponse: Renders the subscription management page, or redirects to
         the subscription creation form if no active subscription is found.
     """
     subscription = Subscription.objects.filter(user=request.user, is_active=True).first()

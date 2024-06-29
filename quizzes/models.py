@@ -64,7 +64,6 @@ class QuizSettings(models.Model):
         cefr_levels (ArrayField): The CEFR levels of words to be included in the quiz.
         word_types (ArrayField): The types of words to be included in the quiz.
     """
-    
     word_count = models.IntegerField(default=10)
     cefr_levels = ArrayField(models.CharField(max_length=2), default=list)
     word_types = ArrayField(models.CharField(max_length=15), default=list)
