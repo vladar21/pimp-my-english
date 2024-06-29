@@ -12,14 +12,13 @@ This README file provides an overview of the project, detailing its purpose, fea
 3. [Future Features](#future-features)
 4. [Technologies](#technologies)
 5. [Project Architecture](#project-architecture)
-6. [Database Structure](#database-structure)
-7. [User Stories](#user-stories)
-8. [Agile Development Plan](#agile-development-plan)
-9. [UX/UI Design](#uxui-design)
-10. [Testing](#testing)
-11. [Deployment](#deployment)
-12. [Acknowledgements](#acknowledgements)
-13. [License](#license)
+6. [User Stories](#user-stories)
+7. [Agile Development Plan](#agile-development-plan)
+8. [UX/UI Design](#uxui-design)
+9. [Testing](#testing)
+10. [Deployment](#deployment)
+11. [Acknowledgements](#acknowledgements)
+12. [License](#license)
 
 ---
 
@@ -199,29 +198,29 @@ This architecture ensures a modular and scalable project structure, making it ea
 
 ---
 
-## Database Structure
+### Database Structure
 
 The **Pimp My English** project uses a PostgreSQL database to manage various aspects of the application, including users, quizzes, subscriptions, and word sets. Below is an overview of the main models and their relationships.
 
-### Models Overview
+#### Models Overview
 
-#### User Models
+##### User Models
 
 - **User**: Extends the default Django user model to include additional fields like `is_subscriber`, `email_verified`, and `role`. 
 - **Admin**: Represents an admin user with a specific role, linked to the `User` model.
 
-#### Quiz Models
+##### Quiz Models
 
 - **Quiz**: Represents a quiz taken by a user, linked to a specific word set.
 - **QuizResult**: Stores the results of a quiz.
 - **QuizSettings**: Stores settings for quizzes, such as word count and CEFR levels.
 
-#### Subscription Models
+##### Subscription Models
 
 - **Subscription**: Represents a user's subscription plan, including details like the Stripe subscription ID and whether the subscription is active.
 - **Payment**: Stores payment information related to a subscription.
 
-#### Word Set Models
+##### Word Set Models
 
 - **WordSet**: Represents a collection of words with a name, description, rating, and other metadata. Linked to the `User` model for the creator and the `Admin` model for approval.
 - **Word**: Represents a single word with additional metadata like language code, country code, word type, and CEFR level.
