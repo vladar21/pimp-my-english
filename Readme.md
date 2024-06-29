@@ -44,20 +44,35 @@ The platform aims to provide a comprehensive learning tool that is both educatio
 - **Guests**: Unregistered users can access preset and shared word sets to quickly test their vocabulary skills without registration.
 - **Admin**: Administrators have full control over platform content and user management, including subscription plans and user roles.
 
+    <img src="static/readme/images/user_authentification_and_roles.png" alt="User Authentication and Roles" width="600">
+
 ### Interactive Quizzes
 - **Engaging Quizzes**: Quizzes challenge users to guess words by their definitions, with each question having a time limit.
 - **Variety of Word Sets**: Users can select from a variety of word sets based on their proficiency level and interests.
 - **Real-time Feedback**: Users receive immediate feedback in the form of a results table displayed in the browser for the current session, allowing them to track their estimated time, correct and incorrect answers.
+
+    <img src="static/readme/images/interactive_quizzes.png" alt="User Authentication and Roles" width="600">
 
 ### Word Set Management
 - **Create and Edit Word Sets**: Subscribers can create personalized word sets and edit existing ones.
 - **Rating System**: Word sets can be rated automatically based on the number of times they have been started, with the ratings displayed when selecting a word set.
 - **Sharing and Collaboration**: Users share their word sets with others and see immediate feedback through the word set ratings.
 
+    <img src="static/readme/images/word_set_managment.png" alt="User Authentication and Roles" width="600">
+
 ### Subscription and E-Commerce Integration
 - **Subscription Plans**: Users can purchase subscriptions to create and customize word sets.
 - **Secure Payments**: Integration with Stripe ensures secure payment processing for subscriptions.
 - **Subscription Management**: Users can manage their subscription plans, including renewals and cancellations with just a few clicks, thanks to Stripe integration and a well-thought-out commercial component.
+
+    <img src="static/readme/images/subscriptions_and_e-commerce.png" alt="User Authentication and Roles" width="600">
+
+### Newsletter Feature Integration
+- **Automatic Subscription Management**: All new subscribers are automatically added to our Mailchimp mailing list.
+- **Seamless Mailchimp Integration**: As users subscribe to our service, their email addresses are instantly synced with Mailchimp.
+- **Effortless Newsletter Distribution**: Subscribers receive regular updates and newsletters through Mailchimp without any additional setup.
+
+    <img src="static/readme/images/newsletters_and_mailchimp.png" alt="User Authentication and Roles" width="600">
 
 ### Facebook Page Mockup
 - **Project Presentation**: Specific mockup showcasing the "Pimp My English" project.
