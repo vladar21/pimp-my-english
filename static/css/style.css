@@ -2047,3 +2047,7 @@ button[name="contact_submit"]:hover {
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+#sign-up-span {
+    display: inline-block;
+}

@@ -10,7 +10,7 @@
     <div class="login-form-container">
         <h1>Sign Up</h1>        
         <p>
-            Already have an account? Then please <span><a href="{% url 'account_login' %}">sign in</a></span> first.
+            Already have an account? Then please&nbsp;<span id="sign-up-span"><a href="{% url 'account_login' %}">sign in</a></span>&nbsp;first.
         </p>
         {% url 'account_signup' as signup_url %}
         <form method="post" action="{% url 'account_signup' %}">

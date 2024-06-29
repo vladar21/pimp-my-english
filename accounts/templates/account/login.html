@@ -12,7 +12,7 @@
         <h1>Sign In</h1>
        
         <p>
-            If you have not created an account yet, then please <span><a href="{% url 'account_signup' %}">sign up</a></span> first.
+            If you have not created an account yet, then please&nbsp;<span id="sign-up-span"><span><a href="{% url 'account_signup' %}">sign up</a></span>&nbsp;first.
         </p>
         {% url 'account_login' as login_url %}
         <form method="post" action="{% url 'account_login' %}">
