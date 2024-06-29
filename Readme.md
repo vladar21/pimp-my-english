@@ -620,7 +620,7 @@ The development of PimpMyEnglish is structured into sprints, with each sprint ta
 
 
 #### Sprint 10: Final Testing and Deployment
-**Duration:** 1 day (June 28, 2024)
+**Duration:** 2 day (June 28-29, 2024)
 
 **Goals:**
 - Perform final testing to ensure all features work as expected.
@@ -630,17 +630,35 @@ The development of PimpMyEnglish is structured into sprints, with each sprint ta
 - As an Admin, I want to ensure the platform is fully functional and ready for use by all users.
 
 **Tasks:**
-- Final Testing of All Features (June 28, 2024)
+- Final Testing of All Features (June 28-29, 2024)
   - **Commit:** No specific commit; comprehensive testing.
   - **Description:** Test all features implemented in previous sprints to ensure they work seamlessly.
-- Fix Any Last-Minute Bugs (June 28, 2024)
-  - **Commit:** Any necessary hotfix commits based on testing.
+- Fix Any Last-Minute Bugs (June 28-29, 2024)
+  - **Commits:**
+    - f96b3f09c5b3aac81aeb89b1bb16caba4c180d0d - add Bugs section to readme
+    - 25d20ffc895ff913d63abdf33677e0199b5a6cb8 - improve disposition of the some contents
+    - 2985ea71bc318e36e796667a54d31111b35bb0ad - remove square brackets from sprint 1 description
+    - b11f9d0522d8d279d126996a95043dd3b442a530 - add section about Agile and subitem Facebook Page Mockup in Features section
+    - ea814c1022ee9a48e6170af5813c3f5230d45785 - finished with footer styles
+    - 681a769e62d5e44fd8b83eb440259f2a7f90ffee - improve footer styles
+    - 9a702c4acd21e4025f9469cdcfcfbcb047fe32f5 - improve margin-top for some pages
+    - 4ba901de8b4b6716edbe2b126e241e832b5b5d16 - improve menu styles
+    - 4279931f98b71dff4dd4f3b38113ee54de6b232b - implemented manage subscription features
   - **Description:** Address any bugs or issues found during final testing.
-- Prepare for Deployment (June 28, 2024)
-  - **Commit:** No specific commit; deployment preparation.
+- Prepare for Deployment (June 28-29, 2024)
+  - **Commits:**
+    - c5a537ed34915b70a8f4dffe2d65c30b45b8555b - profile width
+    - dc305ee5a758e9e79bf3379e8f0e352eaff1dd60add - docstrings to landing.js
+    - 53e53a3b588da9bb2563a8a196157430d7a6b937 - move js code from landing.html to landing.js
+    - eca9a8036c50684a35c70d8a8bdffab37db7042d - clean code and add docstrings to wordsets app files
   - **Description:** Prepare the application for deployment, ensuring all configurations are correct.
 - Deploy to Production (June 28, 2024)
-  - **Commit:** Final deployment commit.
+  - **Commits:** Final deployment commit.
+    - 0af1e76a52f6d04adfb5acab8efbbc3d48415c2c - wrong ranger results in winners table
+    - 6242e793778370bfc58da566ff019d37c129be42 - add docstrings to script.js
+    - f1942070644a2daaf04f7c2028bdf75ffec28793 - add docstring and clean code for quizzes app
+    - 540819a19f05dbee661444f88b917527eeab4307 - all interactive elements within the #settings-form are disabled while the spinner is active
+    - 291996211852ff354a94a5d1f89e403eb365f2cd - moved js from quiz_settings.html to quiz_maker.js, fix problem with reset wordsets select after create new wordsets
   - **Description:** Deploy the application to the production environment.
 
 
