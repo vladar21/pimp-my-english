@@ -147,7 +147,6 @@ main {
 .quiz-field-css {
     display: none;
     flex-direction: column;
-    align-items: top;
     background-color: rgba(0, 188, 212, 0.7);
     padding: 0px;
     border-radius: 5px;
@@ -1142,7 +1141,7 @@ body > main > div > div > form > label:nth-child(6) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: first baseline;
+    justify-content: baseline;
     padding: 20px;
     padding-top: 15px;
     border-radius: 5px;
@@ -1415,7 +1414,7 @@ td.button-container-right {
 #subscription-form > div:nth-child(3) > label {
     display: block;
     text-align: center;
-    margin: 10 auto;
+    margin: 10px auto;
 }
 
 #subscription-form > div:nth-child(3) > label > span {
