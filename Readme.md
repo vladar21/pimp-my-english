@@ -196,8 +196,6 @@ The **Pimp My English** project is organized into several Django applications an
 
 This architecture ensures a modular and scalable project structure, making it easy to manage and extend the functionalities of the **Pimp My English** platform.
 
----
-
 ### Database Structure
 
 The **Pimp My English** project uses a PostgreSQL database to manage various aspects of the application, including users, quizzes, subscriptions, and word sets. Below is an overview of the main models and their relationships.
