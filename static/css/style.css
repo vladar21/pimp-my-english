@@ -150,7 +150,6 @@ main {
     background-color: rgba(0, 188, 212, 0.7);
     padding: 0px;
     border-radius: 5px;
-    /* min-width: 100%; */
     max-width: 80%;
     height: auto;
 }
@@ -1091,7 +1090,6 @@ body > main > div > div > form > label:nth-child(6) {
 .login-form-container a {
     color: #333;
     text-decoration: none;
-    /* font-size: 1.2em; */
     margin-top: 10px;
     font-family: 'Caveat', cursive;
 }
@@ -1101,7 +1099,6 @@ body > main > div > div > form > label:nth-child(6) {
     background-color: rgba(123, 81, 141, 0.9);
     padding: 5px;
     border-radius: 5px;
-    /* font-size: 0.95em; */
     border-radius: 40%;
 }
 
@@ -1123,29 +1120,9 @@ body > main > div > div > form > label:nth-child(6) {
     flex-direction: column;
     margin: 0 auto;
     max-width:600px;
-    /* margin-bottom: 10px; */
     height: fit-content;
-    /* font-size: 1.3em; */
     font-family: 'Caveat', cursive;
     align-items: center;
-}
-
-.login-background {
-    --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
-    --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
-    --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
-    color: whitesmoke;
-    font-family: 'Lato', sans-serif;
-    height: fit-content;
-    background-color: rgba(39, 34, 34, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: baseline;
-    padding: 20px;
-    padding-top: 15px;
-    border-radius: 5px;
-    min-width: 40%;
 }
 
 /* Finished styles for auth forms */
@@ -1194,8 +1171,6 @@ body > main > div > div > form > label:nth-child(6) {
 /* Add some styles for the table on large screens */
 @media screen and (min-width: 600px) {
     .quizsquare {
-        /* padding: 30px;
-        padding-top: 20px; */
         border-radius: 5px;
         width: 90%;
         margin:0 auto;
@@ -1291,9 +1266,6 @@ body > main > div > div > form > label:nth-child(6) {
         margin-left: auto;
         margin-right: auto;
     }
-    /* .quizsquare {
-        width: 80%;
-    } */
 }
 
 @media screen and (min-width: 1000px) {
@@ -1319,10 +1291,6 @@ body > main > div > div > form > label:nth-child(6) {
         min-width: 50%;
     }
 
-    /* .img-word-image {
-        max-width: 50%;
-        max-height: 50%;
-    } */
 }
 
 
@@ -1439,7 +1407,6 @@ td.button-container-right {
     max-width: 1550px;
     z-index: 100;
     box-shadow: 0 2px 2px #3a3a3a;
-    /* position: fixed; */
     margin: 0 auto;
 }
 
@@ -1604,14 +1571,6 @@ td.button-container-right {
 }
 
 @media (max-width: 768px) {
-    /* .footer-container {
-        flex-direction: column;
-        text-align: center;
-    } */
-
-    /* .footer-css {
-        padding-bottom: 60px;
-    } */
 
     .footer-item p {
         justify-content: center;
@@ -1685,21 +1644,11 @@ td.button-container-right {
     bottom: 20px;
     width: 100%;
     height: auto;
-    /* background-color: rgba(0, 0, 0, 0.5); */
     justify-content: center;
     align-items: center;
 }
 
 .modal-nl-content {
-    /* background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
-    position: relative;
-    border-radius: 10px; */
     background-color: rgba(0, 0, 0, 0.7);
     padding: 2rem;
     border-radius: 10px;
@@ -1749,11 +1698,8 @@ td.button-container-right {
     justify-content: space-around;
     min-width:90%;
     max-width: 1250px;
-    /* background-color: rgba(0, 188, 212, 0.7); */
     border-radius: 5px;
     font-family: 'Caveat', cursive;
-    /* margin-top: 15px;
-    margin-bottom: 15px; */
     margin:0 auto;
 
 }
@@ -1839,23 +1785,10 @@ td.button-container-right {
     margin: 0;
     align-content: center;
 
-    /* flex-wrap: wrap; */
     gap: 0.5rem;
     
     
 }
-
-/* .home-feature-item {
-    color: white;
-    flex-basis: 500px;
-    flex-grow: 0;
-    flex-shrink: 0;
-
-    background-color: rgba(51, 51, 51, 0.7);
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-} */
 
 .home-feature-item {
     color: white;
@@ -1900,18 +1833,13 @@ td.button-container-right {
     margin: 0;
     align-content: center;
 
-
     display: flex;
-    /* justify-content: center; */
-    /* flex-wrap: wrap; */
-    /* flex-direction: row; */
 }
 
 .home-quick-start-item {
     flex-basis: 525px;
     flex-grow: 0;
     flex-shrink: 1;
-    /* flex: 1 1 20%; */
     display: flex;
     flex-direction: column;
     align-items: center;
