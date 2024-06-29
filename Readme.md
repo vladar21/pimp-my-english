@@ -718,29 +718,29 @@ By prioritizing user needs and employing best practices in UX/UI design, we aim 
 
 - The project code has passed the Flake8 validation outcome.
 
-<img src="assets/images/Flake8_Validation_Result.jpg" width="600" alt="Flake8 validation result">
+<img src="static/readme/images/flake8_check_result.png" width="600" alt="Flake8 validation result">
 
 ### The W3C Markup Validator, and W3C CSS Validator, and JSHint Javascript Validator Services
 
 - All of these services were used to validate pages of the project to ensure there were no syntax errors in the project.
 
--   [W3C Markup Validator](https://validator.w3.org/nu/) - [results link](https://validator.w3.org/nu/?doc=https%3A%2F%2Fheso-cba8b8a64704.herokuapp.com%2Fschedule%2F)
+-   [W3C Markup Validator](https://validator.w3.org/nu/) - [results link](https://validator.w3.org/nu/?doc=https%3A%2F%2Fpme-8f6d8d60e106.herokuapp.com%2F)
 
 See the W3C Markup validation **Results** in the image below:
 
-<img src="assets/images/w3c_markup_validator_result.jpg" width="600" alt="W3C Markup validation results">
+<img src="static/readme/images/w3c_markup_validator_result.png" width="600" alt="W3C Markup validation results">
 
--   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) - [results link](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fheso-cba8b8a64704.herokuapp.com%2Fschedule%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
+-   [W3C CSS Validator](https://jigsaw.w3.org/css-validator/#validate_by_input) - [results link](https://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fpme-8f6d8d60e106.herokuapp.com%2F&profile=css3svg&usermedium=all&warning=1&vextwarning=&lang=en)
 
 See the W3C CSS validation **Results** in the image below:
 
-<img src="assets/images/w3c_css_validation_result.jpg" width="600" alt="W3C CSS validation results">
+<img src="static/readme/images/w3c_css_validation_result.png" width="600" alt="W3C CSS validation results">
 
 -   [JSHint JavaScript Validator](https://jshint.com/)
 
-See the JSHint validation **Results** in the image below:
+See the JSHint validation **Results** in the image below (it was inserting content of all my JS files into the JSHint validator):
 
-<img src="assets/images/JSHint_validation_result.jpg" width="600" alt="JSHint validation results">
+<img src="static/readme/images/JSHint_validation_result.png" width="600" alt="JSHint validation results">
 
 
 ### Accessibility
@@ -749,11 +749,7 @@ See the JSHint validation **Results** in the image below:
 
 - Lighthouse Chrome devtool test results:
 
-<img src="assets/images/Lighthouse_Test_Result.jpg" width="600" alt="Lighthouse Chrome devtool test results">
-
-- The main problem with performance and SEO - it is CDN factor.
-
-<img src="assets/images/Lighthouse_Treemap.jpg" width="600" alt="The source of the not the higher estimates in the lighthouse test">
+<img src="static/readme/images/Lighthouse_Test_Result.png" width="700" alt="Lighthouse Chrome devtool test results">
 
 2. I tested that this page works in different browsers: Chrome, Firefox, Mircrosoft Edge.
 
@@ -761,7 +757,6 @@ See the JSHint validation **Results** in the image below:
 
 4. I have confirmed that the form works: requires entries in every field, will only accept an email in the email field, and the submit button works.
 
-[Back to Table of Contents](#table-of-contents)
 
 ## Bugs
 
