@@ -10,6 +10,11 @@ class UserRoles(models.TextChoices):
 
 
 class User(AbstractUser):
+    """
+    Custom user model with additional fields.
+
+    Inherits from `django.contrib.auth.models.AbstractUser`.
+    """
     is_subscriber = models.BooleanField(default=False)
     email_verified = models.BooleanField(default=False)
     role = models.CharField(max_length=20, choices=UserRoles.choices, default=UserRoles.GUEST)
