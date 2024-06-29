@@ -334,7 +334,6 @@ class QuizSettings {
     fetch("/wordsets")
       .then((response) => response.json())
       .then((data) => {
-        console.log("Loaded Word Sets:", data.word_sets);
         this.populateWordSets(
           data.word_sets,
           selectedWordSetId,
@@ -360,8 +359,6 @@ class QuizSettings {
     selectedWordSetId = null,
     selectedWordSetDescription = null
   ) {
-    console.log("Selected Word Set ID:", selectedWordSetId);
-    console.log("Word Sets:", wordSets);
 
     this.wordSetSelect.innerHTML = "";
 
@@ -405,7 +402,6 @@ class QuizSettings {
    * @param {Event} event - The event object.
    */
   handleWordSetChange(event) {
-    console.log("handleWordSetChange");
     this.showSpinner();
     const selectedWordSetId = this.wordSetSelect.value;
     const selectedOption = event.target.selectedOptions[0];
@@ -666,10 +662,6 @@ class QuizSettings {
    * @param {Function|null} callback - The callback function to execute after the settings are sent.
    */
   sendSettingsToServer(callback = null) {
-    console.log(
-      "update settings send to server ",
-      JSON.stringify(this.settings)
-    );
     this.showSpinner();
     fetch(this.settingsExternal.update_quiz_settings_url, {
       method: "POST",

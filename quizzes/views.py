@@ -56,8 +56,7 @@ def quiz_settings(request):
     max_word_count = Word.objects.all().count()  # Max word count is initially the total number of words
 
     filtered_words = ', '.join(words.values_list('text', flat=True))  # Initially, no filters applied
-    print('selected_word_set')
-    print(selected_word_set)
+
     context = {
         'word_count': word_count,
         'max_word_count': max_word_count,
@@ -100,11 +99,6 @@ def update_quiz_settings(request):
         isSettingsChange = data.get('isSettingsChange', None)
         filtered_words_from_settings = data.get('filtered_words', [])
         use_filtered_words = data.get('use_filtered_words', False)
-
-        print('filtered words from settings')
-        print(filtered_words_from_settings)
-        print('use_filtered_words')
-        print(use_filtered_words)
 
         words = Word.objects.all()
         max_word_count = words.count()
@@ -207,10 +201,7 @@ def landing(request):
     """
     filtered_words = request.session.get('filtered_words', [])
     word_sets = WordSet.objects.all()
-    print('filtered words ')
-    print(filtered_words)
-    print('wordsets ')
-    print(word_sets)
+
     context = {
         'filtered_words': filtered_words,
         'autostart': 0,
@@ -302,7 +293,7 @@ class QuizDataView(APIView):
             return Response({"error": "Invalid JSON format"}, status=status.HTTP_400_BAD_REQUEST)
 
         filtered_word_texts = data.get('filtered_word_texts', [])
-        print(f"filtered_word_texts {filtered_word_texts}")
+
         if not filtered_word_texts or filtered_word_texts == ['']:
             words = Word.objects.all()
         else:

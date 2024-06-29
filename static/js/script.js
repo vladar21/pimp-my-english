@@ -84,7 +84,6 @@ class Quiz {
       .then((data) => {
         this.englishWords = data;
         this.englishWordsRandomQuestion = JSON.parse(JSON.stringify(data));
-        console.log("Fetched Data: ", this.englishWords); // Debugging
       })
       .catch((error) => {
         console.error("Fetch error:", error);
@@ -154,7 +153,6 @@ class Quiz {
    * Take a turn in the quiz by checking the answer and displaying the next question.
    */
   takeATurn() {
-    console.log("Starting takeATurn");
     this.addSpentTimeToLastAttempt(false);
     const selectedOption = document.querySelector(
       'input[name="answer-option"]:checked'
@@ -171,10 +169,6 @@ class Quiz {
     const answered = parseInt(answeredCountElement.textContent) + 1;
     answeredCountElement.textContent = answered;
 
-    console.log(
-      `Answered: ${answered} / Total: ${this.totalCountElementValue}`
-    );
-
     if (answered >= this.totalCountElementValue) {
       this.stopQuiz();
       this.destroy();
@@ -187,13 +181,11 @@ class Quiz {
         this.currentQuiz.attempt = this.attempt;
         this.currentQuiz.spentTime = 0;
         this.data.push(this.currentQuiz);
-        console.log("Current Quiz Data: ", this.data);
       } else {
         console.error("No valid question to display."); // Debugging
       }
       this.timer = 30; // Reset timer for the next question
     }
-    console.log("Current Quiz Data: ", this.data);
   }
 
   /**
@@ -247,8 +239,6 @@ class Quiz {
     const selectedWordKey = wordKeys[randomIndex];
     const wordObject = this.englishWords[selectedWordKey];
 
-    console.log(`Selected word: ${selectedWordKey}, Index: ${randomIndex}`);
-
     if (
       !wordObject ||
       !wordObject["word-types"] ||
@@ -293,7 +283,6 @@ class Quiz {
     };
 
     delete englishWordsRandomQuestion[selectedWordKey];
-    console.log("Remaining words after deletion: ", englishWordsRandomQuestion);
     return question;
   }
 
@@ -512,9 +501,6 @@ class Quiz {
     );
     const words = hiddenFilteredWordsDiv.dataset.words ? hiddenFilteredWordsDiv.dataset.words.split(", ") : [];
     this.totalCountElementValue = words.length;
-    console.log(
-      `Starting new quiz with total count: ${this.totalCountElementValue}`
-    );
     this.totalCountElement = document.getElementById("total-count");
     this.totalCountElement.textContent = this.totalCountElementValue;
   }
@@ -675,7 +661,6 @@ class Quiz {
     this.englishWordsRandomQuestion = {};
     this.timer = 30;
     this.stopTimer();
-    console.log("Quiz destroyed, necessary parameters reset.");
   }
 }
 
