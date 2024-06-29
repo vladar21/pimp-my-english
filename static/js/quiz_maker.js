@@ -242,9 +242,7 @@ class QuizSettings {
     const hiddenFilteredWords = document.getElementById(
       "hidden-filtered-words"
     );
-    return hiddenFilteredWords
-      ? hiddenFilteredWords.dataset.words.split(", ")
-      : [];
+    return hiddenFilteredWords ? hiddenFilteredWords.dataset.words.split(", ") : [];
   }
 
   /**
@@ -282,9 +280,7 @@ class QuizSettings {
    * Populate the filtered words section.
    */
   populateFilteredWords() {
-    const wordsData = this.hiddenFilteredWords.dataset.words
-      ? this.hiddenFilteredWords.dataset.words.split(", ")
-      : [];
+    const wordsData = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(", ") : [];
     this.filteredWords.innerHTML = ""; // Clear existing content
     wordsData.forEach((word) => {
       if (word.trim() === "") return; // Skip empty words
@@ -308,9 +304,7 @@ class QuizSettings {
    * Populate the unused words section.
    */
   populateUnusedWords() {
-    const wordsData = this.hiddenUnusedWords.dataset.words
-      ? this.hiddenUnusedWords.dataset.words.split(", ")
-      : [];
+    const wordsData = this.hiddenUnusedWords.dataset.words ? this.hiddenUnusedWords.dataset.words.split(", ") : [];
     this.unusedWords.innerHTML = ""; // Clear existing content
     wordsData.forEach((word) => {
       if (word.trim() === "") return; // Skip empty words
@@ -618,16 +612,8 @@ class QuizSettings {
    */
   getTotalChecked() {
     this.showSpinner();
-    const checkedCefrLevels = this.cefrCheckboxes
-      ? Array.from(this.cefrCheckboxes)
-          .filter((checkbox) => checkbox.checked)
-          .map((checkbox) => checkbox.value)
-      : [];
-    const checkedWordTypes = this.wordTypeCheckboxes
-      ? Array.from(this.wordTypeCheckboxes)
-          .filter((checkbox) => checkbox.checked)
-          .map((checkbox) => checkbox.value)
-      : [];
+    const checkedCefrLevels = this.cefrCheckboxes ? Array.from(this.cefrCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value) : [];
+    const checkedWordTypes = this.wordTypeCheckboxes ? Array.from(this.wordTypeCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value) : [];
 
     this.settings.cefr_levels = checkedCefrLevels;
     this.settings.word_types = checkedWordTypes;
@@ -639,16 +625,8 @@ class QuizSettings {
    * Update the settings based on the current state of the checkboxes.
    */
   updateSettings() {
-    const checkedCefrLevels = this.cefrCheckboxes
-      ? Array.from(this.cefrCheckboxes)
-          .filter((checkbox) => checkbox.checked)
-          .map((checkbox) => checkbox.value)
-      : [];
-    const checkedWordTypes = this.wordTypeCheckboxes
-      ? Array.from(this.wordTypeCheckboxes)
-          .filter((checkbox) => checkbox.checked)
-          .map((checkbox) => checkbox.value)
-      : [];
+    const checkedCefrLevels = this.cefrCheckboxes ? Array.from(this.cefrCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value) : [];
+    const checkedWordTypes = this.wordTypeCheckboxes ? Array.from(this.wordTypeCheckboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value) : [];
 
     this.settings.cefr_levels = checkedCefrLevels;
     this.settings.word_types = checkedWordTypes;
@@ -777,9 +755,7 @@ class QuizSettings {
     this.wordSetTitle.value = "";
     this.wordSetDescription.value = "";
     this.filteredWordsList.innerHTML = "";
-    const filteredWords = this.hiddenFilteredWords.dataset.words
-      ? this.hiddenFilteredWords.dataset.words.split(", ")
-      : [];
+    const filteredWords = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(", ") : [];
     filteredWords.forEach((word) => {
       const wordElement = document.createElement("span");
       wordElement.textContent = word;
@@ -808,9 +784,7 @@ class QuizSettings {
     this.wordSetDescription.value = description;
 
     this.filteredWordsList.innerHTML = "";
-    const filteredWords = this.hiddenFilteredWords.dataset.words
-      ? this.hiddenFilteredWords.dataset.words.split(", ")
-      : [];
+    const filteredWords = this.hiddenFilteredWords.dataset.words ? this.hiddenFilteredWords.dataset.words.split(", ") : [];
     filteredWords.forEach((word) => {
       const wordElement = document.createElement("span");
       wordElement.textContent = word;
@@ -837,9 +811,7 @@ class QuizSettings {
     const title = this.wordSetTitle.value.trim();
     const description = this.wordSetDescription.value.trim();
     const wordSetId = this.createWordSetForm.dataset.wordSetId;
-    const url = wordSetId
-      ? `/wordsets/${wordSetId}/update/`
-      : `/wordsets/create/`;
+    const url = wordSetId ? `/wordsets/${wordSetId}/update/` : `/wordsets/create/`;
 
     if (!title) {
       this.showToast("WordSet title is required.", "error");
@@ -875,9 +847,7 @@ class QuizSettings {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          const message = wordSetId
-            ? "WordSet updated successfully."
-            : "WordSet created successfully.";
+          const message = wordSetId ? "WordSet updated successfully." : "WordSet created successfully.";
           this.showToast(message, "success");
           this.closeCreateWordSetModal();
           this.loadWordSets(data.word_set_id, data.description);

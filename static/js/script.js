@@ -45,9 +45,7 @@ class Quiz {
   initialize() {
     if (this.startQuizButton) {
       this.startQuizButton.addEventListener("click", () => {
-        const words = this.filteredWordsDiv.dataset.words
-          ? this.filteredWordsDiv.dataset.words.split(", ")
-          : [];
+        const words = this.filteredWordsDiv.dataset.words ? this.filteredWordsDiv.dataset.words.split(", ") : [];
         if (words.length > 0) {
           this.update(words).then(() => {
             this.startQuiz();
@@ -461,12 +459,8 @@ class Quiz {
         this.addSpentTimeToLastAttempt(false);
         this.takeATurn();
       } else if (this.timer <= 10) {
-        this.timerSpinner.style.backgroundColor = this.isTimerSpinnerVisible
-          ? "red"
-          : "white";
-        this.timerSpinner.style.color = this.isTimerSpinnerVisible
-          ? "white"
-          : "red";
+        this.timerSpinner.style.backgroundColor = this.isTimerSpinnerVisible ? "red" : "white";
+        this.timerSpinner.style.color = this.isTimerSpinnerVisible ? "white" : "red";
         this.isTimerSpinnerVisible = !this.isTimerSpinnerVisible;
       }
     }, 1000);
@@ -516,9 +510,7 @@ class Quiz {
     const hiddenFilteredWordsDiv = document.getElementById(
       "hidden-filtered-words"
     );
-    const words = hiddenFilteredWordsDiv.dataset.words
-      ? hiddenFilteredWordsDiv.dataset.words.split(", ")
-      : [];
+    const words = hiddenFilteredWordsDiv.dataset.words ? hiddenFilteredWordsDiv.dataset.words.split(", ") : [];
     this.totalCountElementValue = words.length;
     console.log(
       `Starting new quiz with total count: ${this.totalCountElementValue}`
