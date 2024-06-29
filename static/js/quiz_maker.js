@@ -231,7 +231,7 @@ class QuizSettings {
    */
   startQuiz(event) {
     event.preventDefault();
-    window.location.href = "{% url 'landing' %}";
+    window.location.href = "/quizzes/game/";
   }
 
   /**
