@@ -330,6 +330,10 @@ Quiz "1" -- "1" WordSet
 @enduml
 ```
 
+### ERP Diagram
+
+<img src="static/readme/images/ERP_diagramm_PME.png" width="800" alt="Pimp my Englsih ERP db diagramm">
+
 ---
 
 ## User Stories
