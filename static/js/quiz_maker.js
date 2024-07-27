@@ -679,7 +679,7 @@ class QuizSettings {
         this.populateFilteredWords(); // Update filtered words display
         this.populateUnusedWords(); // Update unused words display
         if (callback) callback();
-        this.settings.use_filtered_words = false;
+        this.settings.use_filtered_words = true;
         this.hideSpinner();
       })
       .catch((error) => {
