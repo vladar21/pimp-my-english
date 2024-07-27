@@ -1,5 +1,6 @@
 # quizzes/models.py
 
+from django.urls import reverse
 from django.conf import settings
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
@@ -28,6 +29,9 @@ class Quiz(models.Model):
     class Meta:
         verbose_name = "Quiz"
         verbose_name_plural = "Quizzes"
+
+    def get_absolute_url(self):
+        return reverse('quizzes:quiz_detail', args=[self.id])
 
 
 class QuizResult(models.Model):

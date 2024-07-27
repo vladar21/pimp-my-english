@@ -1,5 +1,6 @@
 # wordsets/models.py
 
+from django.urls import reverse
 from django.db import models
 from django.conf import settings
 
@@ -64,10 +65,14 @@ class WordSet(models.Model):
     author_username = models.CharField(max_length=255)
     author_email = models.EmailField()
     words = models.ManyToManyField('Word', related_name='word_sets')
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Word Set"
         verbose_name_plural = "Word Sets"
+
+    def get_absolute_url(self):
+        return reverse('wordsets:get_word_set_words', args=[self.id])
 
 
 class Word(models.Model):

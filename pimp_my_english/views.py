@@ -1,7 +1,11 @@
 # pimp_my_english/views.py
 
 import json
+from django.http import HttpResponse
+from django.contrib.sitemaps import Sitemap
+from django.contrib.sitemaps.views import sitemap as original_sitemap
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.http import JsonResponse
@@ -10,6 +14,8 @@ from django.contrib import messages
 from mailchimp3 import MailChimp
 from mailchimp3.mailchimpclient import MailChimpError
 from .forms import ContactForm
+from quizzes.models import Quiz
+from wordsets.models import WordSet
 
 
 class HomeView(TemplateView):
@@ -112,3 +118,47 @@ def contact_view(request):
         contact_form = ContactForm()
 
     return render(request, 'contact.html', {'contact_form': contact_form})
+
+
+class StaticViewSitemap(Sitemap):
+    priority = 0.5
+    changefreq = 'weekly'
+
+    def items(self):
+        return ['home', 'privacy_policy', 'terms_and_conditions', 'contact']
+
+    def location(self, item):
+        return reverse(item)
+
+
+class QuizSitemap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.7
+
+    def items(self):
+        return Quiz.objects.all()
+
+    def lastmod(self, obj):
+        return obj.completed_at
+
+
+class WordSetSitemap(Sitemap):
+    changefreq = "daily"
+    priority = 0.8
+
+    def items(self):
+        return WordSet.objects.all()
+
+    def lastmod(self, obj):
+        return obj.updated_at
+
+
+def custom_sitemap_view(request):
+    sitemaps = {
+        'static': StaticViewSitemap,
+        'quizzes': QuizSitemap,
+        'wordsets': WordSetSitemap,
+    }
+    response = original_sitemap(request, sitemaps=sitemaps)
+    response['Content-Type'] = 'application/xml'
+    return response
