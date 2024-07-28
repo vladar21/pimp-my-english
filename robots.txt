@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /admin/
+
+Sitemap: https://pme-8f6d8d60e106.herokuapp.com/sitemap.xml
