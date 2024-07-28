@@ -793,6 +793,10 @@ See the JSHint validation **Results** in the image below (it was inserting conte
 
 4. I have confirmed that the form works: requires entries in every field, will only accept an email in the email field, and the submit button works.
 
+### Validate XML Sitemap
+
+<img src="static/readme/images/validate_xml_sitemap.png" width="700" alt="XML Validation Results">
+
 
 ## Bugs
 
