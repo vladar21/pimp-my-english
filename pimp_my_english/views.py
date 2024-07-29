@@ -121,39 +121,114 @@ def contact_view(request):
 
 
 class StaticViewSitemap(Sitemap):
+    """
+    Sitemap for static views such as home, privacy policy, terms and conditions, and contact pages.
+
+    Attributes:
+        priority (float): The priority of the URLs in the sitemap.
+        changefreq (str): The change frequency of the URLs in the sitemap.
+    """
     priority = 0.5
     changefreq = 'weekly'
 
     def items(self):
+        """
+        Returns a list of named URLs for the static views.
+
+        Returns:
+            list: A list of named URLs.
+        """
         return ['home', 'privacy_policy', 'terms_and_conditions', 'contact']
 
     def location(self, item):
+        """
+        Returns the URL for the given item.
+
+        Args:
+            item (str): The name of the URL.
+
+        Returns:
+            str: The URL for the given item.
+        """
         return reverse(item)
 
 
 class QuizSitemap(Sitemap):
+    """
+    Sitemap for quizzes.
+
+    Attributes:
+        changefreq (str): The change frequency of the URLs in the sitemap.
+        priority (float): The priority of the URLs in the sitemap.
+    """
     changefreq = "weekly"
     priority = 0.7
 
     def items(self):
+        """
+        Returns a queryset of all quizzes.
+
+        Returns:
+            QuerySet: A queryset of Quiz objects.
+        """
         return Quiz.objects.all()
 
     def lastmod(self, obj):
+        """
+        Returns the last modified date of the quiz.
+
+        Args:
+            obj (Quiz): The Quiz object.
+
+        Returns:
+            datetime: The last modified date of the quiz.
+        """
         return obj.completed_at
 
 
 class WordSetSitemap(Sitemap):
+    """
+    Sitemap for word sets.
+
+    Attributes:
+        changefreq (str): The change frequency of the URLs in the sitemap.
+        priority (float): The priority of the URLs in the sitemap.
+    """
     changefreq = "daily"
     priority = 0.8
 
     def items(self):
+        """
+        Returns a queryset of all word sets.
+
+        Returns:
+            QuerySet: A queryset of WordSet objects.
+        """
         return WordSet.objects.all()
 
     def lastmod(self, obj):
+        """
+        Returns the last modified date of the word set.
+
+        Args:
+            obj (WordSet): The WordSet object.
+
+        Returns:
+            datetime: The last modified date of the word set.
+        """
         return obj.updated_at
 
 
 def custom_sitemap_view(request):
+    """
+    Custom view to generate and return the sitemap XML.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: The response object with the sitemap XML.
+    """
     sitemaps = {
         'static': StaticViewSitemap,
         'quizzes': QuizSitemap,
