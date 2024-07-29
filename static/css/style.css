@@ -2051,3 +2051,11 @@ button[name="contact_submit"]:hover {
 #sign-up-span {
     display: inline-block;
 }
+
+/* Page Not Found Classes */
+
+.return-home-span {
+    display: inline-block;
+    background-color: white !important;
+    margin:0 auto;
+}
