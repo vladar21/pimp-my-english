@@ -1,13 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Not Found</title>
-</head>
-<body>
-    <h1>Page Not Found</h1>
-    <p>Sorry, but the page you are looking for does not exist.</p>
-    <a href="/">Return to Home</a>
-</body>
-</html>
+<!-- templates/404.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-7 col-md-6 my-auto">
+                <h1 class="display-4 logo-font text-black">
+                    The page you are looking for isn't available
+                </h1>
+                <div class="my-5">
+                    <h4>
+                        <a href="/" 
+                            class="shop-now-button btn btn-lg rounded-0 text-uppercase py-3">
+                                Return to home
+                        </a>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

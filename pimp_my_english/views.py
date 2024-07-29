@@ -165,4 +165,5 @@ def custom_sitemap_view(request):
 
 
 def custom_page_not_found_view(request, exception):
-    return render(request, "404.html", {})
+    """ Error Handler 404 - Page Not Found """
+    return render(request, "404.html", status=404)
