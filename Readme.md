@@ -20,8 +20,9 @@ This README file provides an overview of the project, detailing its purpose, fea
 9. [Testing](#testing)
 10. [Deployment](#deployment)
 11. [Marketing Strategy](#marketing-strategy)
-12. [Acknowledgements](#acknowledgements)
-13. [License](#license)
+12. [Business Model](#business-model)
+13. [Acknowledgements](#acknowledgements)
+14. [License](#license)
 
 ---
 
@@ -798,6 +799,7 @@ See the JSHint validation **Results** in the image below (it was inserting conte
 
 <img src="static/readme/images/validate_xml_sitemap.png" width="700" alt="XML Validation Results">
 
+---
 
 ## Bugs
 
@@ -1020,7 +1022,7 @@ Our primary objective is to capture 0.005% of the online English language learni
     <meta name="description" content="Pimp My English: Learn by Gaming! Whether you're looking to improve your English vocabulary or simply enjoy a challenging quiz, this application is for you.">
     <meta name="keywords" content="english, quiz, word quiz, learning english, remote education">
     ```
-    
+
 3. Cost-Effective Advertising:
     * Focus on acquiring lower-ranking keywords to reduce advertising costs while maintaining effective reach.
 
@@ -1045,6 +1047,28 @@ Our primary objective is to capture 0.005% of the online English language learni
   * Form strategic partnerships with educational institutions and language schools to promote our platform.
 
 By executing this comprehensive marketing strategy, Pimp My English aims to establish a strong presence in the online English language learning market and achieve our ambitious growth targets.
+
+---
+
+## Business Model
+
+Pimp My English is an e-commerce application focused on delivering a B2C (Business-to-Consumer) experience. The platform is designed to enhance users' English vocabulary through engaging and interactive quizzes, offering both free and premium subscription plans to cater to various user needs and preferences.
+
+### Core Business Intents
+
+1. Providing High-Quality Educational Content:
+  * Deliver a comprehensive and engaging learning experience focused on vocabulary expansion through quizzes and interactive content.
+  * Continuously expand and improve the vocabulary database with high-quality visual and audio content.
+
+2. Offering Flexible Subscription Plans:
+  * Free Tier: Provides access to most features, including taking quizzes, and benefiting from real-time feedback and interactive learning, but excludes the ability to create personalized word sets.
+  * Premium Subscription: Grants full access to all features, including creating and customizing word sets, accessing an extensive library of quizzes. Available as monthly or annual plans.
+
+2. Supporting Diverse User Needs:
+  * Cater to a wide range of users, including students, educators, professionals, and language enthusiasts.
+  * Offer tailored content and features to meet the specific needs of different user groups.
+
+---
 
 ## Acknowledgments
 
