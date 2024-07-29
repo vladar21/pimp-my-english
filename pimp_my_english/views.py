@@ -162,3 +162,7 @@ def custom_sitemap_view(request):
     response = original_sitemap(request, sitemaps=sitemaps)
     response['Content-Type'] = 'application/xml'
     return response
+
+
+def custom_page_not_found_view(request, exception):
+    return render(request, "404.html", {})

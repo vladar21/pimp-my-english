@@ -4,8 +4,9 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from .views import PrivacyPolicyView, TermsAndConditionsView, HomeView, custom_sitemap_view
-from .views import subscribe_newsletter, contact_view
+from .views import subscribe_newsletter, contact_view, custom_page_not_found_view
 
+handler404 = custom_page_not_found_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
