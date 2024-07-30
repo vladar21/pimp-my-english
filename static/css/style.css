@@ -1346,6 +1346,10 @@ body > main > div > div > span {
     padding:10px;
 }
 
+.profile-welcome {
+    font-size: 27px;
+}
+
 /* Common styles for btn-link */
 .button-link {
     display: inline-block;

@@ -746,6 +746,14 @@ The platform uses clean and modern fonts that are easy to read on both desktop a
 - **Screen Reader Support**: All interactive elements and important content are labeled appropriately to provide a seamless experience for users relying on screen readers.
 - **Color Contrast**: High contrast ratios are used to ensure readability for users with visual impairments.
 
+### Wireframes
+- [Home Page Wireframe](static/readme/images/PME_home_page.jpg)
+- [Quiz Page Wireframe](static/readme/images/PME_quiz_page.jpg)
+- [Game Page Wireframe](static/readme/images/PME_qame_page.jpg)
+- [Profile Page Wireframe](static/readme/images/PME_profile_page.jpg)
+- [Quiz Maker Page Wireframe](static/readme/images/PME_quiz_maker_page.jpg)
+
+
 By prioritizing user needs and employing best practices in UX/UI design, we aim to create a platform that is not only effective in facilitating learning but also enjoyable to use.
 
 ---
@@ -780,7 +788,6 @@ See the JSHint validation **Results** in the image below (it was inserting conte
 
 <img src="static/readme/images/JSHint_validation_result.png" width="600" alt="JSHint validation results">
 
-
 ### Accessibility
 
 1. I confirmed that the colors and fonts chosen are easy to read and accessible by running it through lighthouse in devtools.
@@ -798,6 +805,23 @@ See the JSHint validation **Results** in the image below (it was inserting conte
 ### Validate XML Sitemap
 
 <img src="static/readme/images/validate_xml_sitemap.png" width="700" alt="XML Validation Results">
+
+## Manual Testing
+
+### Login and Registration
+- [Login and Registration Testing](manual_testing_login_registration.md)
+
+### Create Word Sets
+- [Create Word Sets Testing](manual_testing_create_word_sets.md)
+
+### Edit Word Sets
+- [Edit Word Sets Testing](manual_testing_edit_word_sets.md)
+
+### Delete Word Sets
+- [Delete Word Sets Testing](manual_testing_delete_word_sets.md)
+
+### Take Quizzes
+- [Take Quizzes Testing](manual_testing_take_quizzes.md)
 
 ---
 
@@ -1064,7 +1088,7 @@ Pimp My English is an e-commerce application focused on delivering a B2C (Busine
   * Free Tier: Provides access to most features, including taking quizzes, and benefiting from real-time feedback and interactive learning, but excludes the ability to create personalized word sets.
   * Premium Subscription: Grants full access to all features, including creating and customizing word sets, accessing an extensive library of quizzes. Available as monthly or annual plans.
 
-2. Supporting Diverse User Needs:
+3. Supporting Diverse User Needs:
   * Cater to a wide range of users, including students, educators, professionals, and language enthusiasts.
   * Offer tailored content and features to meet the specific needs of different user groups.
 
