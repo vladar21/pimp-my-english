@@ -809,19 +809,22 @@ See the JSHint validation **Results** in the image below (it was inserting conte
 ## Manual Testing
 
 ### Login and Registration
-- [Login and Registration Testing](manual_testing_login_registration.md)
+- [Login and Registration Testing](/static/readme/md/manual_testing_login_registration.md)
+
+### Subscription Management
+- [Subscription Management Testing](/static/readme/md/manual_testing_subscription_management.md)
 
 ### Create Word Sets
-- [Create Word Sets Testing](manual_testing_create_word_sets.md)
+- [Create Word Sets Testing](/static/readme/md/manual_testing_create_word_sets.md)
 
 ### Edit Word Sets
-- [Edit Word Sets Testing](manual_testing_edit_word_sets.md)
+- [Edit Word Sets Testing](/static/readme/md/manual_testing_edit_word_sets.md)
 
 ### Delete Word Sets
-- [Delete Word Sets Testing](manual_testing_delete_word_sets.md)
+- [Delete Word Sets Testing](/static/readme/md/manual_testing_delete_word_sets.md)
 
 ### Take Quizzes
-- [Take Quizzes Testing](manual_testing_take_quizzes.md)
+- [Take Quizzes Testing](/static/readme/md/manual_testing_take_quizzes.md)
 
 ---
 
